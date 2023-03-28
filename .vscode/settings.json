@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/b6cacb9d-02da-475a-b523-29e66c621d3a/resourceGroups/M3S/providers/Microsoft.Web/sites/hallo-wereld2",
+    "appService.deploySubpath": "."
+}
