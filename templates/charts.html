@@ -46,7 +46,7 @@
 
 
     <header>
-        <a href={{ url_for('index') }} class="logo">Binenklimaat condities</a>
+        <a href={{ url_for('index') }} class="logo">Binenklimaat</a>
         <ul class="navlist">
             <li><a href={{ url_for('index') }}>ACTUELE DATA</a></li>
             <li><a href={{ url_for('charts') }}>GESCHIEDENIS</a></li>
@@ -70,7 +70,12 @@
                 </div>
             </div>
             <div class="notification">
-                <h5>nog wat test text</h5>
+                <div class="notification_title">
+                    <h5>notifications</h5>
+                </div>
+                <div class="notification_content">
+                    <h6>hier komen notificaties</h6>
+                </div>
             </div>
         </div>
 
@@ -78,138 +83,236 @@
 
         <div class="block_container">
             <div class="temp">
-                <div class="temp_text">
-                    <h5>hier de text</h5>
-                </div>
+                <!-- <div class="temp_text">
+                    <h5>hier komt text</h5>
+                </div> -->
                 <div class="temp_chart">
+                    <h8 class="niet_zichtbaar">niet zichtbare text</h8>
                     <canvas id="temp_chart"></canvas>
                 </div>
             </div>
             <div class="CO2">
-                <div class="CO2_text">
-                    <h5>Hier de text</h5>
-                </div>
+                <!-- <div class="CO2_text">
+                    <h5>Hier komt text</h5>
+                </div> -->
                 <div class="CO2_chart">
+                    <h8 class="niet_zichtbaar">niet zichtbare text</h8>
                     <canvas id="co2_chart"></canvas>
                 </div>
             </div>
 
         </div>
-    </div>
+
+        <div class="block_container">
+            <div class="humid">
+                <!-- <div class="humid_text">
+                    <h5>hier komt text</h5>
+                </div> -->
+                <div class="humid-chart">
+                    <h8 class="niet_zichtbaar">niet zichtbare text</h8>
+                    <canvas id="humid_chart"></canvas>
+                </div>
+            </div>
+            <div class="pres">
+                <!-- <div class="pres_text">
+                    <h5>Hier komt text</h5>
+                </div> -->
+                <div class="pres_chart">
+                    <h8 class="niet_zichtbaar">niet zichtbare text</h8>
+                    <canvas id="pres_chart"></canvas>
+                </div>
+            </div>
+
+        </div>
 
 
 
 
-    <script>
-        const temp_chart = document.getElementById('temp_chart');
+        <script>
+            const temp_chart = document.getElementById('temp_chart');
 
-        time_labels = {{ get_recent_sensor_readings(0, 100) | safe }}
-        time_luxon = []
-        for (dt of time_labels) {
-            time_luxon.push(luxon.DateTime.fromISO(dt))
-        }
-        temp_data = {{ get_recent_sensor_readings(1, 100) | safe }}
-
-        var chart = new Chart(temp_chart, {
-            type: 'line',
-            data: {
-                labels: time_luxon,
-                datasets: [{
-                    label: 'Temperature',
-                    data: temp_data,                            // de data die je laat zien
-                    backgroundColor: 'rgb(200, 240, 200)',      // vul kleur van de boletjes en blokjes
-                    borderColor: 'rgb(40, 180, 20)',            // keur van de lijn
-                    fill: false,                                // de onderkant vullen
-                    cubicInterpolationMode: 'monotone',         // de vorm van de lijn afronden
-                    tension: 0.4,                               // hoeveel er word afgerond
-                    borderWidth: 1                              // dikte van de lijn
-                }]
-            },
-            options: {
-                responsive: true,
-                animation: false,
-                interaction: {
-                    intersect: false,
-                },
-                scales: {
-                    x: { display: true, title: { display: true }, type: 'time', time: { displayFormats: { hour: "dd/LL HH'h'", } } },
-                    y: { display: true, title: { display: true, text: 'Degrees celsius (°C)' }, suggestedMin: 20, suggestedMax: 30, }
-                    // x: { type: 'time', time: { displayFormats: { hour: "dd/LL HH'h'", } } },
-                    // y: { suggestedMin: 20, suggestedMax: 30, }
-                }
+            time_labels = {{ get_recent_sensor_readings(0, 100) | safe }}
+            time_luxon = []
+            for (dt of time_labels) {
+                time_luxon.push(luxon.DateTime.fromISO(dt))
             }
-        });
+            temp_data = {{ get_recent_sensor_readings(1, 100) | safe }}
 
-
-        const ct2 = document.getElementById('co2_chart');
-        // time_labels = {{ get_recent_sensor_readings(0, 100) | safe }}
-        // time_luxon = []
-        // for (dt of time_labels) {
-        //     time_luxon.push(luxon.DateTime.fromISO(dt))
-        // }
-        co2_data = {{ get_recent_sensor_readings(2, 100) | safe }}
-
-        chart2 = new Chart(ct2, {
-            type: 'line',
-            data: {
-                labels: time_luxon,
-                datasets: [{
-                    label: 'CO2 (ppm)',
-                    borderColor: '#FF396A',
-                    backgroundColor: '#FF396A80',
-                    data: co2_data,
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                animation: false,
-                scales: {
-                    x: {
-                        type: 'time',
-                        time: {
-                            displayFormats: {
-                                hour: "dd/LL HH'h'",
-                            }
-                        }
+            var chart = new Chart(temp_chart, {
+                type: 'line',
+                data: {
+                    labels: time_luxon,
+                    datasets: [{
+                        label: 'Temperature (°C)',
+                        data: temp_data,                            // de data die je laat zien
+                        backgroundColor: 'rgb(200, 240, 200)',      // vul kleur van de boletjes en blokjes
+                        borderColor: 'rgb(40, 180, 20)',            // keur van de lijn
+                        fill: false,                                // de onderkant vullen
+                        cubicInterpolationMode: 'monotone',         // de vorm van de lijn afronden
+                        tension: 0.4,                               // hoeveel er word afgerond
+                        borderWidth: 1                              // dikte van de lijn
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    animation: false,
+                    interaction: {
+                        intersect: false,
                     },
-                    y: {
-                        suggestedMin: 400,
-                        suggestedMax: 1000,
+                    scales: {
+                        x: { display: true, title: { display: false }, type: 'time', time: { displayFormats: { hour: "dd/LL HH'h'", } } },
+                        y: { display: true, title: { display: false, text: 'Degrees celsius (°C)' }, suggestedMin: 20, suggestedMax: 30, }
+                        // x: { type: 'time', time: { displayFormats: { hour: "dd/LL HH'h'", } } },
+                        // y: { suggestedMin: 20, suggestedMax: 30, }
                     }
                 }
+            });
+
+
+            const ct2 = document.getElementById('co2_chart');
+            co2_data = {{ get_recent_sensor_readings(2, 100) | safe }}
+
+            chart2 = new Chart(ct2, {
+                type: 'line',
+                data: {
+                    labels: time_luxon,
+                    datasets: [{
+                        label: 'CO2 (ppm)',
+                        data: co2_data,
+                        backgroundColor: '#FF396A80',
+                        borderColor: '#FF396A',
+                        fill: false,                                // de onderkant vullen
+                        cubicInterpolationMode: 'monotone',         // de vorm van de lijn afronden
+                        tension: 0.4,                               // hoeveel er word afgerond
+                        borderWidth: 1                              // dikte van de lijn
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    animation: false,
+                    interaction: {
+                        intersect: false,
+                    },
+                    scales: {
+                        x: { display: true, title: { display: false }, type: 'time', time: { displayFormats: { hour: "dd/LL HH'h'", } } },
+                        y: { display: true, title: { display: false, text: 'CO2 in PPM' }, suggestedMin: 400, suggestedMax: 1000, }
+                    }
+                }
+            });
+
+            const ct3 = document.getElementById('humid_chart');
+            time_labels = {{ get_recent_sensor_readings(0, 100) | safe }}
+            time_luxon = []
+            for (dt of time_labels) {
+                time_luxon.push(luxon.DateTime.fromISO(dt))
             }
-        });
+            humid_data = {{ get_recent_sensor_readings(3, 100) | safe }}
 
-    </script>
+            chart3 = new Chart(ct3, {
+                type: 'line',
+                data: {
+                    labels: time_luxon,
+                    datasets: [{
+                        label: 'Humidity (%)',
+                        data: humid_data,                           // de data die je laat zien
+                        backgroundColor: '#39CF9A80',               // vul kleur van de boletjes en blokjes
+                        borderColor: '#39CF6A',                     // keur van de lijn
+                        fill: false,                                // de onderkant vullen
+                        cubicInterpolationMode: 'monotone',         // de vorm van de lijn afronden
+                        tension: 0.4,                               // hoeveel er word afgerond
+                        borderWidth: 1                              // dikte van de lijn
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    animation: false,
+                    interaction: {
+                        intersect: false,
+                    },
+                    scales: {
+                        x: { display: true, title: { display: false }, type: 'time', time: { displayFormats: { hour: "dd/LL HH'h'", } } },
+                        y: { display: true, title: { display: false, text: 'humidity in %' }, suggestedMin: 40, suggestedMax: 60, }
+                    }
+                }
+            });
+
+            const ct4 = document.getElementById('pres_chart');
+            time_labels = {{ get_recent_sensor_readings(0, 100) | safe }}
+            time_luxon = []
+            for (dt of time_labels) {
+                time_luxon.push(luxon.DateTime.fromISO(dt))
+            }
+            pres_data = {{ get_recent_sensor_readings(4, 100) | safe }}
+
+            chart4 = new Chart(ct4, {
+                type: 'line',
+                data: {
+                    labels: time_luxon,
+                    datasets: [{
+                        label: 'Air pressure (hPa)',
+                        data: pres_data,                            // de data die je laat zien
+                        backgroundColor: '#FFAA0080',               // vul kleur van de boletjes en blokjes
+                        borderColor: '#FFAA00',                     // keur van de lijn
+                        fill: false,                                // de onderkant vullen
+                        cubicInterpolationMode: 'monotone',         // de vorm van de lijn afronden
+                        tension: 0.4,                               // hoeveel er word afgerond
+                        borderWidth: 1                              // dikte van de lijn
+
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    animation: false,
+                    interaction: {
+                        intersect: false,
+                    },
+                    scales: {
+                        x: { display: true, title: { display: false }, type: 'time', time: { displayFormats: { hour: "dd/LL HH'h'", } } },
+                        y: { display: true, title: { display: false, text: 'air pressure in hPa' }, suggestedMin: 1000, suggestedMax: 1100, }
+                    }
+                }
+            });
 
 
-    <script>
-        // function to update the graph with a new scale
-        function updateGraph(index) {
-            document.getElementById('myRange').value = index
-            // update the chart data
-            chart.data.datasets[0].data = temp_data.slice(index, 100);
-            chart.data.labels = time_labels.slice(index, 100);
-            chart2.data.datasets[0].data = co2_data.slice(index, 100);
-            chart2.data.labels = time_labels.slice(index, 100);
-            // update the chart
-            chart.update();
-            chart2.update();
-        }
-    </script>
+        </script>
 
 
-    <div class="buttons">
-        <button type="submit" id="button_10" name="button" onclick="updateGraph(10)" class="btn btn-primary">10</button>
-        <button type="submit" id="button_50" name="button" onclick="updateGraph(50)" class="btn btn-primary">50</button>
-        <button type="submit" id="button_100" name="button" onclick="updateGraph(100)"
-            class="btn btn-primary">100</button>
-        <div>
-            <input type="range" min="1" max="100" value="50" class="slider" id="myRange"
-                oninput="updateGraph(value)"></input>
+        <script>
+            // function to update the graph with a new scale
+            function updateGraph(index) {
+                document.getElementById('myRange').value = index
+                // update the chart data
+                chart.data.datasets[0].data = temp_data.slice(index, 100);
+                chart.data.labels = time_labels.slice(index, 100);
+                chart2.data.datasets[0].data = co2_data.slice(index, 100);
+                chart2.data.labels = time_labels.slice(index, 100);
+                chart3.data.datasets[0].data = humid_data.slice(index, 100);
+                chart3.data.labels = time_labels.slice(index, 100);
+                chart4.data.datasets[0].data = pres_data.slice(index, 100);
+                chart4.data.labels = time_labels.slice(index, 100);
+                // update the chart
+                chart.update();
+                chart2.update();
+                chart3.update();
+                chart4.update();
+            }
+        </script>
+
+
+        <div class="buttons">
+            <button type="submit" id="button_10" name="button" onclick="updateGraph(10)"
+                class="btn btn-primary">10</button>
+            <button type="submit" id="button_50" name="button" onclick="updateGraph(50)"
+                class="btn btn-primary">50</button>
+            <button type="submit" id="button_100" name="button" onclick="updateGraph(100)"
+                class="btn btn-primary">100</button>
+            <div>
+                <input type="range" min="1" max="100" value="50" class="slider" id="myRange"
+                    oninput="updateGraph(value)"></input>
+            </div>
         </div>
-    </div>
 
+    </div>
 
 
 

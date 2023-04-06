@@ -17,7 +17,9 @@ header {
     align-items: center;
     justify-content: space-between;
     padding: 33px 9%;
-    background: transparent;
+    background: rgba(255, 255, 255, 0.6);
+    ;
+
 }
 
 .background {
@@ -89,51 +91,31 @@ body {
 }
 
 .block_container {
-    padding-top: 20px;
-    /* text-align: center; */
+    text-align: center;
     /* display: flex;*/
     justify-content: center;
 }
 
+.plategrond,
+.notification,
 .temp,
 .CO2,
-.plategrond,
-.notification {
+.humid,
+.pres {
+    margin-top: 1.5%;
+    margin-left: .5%;
+    margin-right: .5%;
     display: inline-block;
     vertical-align: middle;
+    border-radius: 40px;
     /* display: inline; */
 }
 
-.temp {
-    /* margin-top: 70px; */
-    /* margin-left: 5%;
-    margin-right: 52%; */
-    background-color: rgba(255, 255, 255, 0.8);
-    border-radius: 40px;
-    padding: 3%;
-    width: 48%;
-}
-
-.CO2 {
-    background-color: rgba(255, 255, 255, 0.8);
-    border-radius: 40px;
-    padding: 3%;
-    width: 48%;
-}
-
-.temp_text {
-    padding: 1%;
-}
-
-.temp_chart {
-    padding: 3%;
-}
 
 .plategrond {
     background-color: rgba(19, 57, 23, 0.8);
-    border-radius: 40px;
     padding: 3%;
-    width: 65%;
+    width: 63%;
 }
 
 .plategrond-text {
@@ -143,13 +125,57 @@ body {
 
 .plategrond-image img {
     width: 100%;
+}
+
+.notification {
+    background-color: rgba(255, 255, 255, 0.8);
+    width: 33%;
     height: auto;
 }
+
+.notification_title {
+    color: black;
+}
+
+
+.temp,
+.CO2,
+.humid,
+.pres {
+    /* margin-top: 70px; */
+    /* margin-left: 5%;
+    margin-right: 52%; */
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 3%;
+    width: 48%;
+}
+
+.temp_tex,
+.CO2-text,
+.humid_text,
+.pres_text {
+    padding: 1%;
+}
+
+.temp_chart,
+.CO2_chart,
+.humid_chart,
+.pres_chart {
+    /* padding: 3%; */
+}
+
+.niet_zichtbaar {
+    opacity: 0%;
+    font-size: 0px;
+}
+
+
 
 .buttons {
     margin-left: 5%;
     margin-right: 5%;
 }
+
 
 @media (max-width: 1535px) {
     header {
@@ -197,11 +223,39 @@ body {
     }
 
     .plategrond {
-        border-radius: 30px;
         width: 100%;
     }
 
+    .temp,
+    .CO2,
+    .plategrond,
+    .notification,
+    .humid,
+    .pres {
+        border-radius: 30px;
+        margin-top: 2%;
+        /* display: inline; */
+    }
+
+
 }
 
-/* @media (max-width: 680px) {
-} */
+@media (max-width: 780px) {
+
+    .temp,
+    .CO2,
+    .humid,
+    .pres {
+        width: 100%;
+    }
+
+    .temp,
+    .CO2,
+    .plategrond,
+    .notification,
+    .humid,
+    .pres {
+        border-radius: 25px;
+        /* display: inline; */
+    }
+}
