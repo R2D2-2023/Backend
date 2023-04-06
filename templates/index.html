@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-with, initial-scale=1.0">
+    <title>My first webpage</title>
+
+    <!---link naar CSS opmaak--->
+    <link rel="stylesheet" type="text/css" href="../static/bootstrap/css/style.css">
+
+    <!---boxicons link--->
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+
+    <!----remixicons link--->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+
+    <!---google fonts link --->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Poppins:ital,wght@1,300&display=swap"
+        rel="stylesheet">
+</head>
+
+
+
+<body>
+    <header>
+        <a href={{ url_for('index') }} class="logo">Dashbord</a>
+        <ul class="navlist">
+            <li><a href={{ url_for('index') }}>Home</a></li>
+            <li><a href={{ url_for('charts') }}>Grafiekjes</a></li>
+            <li><a href={{ url_for('lege_pagina') }}>Lege pagina</a></li>
+        </ul>
+        <div class="bx bx-menu" id="menu-icon"></div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-text">
+            <h5># The trending hotdog</h5>
+            <h4>recept voor</h4>
+            <h1>Hotdog</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque quibusdam doloribus consequatur
+                fugit illo maiores ex ut excepturi corporis consectetur.</p>
+            <a href="#">recept</a>
+            <a href="#" class="ctaa"><i class="ri-home-7-line"></i>icoon hotdog</a>
+        </div>
+
+        <div class="hero-image">
+            <img src="../static/images/hotdog.png" alt="digital drawing of a camera">
+        </div>
+    </section>
+
+    <div class="icons">
+        <a href="#"><i class="ri-instagram-line"></i></a>
+        <a href="#"><i class="ri-youtube-line"></i></a>
+        <a href="#"><i class="ri-dribbble-line"></i></a>
+    </div>
+
+    <div class="scroll-down">
+        <a href="#"><i class="ri-arrow-down-s-fill"></i></a>
+    </div>
+
+    <!-- scrollreveal effect -->
+    <script src="https://unpkg.com/scrollreveal"></script>
+
+    <!-- custom js link -->
+    <script src="../static/bootstrap/js/script.js"></script>
+
+</body>
+
+</html>
