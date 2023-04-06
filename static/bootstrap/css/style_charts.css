@@ -17,7 +17,7 @@ header {
     align-items: center;
     justify-content: space-between;
     padding: 33px 9%;
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.8);
     ;
 
 }
@@ -40,7 +40,7 @@ body {
     /* background-image: url("../../images/achtergrond3.png");
     background-repeat: repeat;
     background-size: cover; */
-    background: #A3BA85;
+    background: #133917;
 }
 
 .logo {
@@ -51,12 +51,12 @@ body {
 }
 
 .backgroundimage {
-    background-image: url("../../images/achtergrond4.png");
+    background-image: url("../../images/achtergrond8.png");
     height: 800px;
     width: 100%;
     padding-top: 80px;
-    padding-left: 5%;
-    padding-right: 5%;
+    padding-left: 10%;
+    padding-right: 10%;
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -113,9 +113,10 @@ body {
 
 
 .plategrond {
-    background-color: rgba(19, 57, 23, 0.8);
+    /* background-color: rgba(163, 186, 133, 0.8); */
+    background-color: rgba(195, 216, 173, 0.8);
     padding: 3%;
-    width: 63%;
+    width: 67%;
 }
 
 .plategrond-text {
@@ -129,7 +130,7 @@ body {
 
 .notification {
     background-color: rgba(255, 255, 255, 0.8);
-    width: 33%;
+    width: 30%;
     height: auto;
 }
 
@@ -222,7 +223,8 @@ body {
         right: 0;
     }
 
-    .plategrond {
+    .plategrond,
+    .notification {
         width: 100%;
     }
 
@@ -235,6 +237,11 @@ body {
         border-radius: 30px;
         margin-top: 2%;
         /* display: inline; */
+    }
+
+    .backgroundimage {
+        padding-left: 7%;
+        padding-right: 7%;
     }
 
 
