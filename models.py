@@ -1,9 +1,26 @@
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
+from flask_sqlalchemy import SQLAlchemy
+from flask_wtf.csrf import CSRFProtect
+from flask_migrate import Migrate
 from sqlalchemy.orm import validates
 
-from app import db
+# Initialize the database connection
+db = SQLAlchemy()
+migrate = Migrate()
+csrf = CSRFProtect()
 
+def config_db(app):
+    # Initialize the database connection
+    app.config.update(
+        SQLALCHEMY_DATABASE_URI=app.config.get('DATABASE_URI'),
+        SQLALCHEMY_TRACK_MODIFICATIONS=False,
+    )
+    db.init_app(app)
+    migrate.init_app(app, db)
+    csrf.init_app(app)
+    return db, migrate, csrf
 
+    
 class SensorData(db.Model):
     __tablename__ = 'sensor_data'
     datetime = Column(DateTime, primary_key=True)
@@ -11,6 +28,7 @@ class SensorData(db.Model):
     humidity = Column(Integer)
     pressure = Column(Integer)
     temperature = Column(Integer)
+    location = Column(Integer)
 
     def __str__(self):
         return self.name

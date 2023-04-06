@@ -8,185 +8,69 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1"></script>
 <script src="https://cdn.jsdelivr.net/npm/luxon@3.3.0/build/global/luxon.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@^1.3.1"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
-<script>
-
-    const ct1 = document.getElementById('tempChart');
-    time_labels = {{ get_recent_sensor_readings(0, 100) | safe }}
-    time_luxon = []
-    for (dt of time_labels) {
-        time_luxon.push(luxon.DateTime.fromISO(dt))
-    }
-    temp_data = {{ get_recent_sensor_readings(1, 100) | safe }}
-
-    chart = new Chart(ct1, {
-        type: 'line',
-        data: {
-            labels: time_luxon,
-            datasets: [{
-                label: 'Temperature (°C)',
-                data: temp_data,
-                borderWidth: 1
-            }]
-        },
-
-        options: {
-            animation: false,
-            scales: {
-                x: {
-                    type: 'time',
-                    time: {
-                        displayFormats: {
-                            hour: "dd/LL HH'h'",
-                        }
-                    }
-                },
-                y: {
-                    suggestedMin: 20,
-                    suggestedMax: 30,
-                }
-            }
-        }
-    });
-
-    const ct2 = document.getElementById('co2Chart');
-    time_labels = {{ get_recent_sensor_readings(0, 100) | safe }}
-    time_luxon = []
-    for (dt of time_labels) {
-        time_luxon.push(luxon.DateTime.fromISO(dt))
-    }
-    co2_data = {{ get_recent_sensor_readings(2, 100) | safe }}
-
-    chart2 = new Chart(ct2, {
-        type: 'line',
-        data: {
-            labels: time_luxon,
-            datasets: [{
-                label: 'CO2 (ppm)',
-                borderColor: '#FF396A',
-                backgroundColor: '#FF396A80',
-                data: co2_data,
-                borderWidth: 1
-            }]
-        },
-        options: {
-            animation: false,
-            scales: {
-                x: {
-                    type: 'time',
-                    time: {
-                        displayFormats: {
-                            hour: "dd/LL HH'h'",
-                        }
-                    }
-                },
-                y: {
-                    suggestedMin: 400,
-                    suggestedMax: 1000,
-                }
-            }
-        }
-    });
-
-    const ct3 = document.getElementById('humidChart');
-    time_labels = {{ get_recent_sensor_readings(0, 100) | safe }}
-    time_luxon = []
-    for (dt of time_labels) {
-        time_luxon.push(luxon.DateTime.fromISO(dt))
-    }
-    humid_data = {{ get_recent_sensor_readings(3, 100) | safe }}
-
-    chart3 = new Chart(ct3, {
-        type: 'line',
-        data: {
-            labels: time_luxon,
-            datasets: [{
-                label: 'Humidity (%)',
-                borderColor: '#39CF6A',
-                backgroundColor: '#39CF9A80',
-                data: humid_data,
-                borderWidth: 1
-            }]
-        },
-        options: {
-            animation: false,
-            scales: {
-                x: {
-                    type: 'time',
-                    time: {
-                        displayFormats: {
-                            hour: "dd/LL HH'h'",
-                        }
-                    }
-                },
-                y: {
-                    suggestedMin: 40,
-                    suggestedMax: 60,
-                }
-            }
-        }
-    });
-
-    const ct4 = document.getElementById('presChart');
-    time_labels = {{ get_recent_sensor_readings(0, 100) | safe }}
-    time_luxon = []
-    for (dt of time_labels) {
-        time_luxon.push(luxon.DateTime.fromISO(dt))
-    }
-    pres_data = {{ get_recent_sensor_readings(4, 100) | safe }}
-
-    chart4 = new Chart(ct4, {
-        type: 'line',
-        data: {
-            labels: time_luxon,
-            datasets: [{
-                label: 'Air pressure (hPa)',
-                borderColor: '#FFAA00',
-                backgroundColor: '#FFAA0080',
-                data: pres_data,
-                borderWidth: 1
-            }]
-        },
-        options: {
-            animation: false,
-            scales: {
-                x: {
-                    type: 'time',
-                    time: {
-                        displayFormats: {
-                            hour: "dd/LL HH'h'",
-                        }
-                    }
-                },
-                y: {
-                    suggestedMin: 1000,
-                    suggestedMax: 1100,
-                }
-            }
-        }
-    });
-
-</script>
 
 <script>
     // function to update the graph with new data
     function updateGraph(index) {
-        document.getElementById('myRange').value = index
+        document.getElementById('myRange').value=index
         // update the chart data
-        chart.data.datasets[0].data = temp_data.slice(index, 100);
-        chart.data.labels = time_labels.slice(index, 100);
-        chart2.data.datasets[0].data = co2_data.slice(index, 100);
-        chart2.data.labels = time_labels.slice(index, 100);
-        chart3.data.datasets[0].data = humid_data.slice(index, 100);
-        chart3.data.labels = time_labels.slice(index, 100);
-        chart4.data.datasets[0].data = pres_data.slice(index, 100);
-        chart4.data.labels = time_labels.slice(index, 100);
+        chart.data.datasets[0].data = temp_data.slice(0, index);
+        chart.data.labels = time_labels.slice(0, index);
         // update the chart
         chart.update();
-        chart2.update();
-        chart3.update();
-        chart4.update();
     }
+</script>
+
+<script>
+function prepend(value, array) {
+    var newArray = array.slice();
+    newArray.unshift(value);
+    return newArray;
+}
+
+function getNewData(location){
+    console.log(time_labels[0]);
+    sensor = 'temperature'
+    $.ajax({
+        url: "{{url_for('get_new_data')}}",
+        type: "GET",
+        data: {'last_datapoint':time_labels[0], 'location':location, 'sensor_type':sensor},
+        success: function(ret_data) {
+            if (ret_data) {
+                console.log(ret_data);
+                console.log(ret_data['data'].length);
+                for (var i = 0; i < ret_data['data'].length; i++) {
+                    console.log(ret_data['data'][i]);
+                    console.log(ret_data['timestamp'][i]);
+                    chart.data.datasets[0].data = prepend(ret_data['data'][i], chart.data.datasets[0].data);
+                    chart.data.labels = prepend(luxon.DateTime.fromISO(ret_data['timestamp'][i]), chart.data.labels);
+                    chart.data.datasets[0].data.pop();
+                    chart.data.labels.pop();
+                    time_labels = prepend(ret_data['timestamp'][i], time_labels);
+                }
+                chart.update();
+            }
+        }
+    });
+}
+
+myInterval = setInterval(function(){getNewData(1)}, 1000);
+</script>
+
+<script>
+function getLatest(location) {
+    $.ajax({
+        url: "{{url_for('get_latest')}}",
+        type: "GET",
+        data: {'data':location},
+        success: function(ret_data) {
+            console.log(ret_data);
+            document.getElementById("test1").innerHTML = ret_data;
+        }
+    });
+}
 </script>
 
 <button type="submit" id="button4" name="button" onclick="updateGraph(10)" class="btn btn-primary">10</button>
