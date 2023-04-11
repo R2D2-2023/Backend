@@ -51,6 +51,10 @@ def config_route(app, csrf, db):
         print('Request for lege_pagina page received')
         return render_template('lege_pagina.html')
 
+    @app.route('/posts')
+    def posts():
+        return render_template('posts.html')
+
     @app.context_processor
     def utility_processor():
         def get_recent_sensor_readings(index, limit):
