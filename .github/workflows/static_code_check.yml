@@ -1,4 +1,4 @@
-name: Python check
+name: Static Code Check
 
 on:
   push:
