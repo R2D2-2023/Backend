@@ -1,81 +1,37 @@
 import os
 from datetime import datetime
+
 from flask import Flask, redirect, render_template, request, send_from_directory, url_for
-from flask_migrate import Migrate
-from flask_sqlalchemy import SQLAlchemy
-from flask_wtf.csrf import CSRFProtect
-# from collections import Counter
+
+import sys
+from pathlib import Path
+path_root = Path(__file__).parents[0]
+sys.path.append(str(path_root))
+print(sys.path)
+
+from models import config_db
+from routes import config_route
 
 
+def create_app():
+    app = Flask(__name__)
+    # if config_filename is not None:
+    #     app.config.from_object(config_filename)
 
-app = Flask(__name__) #static_folder='static'
+    #     # WEBSITE_HOSTNAME exists only in production environment
+    if 'WEBSITE_HOSTNAME' not in os.environ:
+        # local development, where we'll use environment variables
+        print("Loading config.development and environment variables from .env file.")
+        app.config.from_object('azureproject.development')
+    else:
+        # production
+        print("Loading config.production.")
+        app.config.from_object('azureproject.production')
 
-@app.route('/')
-def index():
-   print('Request for index page received')
-   return render_template('index.html')
-
-@app.route('/charts')
-def charts():
-    print('Request for charts page received')
-    return render_template('charts.html')
-
-@app.route('/lege_pagina')
-def lege_pagina():
-   print('Request for lege_pagina page received')
-   return render_template('lege_pagina.html')
+    db, migrate, csrf = config_db(app)
+    config_route(app, csrf, db)
+    return app
 
 if __name__ == '__main__':
-   app.run()
-
-
-
-
-# om de server te laten configureren dat jij het bent of zo iets... google het
-csrf = CSRFProtect(app)
-
-# WEBSITE_HOSTNAME exists only in production environment
-if 'WEBSITE_HOSTNAME' not in os.environ:
-    # local development, where we'll use environment variables
-    print("Loading config.development and environment variables from .env file.")
-    app.config.from_object('azureproject.development')
-else:
-    # production
-    print("Loading config.production.")
-    app.config.from_object('azureproject.production')
-
-app.config.update(
-    SQLALCHEMY_DATABASE_URI=app.config.get('DATABASE_URI'),
-    SQLALCHEMY_TRACK_MODIFICATIONS=False,
-)
-
-# Initialize the database connection
-db = SQLAlchemy(app)
-
-# Enable Flask-Migrate commands "flask db init/migrate/upgrade" to work
-migrate = Migrate(app, db)
-
-# The import must be done after db initialization due to circular import issue
-from models import SensorData
-
-
-
-@app.context_processor
-def utility_processor():
-    def get_recent_sensor_readings(index, limit):
-        sensordata = SensorData.query.order_by(SensorData.datetime.desc()).limit(limit).all()
-        if index == 0:
-            lst = [data.datetime.isoformat() for data in sensordata]
-        elif index == 1:
-            lst = [data.temperature for data in sensordata]
-        elif index == 2:
-            lst = [data.co2 for data in sensordata]
-        elif index == 3:
-            lst = [data.humidity for data in sensordata]
-        elif index == 4:
-            lst = [data.pressure for data in sensordata]
-        else:
-            return None
-        return lst
-    
-    return dict(get_recent_sensor_readings=get_recent_sensor_readings)
+    app = create_app()
+    app.run(debug=True)

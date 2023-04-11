@@ -55,8 +55,8 @@ body {
     height: 800px;
     width: 100%;
     padding-top: 80px;
-    padding-left: 5%;
-    padding-right: 5%;
+    padding-left: 10%;
+    padding-right: 10%;
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -235,6 +235,10 @@ body {
         border-radius: 30px;
         margin-top: 2%;
         /* display: inline; */
+    }
+    .backgroundimage {
+        padding-left: 5%;
+        padding-right: 5%;
     }
 
 
