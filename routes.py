@@ -16,9 +16,9 @@ def config_route(app, csrf, db):
     @app.route('/get_new_data')
     def get_new_data():
         last_datapoint = request.args.get('last_datapoint')
-        if last_datapoint is None:
-            return ""
         location = request.args.get('location')
+        if last_datapoint is None or location is None:
+            return "Not the right parameters are given."
         last_datapoint = datetime.strptime(last_datapoint, '%Y-%m-%dT%H:%M:%S.%f')
         # query for new data with and location and datetime after last_datapoint. return all columns
         new_data = SensorData.query.order_by(SensorData.datetime.desc()).filter(SensorData.datetime > last_datapoint, SensorData.location == location).all()
@@ -31,30 +31,15 @@ def config_route(app, csrf, db):
         data['co2'] = [data.co2 for data in new_data]
         data['pressure'] = [data.pressure for data in new_data]
         # data['pressure'] = [data.air_pressure for data in new_data]
+        if timestamp == []:
+            return "No new data available."
         
         return jsonify(timestamp=timestamp, data=data)
     
-    @app.route('/make_test_data')
-    def make_test_data():
-        # Check if the test flag is set
-        if os.environ['FLASK_TEST'] == 'true':
-            # Check if database is empty
-            db.create_all()
-            if SensorData.query.count() != 0:
-                db.drop_all()
-                db.create_all()
-            # Create test data
-            for i in range(100, 0, -1):
-                test_data = SensorData(datetime=datetime.now() - timedelta(minutes=i), temperature=20, humidity=50, co2=500, pressure=1000)
-                # Add test data to database
-                db.session.add(test_data)
-                print("Added test data to database " + str(i))
-            db.session.commit()
-            # Return the test data to the user
-            return "Test data created"
-        else:
-            raise Exception('Test flag is not set')
-        
+    @app.route('/test_is_data_avalable')
+    def test_is_data_avalable():
+        SensorData.query.order_by(SensorData.datetime.desc()).limit(100).all()
+        return "ok"
 
     # Routes for html pages
     @app.route('/')
@@ -71,11 +56,6 @@ def config_route(app, csrf, db):
     def lege_pagina():
         print('Request for lege_pagina page received')
         return render_template('lege_pagina.html')
-
-    @app.route('/posts')
-    def posts():
-        return render_template('posts.html')
-
 
     @app.context_processor
     def utility_processor():

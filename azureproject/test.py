@@ -16,7 +16,7 @@ DATABASE_URI = 'postgresql+psycopg2://{dbuser}:{dbpass}@{dbhost}/{dbname}'.forma
     dbname="postgres"
 )
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Amsterdam'
 
 STATICFILES_DIRS = (str(BASE_DIR.joinpath('static')),)
 STATIC_URL = 'static/'
