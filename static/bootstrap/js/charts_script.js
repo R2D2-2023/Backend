@@ -87,16 +87,14 @@ function getNewData(charts, graphs, location) {
         data: {'last_datapoint':graphs[0].time_labels[0], 'location':location},
         success: function(ret_data) {
             if (ret_data) {
-                console.log(ret_data);
-                console.log(ret_data['timestamp'].length);
+                // console.log(ret_data);
+                // console.log(ret_data['timestamp'].length);
                 for (var i = 0; i < ret_data['timestamp'].length; i++) {
-                    console.log(ret_data['data']);
-                    console.log(ret_data['timestamp'][i]);
                     for (let j = 0; j < charts.length; j++) {
                         chart = charts[j];
                         graph = graphs[j];
                         console.log(ret_data['data'][graph.type])
-                        chart.data.datasets[0].data = prepend(ret_data['data'][graph.type], chart.data.datasets[0].data);
+                        chart.data.datasets[0].data = prepend(ret_data['data'][graph.type][i], chart.data.datasets[0].data);
                         chart.data.labels = prepend(luxon.DateTime.fromISO(ret_data['timestamp'][i]), chart.data.labels);
                         chart.data.datasets[0].data.pop();
                         chart.data.labels.pop();
