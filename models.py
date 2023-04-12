@@ -32,19 +32,7 @@ class SensorData(db.Model):
 
     def __str__(self):
         return self.name
-    
-
-class TestSensorData(db.Model):
-    __tablename__ = 'sensor_data'
-    datetime = Column(DateTime, primary_key=True)
-    co2 = Column(Integer)
-    humidity = Column(Integer)
-    pressure = Column(Integer)
-    temperature = Column(Integer)
-    location = Column(Integer)
-
-    def __str__(self):
-        return self.name    
+ 
 
 class aabbccddeeff7778(db.Model):
     __tablename__ = 'aabbccddeeff7778'

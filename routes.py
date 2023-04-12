@@ -1,11 +1,11 @@
 
 from flask import Flask, redirect, render_template, request, send_from_directory, url_for
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 from flask import jsonify
 
 # The import must be done after db initialization due to circular import issue
-from models import SensorData, aabbccddeeff7778, TestSensorData
+from models import SensorData, aabbccddeeff7778
 
 sensordata = None
 cachetime = None
@@ -33,6 +33,27 @@ def config_route(app, csrf, db):
         # data['pressure'] = [data.air_pressure for data in new_data]
         
         return jsonify(timestamp=timestamp, data=data)
+    
+    @app.route('/make_test_data')
+    def make_test_data():
+        # Check if the test flag is set
+        if os.environ['FLASK_TEST'] == 'true':
+            # Check if database is empty
+            db.create_all()
+            if SensorData.query.count() != 0:
+                db.drop_all()
+                db.create_all()
+            # Create test data
+            for i in range(100, 0, -1):
+                test_data = SensorData(datetime=datetime.now() - timedelta(minutes=i), temperature=20, humidity=50, co2=500, pressure=1000)
+                # Add test data to database
+                db.session.add(test_data)
+                print("Added test data to database " + str(i))
+            db.session.commit()
+            # Return the test data to the user
+            return "Test data created"
+        else:
+            raise Exception('Test flag is not set')
         
 
     # Routes for html pages
@@ -54,24 +75,6 @@ def config_route(app, csrf, db):
     @app.route('/posts')
     def posts():
         return render_template('posts.html')
-    
-    @app.route('/make_test_data')
-    def make_test_data():
-        # Check if the test flag is set
-        if os.environ['FLASK_TEST'] == 'true':
-            # Check if database is empty
-            if TestSensorData.query.count() == 0:
-                # Create a new test sensor data object
-                test_data = TestSensorData()
-                # Add the test data to the database
-                db.session.add(test_data)
-                db.session.commit()
-                # Return the test data to the user
-                return "Test data created"
-            else:
-                raise Exception('Database is not empty')
-        else:
-            raise Exception('Test flag is not set')
 
 
     @app.context_processor

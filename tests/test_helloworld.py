@@ -33,7 +33,6 @@ def test_write_to_db(client):
     assert response.status_code == 200
     assert b"Test data created" in response.data
 
-    
 
 # def test_write_to_db(client):
 #     response = client.post(
