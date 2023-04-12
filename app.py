@@ -34,6 +34,11 @@ def create_app():
     config_route(app, csrf, db)
     return app
 
+if os.environ.get("WEBSITE_HOSTNAME") is not None:
+    # running on Azure Web App
+    app = create_app()
+    
+
 if __name__ == '__main__':
     app = create_app()
     app.run(debug=True)
