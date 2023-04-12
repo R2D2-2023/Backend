@@ -2,7 +2,7 @@ name: Pytest flask and postgresql
 
 on:
   push:
-    branches: [ feature/unittesting ]
+    branches: [ '*' ]
 
 jobs:
   test_package:

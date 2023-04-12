@@ -7,8 +7,8 @@ name: Build and deploy Python app to Azure Web App - hallo-wereld2
 on:
   push:
     branches:
-      - feature/unittesting
-  workflow_dispatch:
+      - 'dev'
+      - 'main'
 
 jobs:
   build:
