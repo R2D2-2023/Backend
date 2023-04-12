@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-with, initial-scale=1.0">
-    <title>My fist webpage</title>
+    <title>My first webpage</title>
 
     <!---link naar CSS opmaak--->
     <link rel="stylesheet" type="text/css" href="../static/bootstrap/css/style_lege_pagina.css">
@@ -24,35 +24,34 @@
 </head>
 
 
-
 <body>
     <header>
-        <a href={{ url_for('index') }} class="logo">Dashbord</a>
+        <a href={{ url_for('index') }} class="logo">Binnenklimaat</a>
         <ul class="navlist">
-            <li><a href={{ url_for('index') }}>Home</a></li>
-            <li><a href={{ url_for('charts') }}>Grafiekjes</a></li>
-            <li><a href={{ url_for('lege_pagina') }}>Lege pagina</a></li>
+            <li><a href={{ url_for('index') }}>HOME</a></li>
+            <li><a href={{ url_for('charts') }}>STATISTIEKEN</a></li>
+            <li><a href={{ url_for('lege_pagina') }}>LEGE PAGINA</a></li>
+            <li><a href={{ url_for('lege_pagina') }}>LEGE PAGINA</a></li>
         </ul>
         <div class="bx bx-menu" id="menu-icon"></div>
     </header>
 
+    <div class="backgroundimage">
 
-    <section class="chart">
-        <div class="chart-text">
-
+        <div>
+            <!-- inhoud van pagina hier -->
         </div>
-    </section>
 
-
-
+    </div>
 
 
     <!-- scrollreveal effect -->
     <script src="https://unpkg.com/scrollreveal"></script>
 
-    <!-- custom js link -->
+    <!-- custom javascript link -->
     <script src="../static/bootstrap/js/script.js"></script>
 
 </body>
+
 
 </html>

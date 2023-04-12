@@ -33,12 +33,6 @@
     <script src="https://cdn.jsdelivr.net/npm/luxon@3.3.0/build/global/luxon.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@^1.3.1"></script>
 
-    <!-- scrollreveal effect -->
-    <script src="https://unpkg.com/scrollreveal"></script>
-
-    <!-- custom javascript link -->
-    <script src="../static/bootstrap/js/script.js"></script>
-
     <!-- javascript voor de grafiekjes, werkt niet doordat er variabelen nodig zijn uit de HTML file -->
     <!-- <script src="../static/bootstrap/js/charts_script.js"></script> -->
     <!-- <script src="{{url_for('static', filename='/bootstrap/js/charts_script.js')}}"></script> -->
@@ -51,9 +45,9 @@
     <header>
         <a href={{ url_for('index') }} class="logo">Binnenklimaat</a>
         <ul class="navlist">
-            <li><a href={{ url_for('index') }}>ACTUELE DATA</a></li>
-            <li><a href={{ url_for('charts') }}>GESCHIEDENIS</a></li>
-            <li><a href={{ url_for('lege_pagina') }}>NOTIFICATIES</a></li>
+            <li><a href={{ url_for('index') }}>HOME</a></li>
+            <li><a href={{ url_for('charts') }}>STATISTIEKEN</a></li>
+            <li><a href={{ url_for('lege_pagina') }}>LEGE PAGINA</a></li>
             <li><a href={{ url_for('lege_pagina') }}>LEGE PAGINA</a></li>
         </ul>
         <div class="bx bx-menu" id="menu-icon"></div>
@@ -104,8 +98,10 @@
                 </div>
             </div>
             <div class="temp_buttons">
-                <button type="submit" id="button_10" name="button" onclick="updateGraph(10)" class="btn btn-primary">10</button>
-                <button type="submit" id="button_50" name="button" onclick="updateGraph(50)" class="btn btn-primary">50</button>
+                <button type="submit" id="button_10" name="button" onclick="updateGraph(10)"
+                    class="btn btn-primary">10</button>
+                <button type="submit" id="button_50" name="button" onclick="updateGraph(50)"
+                    class="btn btn-primary">50</button>
                 <button type="submit" id="button_100" name="button" onclick="updateGraph(100)"
                     class="btn btn-primary">100</button>
                 <div>
@@ -276,34 +272,36 @@
             });
 
 
-        // function to update the graph with new data
-        function updateGraph(index) {
-            document.getElementById('myRange').value=index
-            // update the chart data
-            chart.data.datasets[0].data = temp_data.slice(0, index);
-            chart.data.labels = time_labels.slice(0, index);
-            chart2.data.datasets[0].data = co2_data.slice(0, index);
-            chart2.data.labels = time_labels.slice(0, index);
-            chart3.data.datasets[0].data = humid_data.slice(0, index);
-            chart3.data.labels = time_labels.slice(0, index);
-            chart4.data.datasets[0].data = pres_data.slice(0, index);
-            chart4.data.labels = time_labels.slice(0, index);
-            // update the chart
-            chart.update();
-            chart2.update();
-            chart3.update();
-            chart4.update();
-        }
-        updateGraph(10);
-    </script>
+            // function to update the graph with new data
+            function updateGraph(index) {
+                document.getElementById('myRange').value = index
+                // update the chart data
+                chart.data.datasets[0].data = temp_data.slice(0, index);
+                chart.data.labels = time_labels.slice(0, index);
+                chart2.data.datasets[0].data = co2_data.slice(0, index);
+                chart2.data.labels = time_labels.slice(0, index);
+                chart3.data.datasets[0].data = humid_data.slice(0, index);
+                chart3.data.labels = time_labels.slice(0, index);
+                chart4.data.datasets[0].data = pres_data.slice(0, index);
+                chart4.data.labels = time_labels.slice(0, index);
+                // update the chart
+                chart.update();
+                chart2.update();
+                chart3.update();
+                chart4.update();
+            }
+            updateGraph(10);
+        </script>
 
 
 
     </div>
 
+    <!-- scrollreveal effect -->
+    <script src="https://unpkg.com/scrollreveal"></script>
 
-
-
+    <!-- custom javascript link -->
+    <script src="../static/bootstrap/js/script.js"></script>
 
 
 </body>
@@ -321,8 +319,8 @@
         $.ajax({
             url: "{{url_for('get_new_data')}}",
             type: "GET",
-            data: {'last_datapoint':time_labels[0], 'location':location},
-            success: function(ret_data) {
+            data: { 'last_datapoint': time_labels[0], 'location': location },
+            success: function (ret_data) {
                 if (ret_data) {
                     console.log(ret_data);
                     console.log(ret_data['timestamp'].length);
@@ -355,9 +353,11 @@
             }
         });
     }
-    
-    myInterval = setInterval(function(){getNewData(1)}, 1000);
+
+    myInterval = setInterval(function () { getNewData(1) }, 1000);
 
 </script>
+
+
 
 </html>
