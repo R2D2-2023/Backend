@@ -18,8 +18,10 @@ def create_app():
     # if config_filename is not None:
     #     app.config.from_object(config_filename)
 
+    if os.environ['FLASK_TEST'] == 'true':
+        app.config.from_object('azureproject.test')
     #     # WEBSITE_HOSTNAME exists only in production environment
-    if 'WEBSITE_HOSTNAME' not in os.environ:
+    elif 'WEBSITE_HOSTNAME' not in os.environ:
         # local development, where we'll use environment variables
         print("Loading config.development and environment variables from .env file.")
         app.config.from_object('azureproject.development')

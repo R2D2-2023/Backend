@@ -28,6 +28,13 @@ def test_request_example(client):
     assert b"<h2>Hello, World!</h2>" in response.data
     assert response.status_code == 200
 
+def test_write_to_db(client):
+    response = client.get("/make_test_data")
+    assert response.status_code == 200
+    assert b"Test data created" in response.data
+
+    
+
 # def test_write_to_db(client):
 #     response = client.post(
 #         '/users',
