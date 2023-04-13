@@ -39,8 +39,6 @@ function getRecentData(location, max_data) {
         type: "GET",
         data: {'location': location, 'limit': max_data},
         success: function(ret_data) {
-            console.log("ret_data")
-            console.log(ret_data);
             var temp_value = document.getElementById("temperature-value");
             temp_value.innerHTML = ret_data['data']['temperature'][0];
             var humid_value = document.getElementById("humidity-value");

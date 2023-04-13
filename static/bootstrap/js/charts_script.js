@@ -85,17 +85,12 @@ function getNewData(charts, graphs, location, timestamp, cutoff_time) {
     if (timestamp === undefined) {
         timestamp = charts[0].data.labels[charts[0].data.labels.length - 1]
     }
-    console.log("getNewData")
-    console.log(cutoff_time)
-    console.log(timestamp)
     $.ajax({
         url: "/get_new_data",
         type: "GET",
         data: {'last_datapoint': timestamp, 'location': location, 'max_data': 100},
         success: function(ret_data) {
             if (typeof ret_data === 'object') {
-                console.log("ret_data")
-                console.log(ret_data)
                 for (let i = 0; i < ret_data.timestamp.length; i++) {
                     for (let j = 0; j < charts.length; j++) {
                         charts[j].data.datasets.forEach((dataset) => {
@@ -104,11 +99,8 @@ function getNewData(charts, graphs, location, timestamp, cutoff_time) {
                         charts[j].data.labels.push(ret_data.timestamp[i])
                     }                    
                 }
-                console.log("graphs")
-                console.log(charts[0].data.labels)
             }
             else {
-                console.log(ret_data)
             }
             if (cutoff_time != undefined) {
                 while (graphs[0].time_labels[0] < cutoff_time) {
