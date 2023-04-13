@@ -93,7 +93,7 @@ function getNewData(charts, graphs, location, timestamp, cutoff_time) {
         type: "GET",
         data: {'last_datapoint': timestamp, 'location': location, 'max_data': 100},
         success: function(ret_data) {
-            if (ret_data) {
+            if (typeof ret_data === 'object') {
                 console.log("ret_data")
                 console.log(ret_data)
                 for (let i = 0; i < ret_data.timestamp.length; i++) {
@@ -106,6 +106,9 @@ function getNewData(charts, graphs, location, timestamp, cutoff_time) {
                 }
                 console.log("graphs")
                 console.log(charts[0].data.labels)
+            }
+            else {
+                console.log(ret_data)
             }
             if (cutoff_time != undefined) {
                 while (graphs[0].time_labels[0] < cutoff_time) {

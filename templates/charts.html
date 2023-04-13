@@ -142,7 +142,6 @@
         new GraphData('humidity', 'humid_chart', [], 'Humidity (%)', [], '#39CF9A', '#82EDC7', 40, 60),
         new GraphData('pressure', 'pres_chart', [], 'Air pressure (hPa)', [], '#FFAA00', '#FFD175', 1000, 1100)
     ];
- 
     charts = createCharts(graphs);
     getNewData(charts, graphs, 1, dateMinHours(hour_global, min_global)) 
     myInterval = setInterval(function(){getNewData(charts, graphs, 1, undefined, dateMinHours(hour_global, min_global))}, 1000);
