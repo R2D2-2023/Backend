@@ -1,0 +1,268 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    list-style: none;
+    text-decoration: none;
+}
+
+header {
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 33px 9%;
+    background: rgba(255, 255, 255, 0.8);
+    ;
+
+}
+
+.background {
+    /* height: 100%;
+    width: 100%;
+    min-height: 100vh; */
+    /* background: linear-gradient(245.59deg, #4d9559 0%, #38703d 28.53%, #133917 75.52%); */
+    /* position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+    gap: 2rem; */
+}
+
+body {
+    /* background: linear-gradient(245.59deg, #4d9559 0%, #38703d 28.53%, #133917 75.52%); */
+    /* background: #133917; */
+    /* background-image: url("../../images/achtergrond3.png");
+    background-repeat: repeat;
+    background-size: cover; */
+    background: #133917;
+}
+
+.logo {
+    font-size: 30px;
+    font-weight: 700;
+    /* color: white; */
+    color: #133917;
+}
+
+.backgroundimage {
+    background-image: url("../../images/achtergrond8.png");
+    height: 800px;
+    width: 100%;
+    padding-top: 80px;
+    padding-left: 10%;
+    padding-right: 10%;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.navlist {
+    display: flex;
+
+}
+
+.navlist a {
+    /* color: white; */
+    color: #133917;
+    margin-left: 60px;
+    font-size: 15px;
+    font-weight: 600;
+    border-bottom: 2px solid transparent;
+    transition: all .55s ease;
+}
+
+
+.navlist a:hover {
+    border-bottom: 2px solid #133917;
+}
+
+#menu-icon {
+    /* color: white; */
+    color: #133917;
+    font-size: 30px;
+    z-index: 10001;
+    cursor: pointer;
+    display: none;
+}
+
+.block_container {
+    text-align: center;
+    /* display: flex;*/
+    justify-content: center;
+}
+
+.plategrond,
+.notification,
+.temp,
+.CO2,
+.humid,
+.pres {
+    margin-top: 1.5%;
+    margin-left: .5%;
+    margin-right: .5%;
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: 40px;
+    /* display: inline; */
+}
+
+
+.plategrond {
+    /* background-color: rgba(163, 186, 133, 0.8); */
+    background-color: rgba(195, 216, 173, 0.8);
+    padding: 3%;
+    width: 67%;
+}
+
+.plategrond-text {
+    color: white;
+
+}
+
+.plategrond-image img {
+    width: 100%;
+}
+
+.notification {
+    background-color: rgba(255, 255, 255, 0.8);
+    width: 30%;
+    height: auto;
+}
+
+.notification_title {
+    color: black;
+}
+
+
+.temp,
+.CO2,
+.humid,
+.pres {
+    /* margin-top: 70px; */
+    /* margin-left: 5%;
+    margin-right: 52%; */
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 3%;
+    width: 48%;
+}
+
+.temp_tex,
+.CO2-text,
+.humid_text,
+.pres_text {
+    padding: 1%;
+}
+
+.temp_chart,
+.CO2_chart,
+.humid_chart,
+.pres_chart {
+    /* padding: 3%; */
+}
+
+.niet_zichtbaar {
+    opacity: 0%;
+    font-size: 0px;
+}
+
+
+
+.buttons {
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+
+@media (max-width: 1535px) {
+    header {
+        padding: 15px 3%;
+        transition: .2s;
+    }
+}
+
+/* @media (max-width: 1460px) {
+} */
+
+/* @media (max-width: 1340px) {
+} */
+
+/* @media (max-width: 1000px) {
+} */
+
+@media (max-width: 990px) {
+    #menu-icon {
+        display: block;
+    }
+
+    .navlist {
+        position: absolute;
+        top: 100%;
+        right: -100%;
+        width: 220px;
+        height: 30vh;
+        background: rgba(255, 255, 255, 0.8);
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        padding: 40px 20px;
+        transition: all .55s ease;
+    }
+
+    .navlist a {
+        margin-left: 0;
+        display: block;
+        margin: 9px 0;
+    }
+
+    .navlist.open {
+        right: 0;
+    }
+
+    .plategrond,
+    .notification {
+        width: 100%;
+    }
+
+    .temp,
+    .CO2,
+    .plategrond,
+    .notification,
+    .humid,
+    .pres {
+        border-radius: 30px;
+        margin-top: 2%;
+        /* display: inline; */
+    }
+
+    .backgroundimage {
+        padding-left: 7%;
+        padding-right: 7%;
+    }
+
+
+}
+
+@media (max-width: 780px) {
+
+    .temp,
+    .CO2,
+    .humid,
+    .pres {
+        width: 100%;
+    }
+
+    .temp,
+    .CO2,
+    .plategrond,
+    .notification,
+    .humid,
+    .pres {
+        border-radius: 25px;
+        /* display: inline; */
+    }
+}
