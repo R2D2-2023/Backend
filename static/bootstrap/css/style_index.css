@@ -1,0 +1,354 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    list-style: none;
+    text-decoration: none;
+}
+
+header {
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 33px 9%;
+    background: rgba(255, 255, 255, 0.0);
+}
+
+body {
+    background-color: #0d0d0d;
+    /* background: linear-gradient(to bottom, #280718 0%, #0d0d0d 100%); */
+}
+
+.logo {
+    font-size: 30px;
+    font-weight: 700;
+    color: white;
+}
+
+.backgroundimage {
+    /* background-image: url("../../images/achtergrond8.png");
+    height: 800px;
+    width: 100%; */
+    /* background: linear-gradient(to bottom right, #0e2806 0%, #0d0d0d 60%); */
+    background: linear-gradient(to bottom, #230e1a, #22111f, #211324, #1e1629, #1a192d, #18192c, #16192a, #141929, #141622, #13131c, #111015, #0d0d0d);
+    padding-top: 80px;
+    padding-left: 10%;
+    padding-right: 10%;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.navlist {
+    display: flex;
+
+}
+
+.navlist a {
+    color: white;
+    margin-left: 60px;
+    font-size: 15px;
+    font-weight: 600;
+    border-bottom: 2px solid transparent;
+    transition: all .55s ease;
+}
+
+.navlist a:hover {
+    border-bottom: 2px solid #1aef9a;
+}
+
+#menu-icon {
+    color: white;
+    font-size: 30px;
+    z-index: 10001;
+    cursor: pointer;
+    display: none;
+}
+
+/* tot hier is het menu styling */
+
+/* .container {
+    text-align: left;
+}
+
+.notifications,
+.statistics {
+    margin-top: 1.5%;
+    margin-left: .5%;
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: 40px;
+}
+
+.notifications {
+    width: 24%;
+    background-color: #133957;
+    height: 650px;
+}
+
+.statistics {
+    vertical-align: top;
+    width: 74%;
+}
+
+.temp,
+.humid,
+.co2 {
+    margin-top: 1.5%;
+    margin-left: .5%;
+    margin-right: .5%;
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: 40px;
+    background-color: rgba(195, 216, 173, 0.8);
+    height: 180px;
+    width: 31.8%;
+}
+
+.hele_breete {
+    margin-top: 1.5%;
+    margin-left: .5%;
+    margin-right: .5%;
+    border-radius: 40px;
+    background-color: rgba(195, 216, 173, 0.8);
+    height: 300px;
+    width: 99%;
+} */
+
+.col-1-4 {
+    width: 24%;
+}
+
+.col-3-4 {
+    width: 75%;
+}
+
+.col-1-3 {
+    width: 32.4%;
+}
+
+.col-2-3 {
+    width: 65%;
+}
+
+.col-1-2 {
+    width: 49.5%;
+}
+
+.col-1-4,
+.col-3-4,
+.col-1-3,
+.col-2-3,
+.col-1-2 {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.notification,
+.temp,
+.humid,
+.co2,
+.pres,
+.qual,
+.overig,
+.kaart,
+.meer-info {
+    border-radius: 4px;
+    margin-left: 1.5%;
+    margin-right: 1.5%;
+    margin-top: 15px;
+}
+
+.notification {
+    height: 650px;
+    /* border: 2px solid rgba(255, 255, 255, 0.5); */
+    color: white;
+}
+
+.temp,
+.humid,
+.co2,
+.pres,
+.qual,
+.overig {
+    background-color: rgba(40, 40, 40, .1);
+    height: 110px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.temp {
+    /* background: linear-gradient(to bottom, #33ccff 0%, #ff99cc 100%); */
+    background: linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12);
+}
+
+.humid {
+    background: linear-gradient(to left top, #051937, #004d7a, #008793, #00bf72, #a8eb12);
+}
+
+.co2,
+.pres,
+.qual,
+.overig {
+    border: 2px solid #1aef9a;
+}
+
+/* .kaart {
+    height: 390px;
+    background-color: rgba(40, 40, 40, .1);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.meer-info {
+    height: 390px;
+    background-color: rgba(40, 40, 40, .1);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+} */
+
+.notification-title {
+    padding-left: 10%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 20px;
+    border-left: 2px solid #1aef9a;
+    background-color: rgba(40, 40, 40, .4);
+}
+
+.bericht-1,
+.bericht-2,
+.bericht-3,
+.bericht-4 {
+    border-left: 2px solid #1aef9a;
+    background-color: rgba(40, 40, 40, .4);
+
+}
+
+.notificartion-bericht-title {
+    margin-top: 20px;
+    padding-top: 10px;
+    padding-left: 10%;
+}
+
+.notificartion-bericht {
+    padding-left: 5%;
+    padding-right: 3%;
+    padding-bottom: 10px;
+    padding-top: 2px;
+}
+
+
+.waardes-naam {
+    padding-left: 10%;
+    padding-top: 15px;
+    /* color: rgba(50, 50, 50, 1); */
+}
+
+
+.waardes-value {
+    display: inline-block;
+    padding-left: 7%;
+    padding-top: 3px;
+    font-size: 55px;
+}
+
+.waardes-eenheid {
+    display: inline-block;
+}
+
+.kaart {
+    color: white;
+    border: 2px solid #1aef9a;
+}
+
+.kaart-text {
+    margin-left: 3%;
+    margin-top: 10px;
+}
+
+.title {
+    font-size: 20px;
+}
+
+.kaart-img {
+    margin-left: 6%;
+    margin-right: 8%;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.kaart-img img {
+    width: 100%;
+}
+
+
+@media (max-width: 1535px) {
+    header {
+        padding: 15px 3%;
+        transition: .2s;
+    }
+}
+
+/* @media (max-width: 1460px) {
+} */
+
+/* @media (max-width: 1340px) {
+} */
+
+/* @media (max-width: 1000px) {
+} */
+
+@media (max-width: 990px) {
+    #menu-icon {
+        display: block;
+    }
+
+    .navlist {
+        position: absolute;
+        top: 100%;
+        right: -100%;
+        width: 220px;
+        height: 30vh;
+        background: rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        padding: 40px 20px;
+        transition: all .55s ease;
+    }
+
+    .navlist a {
+        margin-left: 0;
+        display: block;
+        margin: 9px 0;
+    }
+
+    .navlist.open {
+        right: 0;
+    }
+
+    .backgroundimage {
+        padding-left: 7%;
+        padding-right: 7%;
+    }
+
+    .col-1-4 {
+        width: 32%;
+    }
+
+    .col-3-4 {
+        width: 65%;
+    }
+
+    .col-1-3 {
+        width: 49.2%;
+    }
+
+
+}
+
+/* @media (max-width: 780px) {
+} */

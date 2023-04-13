@@ -2,7 +2,8 @@ name: Static Code Check
 
 on:
   push:
-    branches: [ '*' ]
+    branches: 
+      - '**'
 
 jobs:
   test_package:

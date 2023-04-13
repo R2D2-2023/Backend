@@ -1,180 +1,145 @@
-// src = "https://cdn.jsdelivr.net/npm/chart.js@4.2.1";
-// src = "https://cdn.jsdelivr.net/npm/luxon@3.3.0/build/global/luxon.js";
-// src = "https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@^1.3.1";
-
-const ct1 = document.getElementById('tempChart');
-time_labels = {{ get_recent_sensor_readings(0, 100) | safe }}
-time_luxon = []
-for (dt of time_labels) {
-    time_luxon.push(luxon.DateTime.fromISO(dt))
+function GraphData(type, canvasID, data, data_label, time_labels, color, backgroundColor, suggestedMin, suggestedMax) {
+    this.type = type;
+    this.canvasID = canvasID;
+    this.data = data;
+    this.data_label = data_label;
+    this.time_labels = time_labels;
+    this.color = color;
+    this.backgroundColor = backgroundColor;
+    this.suggestedMin = suggestedMin;
+    this.suggestedMax = suggestedMax;
 }
-temp_data = {{ get_recent_sensor_readings(1, 100) | safe }}
 
-chart = new Chart(ct1, {
-    type: 'line',
-    data: {
-        labels: time_luxon,
-        datasets: [{
-            label: 'Temperature (°C)',
-            data: temp_data,
-            borderWidth: 1
-        }]
-    },
+var min_global = 2;
+var hour_global = 0;
 
-    options: {
-        animation: false,
-        scales: {
-            x: {
-                type: 'time',
-                time: {
-                    displayFormats: {
-                        hour: "dd/LL HH'h'",
-                    }
-                }
+function createCharts(graphs) {
+    charts = [];
+    for (let i = 0; i < graphs.length; i++) {
+        charts.push(createGraph(graphs[i]));
+    }
+    return charts;
+}
+
+function createGraph(graph) {
+    const canvas = document.getElementById(graph.canvasID);
+
+    return new Chart(canvas, {
+        type: 'line',
+        data: {
+            labels: graph.time_labels,
+            datasets: [{
+                label: graph.data_label,
+                data: graph.data,                           // de data die je laat zien
+                borderColor: graph.color,                   // kleur van de lijn
+                backgroundColor: graph.backgroundColor,     // vul kleur van de bolletjes en blokjes
+                fill: false,                                // de onderkant vullen
+                cubicInterpolationMode: 'monotone',         // de vorm van de lijn afronden
+                tension: 0.4,                               // hoeveel er word afgerond
+                borderWidth: 1                              // dikte van de lijn
+            }]
+        },
+        options: {
+            responsive: true,
+            animation: false,
+            interaction: {
+                intersect: false,
             },
-            y: {
-                suggestedMin: 20,
-                suggestedMax: 30,
+            scales: {
+                x: { display: true, title: { display: false }, type: 'time', time: { displayFormats: { hour: "dd/LL HH'h'", minute: "HH:mm", second: "HH:mm:ss" } }, ticks: {maxTicksLimit: 10} },
+                y: { display: true, title: { display: false, text: 'Degrees celsius (°C)' }, suggestedMin: graph.suggestedMin, suggestedMax: graph.suggestedMax, }
             }
         }
-    }
-});
+    });
 
 
-const ct2 = document.getElementById('co2Chart');
-time_labels = {{ get_recent_sensor_readings(0, 100) | safe }}
-time_luxon = []
-for (dt of time_labels) {
-    time_luxon.push(luxon.DateTime.fromISO(dt))
 }
-co2_data = {{ get_recent_sensor_readings(2, 100) | safe }}
-
-chart2 = new Chart(ct2, {
-    type: 'line',
-    data: {
-        labels: time_luxon,
-        datasets: [{
-            label: 'CO2 (ppm)',
-            borderColor: '#FF396A',
-            backgroundColor: '#FF396A80',
-            data: co2_data,
-            borderWidth: 1
-        }]
-    },
-    options: {
-        animation: false,
-        scales: {
-            x: {
-                type: 'time',
-                time: {
-                    displayFormats: {
-                        hour: "dd/LL HH'h'",
-                    }
-                }
-            },
-            y: {
-                suggestedMin: 400,
-                suggestedMax: 1000,
-            }
-        }
-    }
-});
-
-const ct3 = document.getElementById('humidChart');
-time_labels = {{ get_recent_sensor_readings(0, 100) | safe }}
-time_luxon = []
-for (dt of time_labels) {
-    time_luxon.push(luxon.DateTime.fromISO(dt))
-}
-humid_data = {{ get_recent_sensor_readings(3, 100) | safe }}
-
-chart3 = new Chart(ct3, {
-    type: 'line',
-    data: {
-        labels: time_luxon,
-        datasets: [{
-            label: 'Humidity (%)',
-            borderColor: '#39CF6A',
-            backgroundColor: '#39CF9A80',
-            data: humid_data,
-            borderWidth: 1
-        }]
-    },
-    options: {
-        animation: false,
-        scales: {
-            x: {
-                type: 'time',
-                time: {
-                    displayFormats: {
-                        hour: "dd/LL HH'h'",
-                    }
-                }
-            },
-            y: {
-                suggestedMin: 40,
-                suggestedMax: 60,
-            }
-        }
-    }
-});
-
-const ct4 = document.getElementById('presChart');
-time_labels = {{ get_recent_sensor_readings(0, 100) | safe }}
-time_luxon = []
-for (dt of time_labels) {
-    time_luxon.push(luxon.DateTime.fromISO(dt))
-}
-pres_data = {{ get_recent_sensor_readings(4, 100) | safe }}
-
-chart4 = new Chart(ct4, {
-    type: 'line',
-    data: {
-        labels: time_luxon,
-        datasets: [{
-            label: 'Air pressure (hPa)',
-            borderColor: '#FFAA00',
-            backgroundColor: '#FFAA0080',
-            data: pres_data,
-            borderWidth: 1
-        }]
-    },
-    options: {
-        animation: false,
-        scales: {
-            x: {
-                type: 'time',
-                time: {
-                    displayFormats: {
-                        hour: "dd/LL HH'h'",
-                    }
-                }
-            },
-            y: {
-                suggestedMin: 1000,
-                suggestedMax: 1100,
-            }
-        }
-    }
-});
-
 
 
 // function to update the graph with new data
-function updateGraph(index) {
-    document.getElementById('myRange').value = index
+function updateCharts(charts, graphs, index) {
+    document.getElementById('myRange').value=index
     // update the chart data
-    chart.data.datasets[0].data = temp_data.slice(index, 100);
-    chart.data.labels = time_labels.slice(index, 100);
-    chart2.data.datasets[0].data = co2_data.slice(index, 100);
-    chart2.data.labels = time_labels.slice(index, 100);
-    chart3.data.datasets[0].data = humid_data.slice(index, 100);
-    chart3.data.labels = time_labels.slice(index, 100);
-    chart4.data.datasets[0].data = pres_data.slice(index, 100);
-    chart4.data.labels = time_labels.slice(index, 100);
-    // update the chart
-    chart.update();
-    chart2.update();
-    chart3.update();
-    chart4.update();
+    for (let i = 0; i < charts.length; i++) {
+        chart = charts[i];
+        graph = graphs[i];
+        chart.data.datasets[0].data = graph.data.slice(0, index);
+        chart.data.labels = graph.time_labels.slice(0, index);
+        chart.update();
+    }
+}
+
+function append(value, array) {
+    var newArray = array.slice();
+    newArray.shift(value);
+    return newArray;
+}
+
+function prepend(value, array) {
+    var newArray = array.slice();
+    newArray.unshift(value);
+    return newArray;
+}
+
+function getNewData(charts, graphs, location, timestamp, cutoff_time) {
+    if (timestamp === undefined) {
+        timestamp = charts[0].data.labels[charts[0].data.labels.length - 1]
+    }
+    $.ajax({
+        url: "/get_new_data",
+        type: "GET",
+        data: {'last_datapoint': timestamp, 'location': location, 'max_data': 100},
+        success: function(ret_data) {
+            if (typeof ret_data === 'object') {
+                for (let i = 0; i < ret_data.timestamp.length; i++) {
+                    for (let j = 0; j < charts.length; j++) {
+                        charts[j].data.datasets.forEach((dataset) => {
+                            dataset.data.push(ret_data.data[graphs[j].type][i])
+                        });
+                        charts[j].data.labels.push(ret_data.timestamp[i])
+                    }                    
+                }
+            }
+            else {
+            }
+            if (cutoff_time != undefined) {
+                while (graphs[0].time_labels[0] < cutoff_time) {
+                    for (let i = 0; i < charts.length; i++) {
+                        charts[i].data.datasets.forEach((dataset) => {
+                            dataset.data.shift();
+                        });
+                        charts[i].data.labels.shift();
+                        // graphs[i].ti me_labels.shift();
+                    }
+                }
+            }
+            for (let chart in charts) charts[chart].update();
+        }
+    })
+}
+
+function setTimeView(charts, graphs, location, hours, mins) {
+    // Clear the data from the graphs and charts
+    for (let i = 0; i < charts.length; i++) {
+        charts[i].data.datasets[0].data = [];
+        charts[i].data.labels = [];
+        graphs[i].time_labels = [];
+    }
+    min_global = mins;
+    hour_global = hours;
+    getNewData(charts, graphs, location, dateMinHours(hour_global, min_global), undefined);
+}
+
+function dateMinHours(hours, minutes) {
+    if (minutes === undefined) {
+        minutes = 0;
+    }
+    if (hours === undefined) {
+        hours = 0;
+    }
+    d = new Date();
+    d.setMinutes(d.getMinutes() - minutes);
+    d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+    d.setHours(d.getHours() - hours);
+    return d.toISOString().slice(0, -1);
 }
