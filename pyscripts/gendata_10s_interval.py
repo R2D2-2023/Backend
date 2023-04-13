@@ -49,7 +49,7 @@ while True:
     conn.commit()
 
     #sleep for 10 seconds
-    time.sleep(2)
+    time.sleep(random.randint(1, 10))
 
 
 # close the communication with the database

@@ -3,8 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-with, initial-scale=1.0">
-    <title>My first webpage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
 
     <!---link naar CSS opmaak--->
     <link rel="stylesheet" type="text/css" href="../static/bootstrap/css/style_charts.css">
@@ -21,27 +21,30 @@
     <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Poppins:ital,wght@1,300&display=swap"
         rel="stylesheet">
+        
 </head>
+
+<!-- chart.js link -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- om de schaal van tijd te maken -->
+<script src="https://cdn.jsdelivr.net/npm/luxon@3.3.0/build/global/luxon.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@^1.3.1"></script>
+
+<!-- scrollreveal effect -->
+<script src="https://unpkg.com/scrollreveal"></script>
+
+<!-- custom javascript link
+<script src="../static/bootstrap/js/script.js"></script> -->
+
+<!-- voor ajax functionaliteit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<!-- javascript voor de grafiekjes, werkt niet doordat er variabelen nodig zijn uit de HTML file -->
+<script src="{{url_for('static', filename='bootstrap/js/charts_script.js')}}"></script>
 
 
 <body>
-
-    <!-- chart.js link -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <!-- om de schaal van tijd te maken -->
-    <script src="https://cdn.jsdelivr.net/npm/luxon@3.3.0/build/global/luxon.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@^1.3.1"></script>
-
-    <!-- javascript voor de grafiekjes, werkt niet doordat er variabelen nodig zijn uit de HTML file -->
-    <!-- <script src="../static/bootstrap/js/charts_script.js"></script> -->
-    <!-- <script src="{{url_for('static', filename='/bootstrap/js/charts_script.js')}}"></script> -->
-
-    <!-- voor ajax functionaliteit -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-
-
-
     <header>
         <a href={{ url_for('index') }} class="logo">Binnenklimaat</a>
         <ul class="navlist">
@@ -98,15 +101,13 @@
                 </div>
             </div>
             <div class="temp_buttons">
-                <button type="submit" id="button_10" name="button" onclick="updateGraph(10)"
-                    class="btn btn-primary">10</button>
-                <button type="submit" id="button_50" name="button" onclick="updateGraph(50)"
-                    class="btn btn-primary">50</button>
-                <button type="submit" id="button_100" name="button" onclick="updateGraph(100)"
-                    class="btn btn-primary">100</button>
+                <button type="submit" id="button_10" name="button" onclick="setTimeView(charts, graphs, 1, 0, 1)" class="btn btn-primary">1 min</button>
+                <button type="submit" id="button_50" name="button" onclick="setTimeView(charts, graphs, 1, 0, 5)" class="btn btn-primary">5 min</button>
+                <button type="submit" id="button_100" name="button" onclick="setTimeView(charts, graphs, 1, 0, 10)" class="btn btn-primary">10 min</button>
+                <button type="submit" id="button_100" name="button" onclick="setTimeView(charts, graphs, 1, 1, 0)" class="btn btn-primary">1 uur</button>
                 <div>
-                    <input type="range" min="1" max="100" value="10" class="slider" id="myRange"
-                        oninput="updateGraph(value)"></input>
+                    <!-- <input type="range" min="1" max="100" value="10" class="slider" id="myRange"
+                        oninput="updateCharts(charts, graphs, value)"></input> -->
                 </div>
             </div>
         </div>
@@ -116,7 +117,7 @@
                 <!-- <div class="humid_text">
                     <h5>hier komt text</h5>
                 </div> -->
-                <div class="humid-chart">
+                <div class="humid_chart">
                     <h8 class="niet_zichtbaar">niet zichtbare text</h8>
                     <canvas id="humid_chart"></canvas>
                 </div>
@@ -130,232 +131,20 @@
                     <canvas id="pres_chart"></canvas>
                 </div>
             </div>
-
         </div>
-
-
-
-
-        <script>
-            const temp_chart = document.getElementById('temp_chart');
-
-            time_labels = {{ get_recent_sensor_readings(0, 100) | safe }}
-            time_luxon = []
-            for (dt of time_labels) {
-                time_luxon.push(luxon.DateTime.fromISO(dt))
-            }
-            temp_data = {{ get_recent_sensor_readings(1, 100) | safe }}
-
-            var chart = new Chart(temp_chart, {
-                type: 'line',
-                data: {
-                    labels: time_luxon,
-                    datasets: [{
-                        label: 'Temperature (°C)',
-                        data: temp_data,                            // de data die je laat zien
-                        backgroundColor: 'rgb(200, 240, 200)',      // vul kleur van de boletjes en blokjes
-                        borderColor: 'rgb(40, 180, 20)',            // keur van de lijn
-                        fill: false,                                // de onderkant vullen
-                        cubicInterpolationMode: 'monotone',         // de vorm van de lijn afronden
-                        tension: 0.4,                               // hoeveel er word afgerond
-                        borderWidth: 1                              // dikte van de lijn
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    animation: false,
-                    interaction: {
-                        intersect: false,
-                    },
-                    scales: {
-                        x: { display: true, title: { display: false }, type: 'time', time: { displayFormats: { hour: "dd/LL HH'h'", } } },
-                        y: { display: true, title: { display: false, text: 'Degrees celsius (°C)' }, suggestedMin: 20, suggestedMax: 30, }
-                        // x: { type: 'time', time: { displayFormats: { hour: "dd/LL HH'h'", } } },
-                        // y: { suggestedMin: 20, suggestedMax: 30, }
-                    }
-                }
-            });
-
-
-            const ct2 = document.getElementById('co2_chart');
-            co2_data = {{ get_recent_sensor_readings(2, 100) | safe }}
-
-            chart2 = new Chart(ct2, {
-                type: 'line',
-                data: {
-                    labels: time_luxon,
-                    datasets: [{
-                        label: 'CO2 (ppm)',
-                        data: co2_data,
-                        backgroundColor: '#FF396A80',
-                        borderColor: '#FF396A',
-                        fill: false,                                // de onderkant vullen
-                        cubicInterpolationMode: 'monotone',         // de vorm van de lijn afronden
-                        tension: 0.4,                               // hoeveel er word afgerond
-                        borderWidth: 1                              // dikte van de lijn
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    animation: false,
-                    interaction: {
-                        intersect: false,
-                    },
-                    scales: {
-                        x: { display: true, title: { display: false }, type: 'time', time: { displayFormats: { hour: "dd/LL HH'h'", } } },
-                        y: { display: true, title: { display: false, text: 'CO2 in PPM' }, suggestedMin: 400, suggestedMax: 1000, }
-                    }
-                }
-            });
-
-            const ct3 = document.getElementById('humid_chart');
-            humid_data = {{ get_recent_sensor_readings(3, 100) | safe }}
-
-            chart3 = new Chart(ct3, {
-                type: 'line',
-                data: {
-                    labels: time_luxon,
-                    datasets: [{
-                        label: 'Humidity (%)',
-                        data: humid_data,                           // de data die je laat zien
-                        backgroundColor: '#39CF9A80',               // vul kleur van de boletjes en blokjes
-                        borderColor: '#39CF6A',                     // keur van de lijn
-                        fill: false,                                // de onderkant vullen
-                        cubicInterpolationMode: 'monotone',         // de vorm van de lijn afronden
-                        tension: 0.4,                               // hoeveel er word afgerond
-                        borderWidth: 1                              // dikte van de lijn
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    animation: false,
-                    interaction: {
-                        intersect: false,
-                    },
-                    scales: {
-                        x: { display: true, title: { display: false }, type: 'time', time: { displayFormats: { hour: "dd/LL HH'h'", } } },
-                        y: { display: true, title: { display: false, text: 'humidity in %' }, suggestedMin: 40, suggestedMax: 60, }
-                    }
-                }
-            });
-
-            const ct4 = document.getElementById('pres_chart');
-            pres_data = {{ get_recent_sensor_readings(4, 100) | safe }}
-
-            chart4 = new Chart(ct4, {
-                type: 'line',
-                data: {
-                    labels: time_luxon,
-                    datasets: [{
-                        label: 'Air pressure (hPa)',
-                        data: pres_data,                            // de data die je laat zien
-                        backgroundColor: '#FFAA0080',               // vul kleur van de boletjes en blokjes
-                        borderColor: '#FFAA00',                     // keur van de lijn
-                        fill: false,                                // de onderkant vullen
-                        cubicInterpolationMode: 'monotone',         // de vorm van de lijn afronden
-                        tension: 0.4,                               // hoeveel er word afgerond
-                        borderWidth: 1                              // dikte van de lijn
-
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    animation: false,
-                    interaction: {
-                        intersect: false,
-                    },
-                    scales: {
-                        x: { display: true, title: { display: false }, type: 'time', time: { displayFormats: { hour: "dd/LL HH'h'", } } },
-                        y: { display: true, title: { display: false, text: 'air pressure in hPa' }, suggestedMin: 1000, suggestedMax: 1100, }
-                    }
-                }
-            });
-
-
-            // function to update the graph with new data
-            function updateGraph(index) {
-                document.getElementById('myRange').value = index
-                // update the chart data
-                chart.data.datasets[0].data = temp_data.slice(0, index);
-                chart.data.labels = time_labels.slice(0, index);
-                chart2.data.datasets[0].data = co2_data.slice(0, index);
-                chart2.data.labels = time_labels.slice(0, index);
-                chart3.data.datasets[0].data = humid_data.slice(0, index);
-                chart3.data.labels = time_labels.slice(0, index);
-                chart4.data.datasets[0].data = pres_data.slice(0, index);
-                chart4.data.labels = time_labels.slice(0, index);
-                // update the chart
-                chart.update();
-                chart2.update();
-                chart3.update();
-                chart4.update();
-            }
-            updateGraph(10);
-        </script>
-
-
-
     </div>
-
-    <!-- scrollreveal effect -->
-    <script src="https://unpkg.com/scrollreveal"></script>
-
-    <!-- custom javascript link -->
-    <script src="../static/bootstrap/js/script.js"></script>
-
-
 </body>
 
 <script>
-
-    function prepend(value, array) {
-        var newArray = array.slice();
-        newArray.unshift(value);
-        return newArray;
-    }
-
-    function getNewData(location) {
-        console.log(time_labels[0]);
-        $.ajax({
-            url: "{{url_for('get_new_data')}}",
-            type: "GET",
-            data: { 'last_datapoint': time_labels[0], 'location': location },
-            success: function (ret_data) {
-                if (ret_data) {
-                    console.log(ret_data);
-                    console.log(ret_data['timestamp'].length);
-                    for (var i = 0; i < ret_data['timestamp'].length; i++) {
-                        console.log(ret_data['data'][i]);
-                        console.log(ret_data['timestamp'][i]);
-                        chart.data.datasets[0].data = prepend(ret_data['data']['temperature'][i], chart.data.datasets[0].data);
-                        chart.data.labels = prepend(luxon.DateTime.fromISO(ret_data['timestamp'][i]), chart.data.labels);
-                        chart.data.datasets[0].data.pop();
-                        chart.data.labels.pop();
-                        chart2.data.datasets[0].data = prepend(ret_data['data']['co2'][i], chart2.data.datasets[0].data);
-                        chart2.data.labels = prepend(luxon.DateTime.fromISO(ret_data['timestamp'][i]), chart2.data.labels);
-                        chart2.data.datasets[0].data.pop();
-                        chart2.data.labels.pop();
-                        chart3.data.datasets[0].data = prepend(ret_data['data']['humidity'][i], chart3.data.datasets[0].data);
-                        chart3.data.labels = prepend(luxon.DateTime.fromISO(ret_data['timestamp'][i]), chart3.data.labels);
-                        chart3.data.datasets[0].data.pop();
-                        chart3.data.labels.pop();
-                        chart4.data.datasets[0].data = prepend(ret_data['data']['pressure'][i], chart4.data.datasets[0].data);
-                        chart4.data.labels = prepend(luxon.DateTime.fromISO(ret_data['timestamp'][i]), chart4.data.labels);
-                        chart4.data.datasets[0].data.pop();
-                        chart4.data.labels.pop();
-                        time_labels = prepend(ret_data['timestamp'][i], time_labels);
-                    }
-                    chart.update();
-                    chart2.update();
-                    chart3.update();
-                    chart4.update();
-                }
-            }
-        });
-    }
-
-    myInterval = setInterval(function () { getNewData(1) }, 1000);
-
+    let graphs = [
+        new GraphData('temperature', 'temp_chart', [], 'Temperature (°C)', [], '#28B414', '#C8F0C8', 20, 30),
+        new GraphData('co2', 'co2_chart', [], 'CO2 (ppm)', [], '#FF396A', '#FAACC2', 400, 1000),
+        new GraphData('humidity', 'humid_chart', [], 'Humidity (%)', [], '#39CF9A', '#82EDC7', 40, 60),
+        new GraphData('pressure', 'pres_chart', [], 'Air pressure (hPa)', [], '#FFAA00', '#FFD175', 1000, 1100)
+    ];
+    charts = createCharts(graphs);
+    getNewData(charts, graphs, 1, dateMinHours(hour_global, min_global)) 
+    myInterval = setInterval(function(){getNewData(charts, graphs, 1, undefined, dateMinHours(hour_global, min_global))}, 1000);
 </script>
 
 
