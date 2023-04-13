@@ -32,7 +32,8 @@ class SensorData(db.Model):
 
     def __str__(self):
         return self.name
-    
+ 
+
 class aabbccddeeff7778(db.Model):
     __tablename__ = 'aabbccddeeff7778'
     datetime = Column(DateTime, primary_key=True)

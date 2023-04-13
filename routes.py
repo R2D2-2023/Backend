@@ -1,6 +1,6 @@
 
 from flask import Flask, redirect, render_template, request, send_from_directory, url_for
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 from flask import jsonify
 
@@ -16,10 +16,9 @@ def config_route(app, csrf, db):
     @app.route('/get_new_data')
     def get_new_data():
         last_datapoint = request.args.get('last_datapoint')
-        if last_datapoint is None:
-            return ""
         location = request.args.get('location')
-        max_data = int(request.args.get('max_data'))
+        if last_datapoint is None or location is None:
+            return "Not the right parameters are given."
         last_datapoint = datetime.strptime(last_datapoint, '%Y-%m-%dT%H:%M:%S.%f')
         # query for new data with and location and datetime after last_datapoint. return all columns
         new_data = SensorData.query.order_by(SensorData.datetime.desc()).filter(SensorData.datetime > last_datapoint, SensorData.location == location).all()
@@ -37,10 +36,16 @@ def config_route(app, csrf, db):
         # data['co2'] = [data.ppm for data in filter_data]
         data['co2'] = [data.co2 for data in new_data]
         data['pressure'] = [data.pressure for data in new_data]
-        # data['pressure'] = [data.air_pressure for data in filter_data]
+        # data['pressure'] = [data.air_pressure for data in new_data]
+        if timestamp == []:
+            return "No new data available."
         
         return jsonify(timestamp=timestamp, data=data)
-        
+    
+    @app.route('/test_is_data_avalable')
+    def test_is_data_avalable():
+        SensorData.query.order_by(SensorData.datetime.desc()).limit(100).all()
+        return "ok"
 
     # Routes for html pages
     @app.route('/')
