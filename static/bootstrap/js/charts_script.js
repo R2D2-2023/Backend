@@ -10,6 +10,8 @@ function GraphData(type, canvasID, data, data_label, time_labels, color, backgro
     this.suggestedMax = suggestedMax;
 }
 
+var min_global = 2;
+var hour_global = 0;
 
 function createCharts(graphs) {
     charts = [];
@@ -44,7 +46,7 @@ function createGraph(graph) {
                 intersect: false,
             },
             scales: {
-                x: { display: true, title: { display: false }, type: 'time', time: { displayFormats: { hour: "dd/LL HH'h'", } } },
+                x: { display: true, title: { display: false }, type: 'time', time: { displayFormats: { hour: "dd/LL HH'h'", minute: "HH:mm", second: "HH:mm:ss" } }, ticks: {maxTicksLimit: 10} },
                 y: { display: true, title: { display: false, text: 'Degrees celsius (°C)' }, suggestedMin: graph.suggestedMin, suggestedMax: graph.suggestedMax, }
             }
         }
@@ -79,74 +81,70 @@ function prepend(value, array) {
     return newArray;
 }
 
-function getNewData(charts, graphs, timestamp) {
-    let location = 1;
+function getNewData(charts, graphs, location, timestamp, cutoff_time) {
+    if (timestamp === undefined) {
+        timestamp = charts[0].data.labels[charts[0].data.labels.length - 1]
+    }
+    console.log("getNewData")
+    console.log(cutoff_time)
+    console.log(timestamp)
     $.ajax({
         url: "/get_new_data",
         type: "GET",
         data: {'last_datapoint': timestamp, 'location': location, 'max_data': 100},
         success: function(ret_data) {
             if (ret_data) {
+                console.log("ret_data")
                 console.log(ret_data)
                 for (let i = 0; i < ret_data.timestamp.length; i++) {
                     for (let j = 0; j < charts.length; j++) {
                         charts[j].data.datasets.forEach((dataset) => {
                             dataset.data.push(ret_data.data[graphs[j].type][i])
                         });
+                        charts[j].data.labels.push(ret_data.timestamp[i])
                     }                    
-                    charts[0].data.labels.push(ret_data.timestamp[i])
+                }
+                console.log("graphs")
+                console.log(charts[0].data.labels)
+            }
+            if (cutoff_time != undefined) {
+                while (graphs[0].time_labels[0] < cutoff_time) {
+                    for (let i = 0; i < charts.length; i++) {
+                        charts[i].data.datasets.forEach((dataset) => {
+                            dataset.data.shift();
+                        });
+                        charts[i].data.labels.shift();
+                        // graphs[i].ti me_labels.shift();
+                    }
                 }
             }
-            for (chart in charts) charts[chart].update()
+            for (let chart in charts) charts[chart].update();
         }
     })
 }
 
+function setTimeView(charts, graphs, location, hours, mins) {
+    // Clear the data from the graphs and charts
+    for (let i = 0; i < charts.length; i++) {
+        charts[i].data.datasets[0].data = [];
+        charts[i].data.labels = [];
+        graphs[i].time_labels = [];
+    }
+    min_global = mins;
+    hour_global = hours;
+    getNewData(charts, graphs, location, dateMinHours(hour_global, min_global), undefined);
+}
 
-// function getNewData(charts, graphs, location, timestamp) {
-//     if (timestamp === undefined) {
-//         timestamp = graphs[0].time_labels[0]
-//     }
-//     console.log(timestamp);
-//     $.ajax({
-//         url: "/get_new_data",
-//         type: "GET",
-//         data: {'last_datapoint':timestamp, 'location':location},
-//         success: function(ret_data) {
-//             if (ret_data) {
-//                 // console.log(ret_data);
-//                 // console.log(ret_data['timestamp'].length);
-//                 let empty = false;
-//                 if (charts[0].data.datasets[0].data.length == 0) empty = true;
-//                 for (var i = ret_data['timestamp'].length; i > 0; i--) {
-//                     for (let j = 0; j < charts.length; j++) {
-//                         chart = charts[j];
-//                         graph = graphs[j];
-//                         // console.log(chart.data.datasets[0].data)
-//                         // console.log(chart.data.labels)
-//                         chart.data.datasets[0].data = prepend(ret_data['data'][graph.type][i], chart.data.datasets[0].data);
-//                         chart.data.labels = prepend(luxon.DateTime.fromISO(ret_data['timestamp'][i]), chart.data.labels);
-//                         if (!empty) {
-//                             chart.data.datasets[0].data.pop();
-//                             chart.data.labels.pop();
-//                         }
-//                         else{
-//                         }
-//                     }
-//                     if (empty)
-
-//                     graphs[0].time_labels.unshift(ret_data['timestamp'][i]);
-                    
-//                 }
-//                 for (let i = 0; i < charts.length; i++) charts[i].update();
-//             }
-//         }
-//     });
-// }
-
-function dateMinHours(hours) {
+function dateMinHours(hours, minutes) {
+    if (minutes === undefined) {
+        minutes = 0;
+    }
+    if (hours === undefined) {
+        hours = 0;
+    }
     d = new Date();
-    d.setMinutes(d.getMinutes() - d.getTimezoneOffset())
+    d.setMinutes(d.getMinutes() - minutes);
+    d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
     d.setHours(d.getHours() - hours);
     return d.toISOString().slice(0, -1);
 }

@@ -26,15 +26,17 @@ def config_route(app, csrf, db):
         # new_data = aabbccddeeff7778.query.order_by(aabbccddeeff7778.datetime.desc()).filter(aabbccddeeff7778.datetime > last_datapoint, aabbccddeeff7778.position == location).all()
         new_data.reverse()
         filter_data = []
-        for i in range(0, len(new_data), (len(new_data) // max_data)):
-            filter_data.append(new_data[i])
-        timestamp = [data.datetime.isoformat() for data in filter_data]
+        # if len(new_data) == 0:
+        #     return jsonify(timestamp=[], data={})
+        # for i in range(0, len(new_data), (len(new_data) // max_data)):
+        #     filter_data.append(new_data[i])
+        timestamp = [data.datetime.isoformat() for data in new_data]
         data = {}
-        data['temperature'] = [data.temperature for data in filter_data]
-        data['humidity'] = [data.humidity for data in filter_data]
+        data['temperature'] = [data.temperature for data in new_data]
+        data['humidity'] = [data.humidity for data in new_data]
         # data['co2'] = [data.ppm for data in filter_data]
-        data['co2'] = [data.co2 for data in filter_data]
-        data['pressure'] = [data.pressure for data in filter_data]
+        data['co2'] = [data.co2 for data in new_data]
+        data['pressure'] = [data.pressure for data in new_data]
         # data['pressure'] = [data.air_pressure for data in filter_data]
         
         return jsonify(timestamp=timestamp, data=data)
