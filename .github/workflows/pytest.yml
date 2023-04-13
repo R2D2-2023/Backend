@@ -3,7 +3,7 @@ name: Pytest flask and postgresql
 on:
   push:
     branches: 
-      - '*'
+      - '**'
 
 jobs:
   test_package:
