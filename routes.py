@@ -42,6 +42,26 @@ def config_route(app, csrf, db):
         
         return jsonify(timestamp=timestamp, data=data)
     
+    @app.route('/get_recent_data')	
+    def get_recent_data():
+        limit = request.args.get('limit')
+        location = request.args.get('location')
+        # global sensordata
+        # global cachetime 
+        curr_time = datetime.now()
+        # disable = False
+        # if sensordata is None or (datetime.now() - cachetime).total_seconds() > 30 or int(limit) > len(sensordata) or disable:
+        sensordata = SensorData.query.order_by(SensorData.datetime.desc()).filter(SensorData.location == location).limit(limit).all()
+        # cachetime = curr_time
+        timestamp = [data.datetime.strftime("%H:%M") for data in sensordata]
+        data = {}
+        data['temperature'] = [data.temperature for data in sensordata]
+        data['humidity'] = [data.humidity for data in sensordata]
+        data['co2'] = [data.co2 for data in sensordata]
+        data['pressure'] = [data.pressure for data in sensordata]
+        print("get_recent_sensor_readings time taken", datetime.now() - curr_time)
+        return jsonify(timestamp=timestamp, data=data)
+    
     @app.route('/test_is_data_avalable')
     def test_is_data_avalable():
         SensorData.query.order_by(SensorData.datetime.desc()).limit(100).all()
@@ -63,32 +83,6 @@ def config_route(app, csrf, db):
         print('Request for lege_pagina page received')
         return render_template('lege_pagina.html')
 
-    @app.context_processor
-    def utility_processor():
-        def get_recent_sensor_readings(index, limit):
-            global sensordata
-            global cachetime 
-            curr_time = datetime.now()
-            disable = False
-            if sensordata is None or (datetime.now() - cachetime).total_seconds() > 30 or limit > len(sensordata) or disable:
-                sensordata = SensorData.query.order_by(SensorData.datetime.desc()).limit(limit).all()
-                cachetime = curr_time
-            if index == 0:
-                lst = [data.datetime.isoformat() for data in sensordata]
-            elif index == 1:
-                lst = [data.temperature for data in sensordata]
-            elif index == 2:
-                lst = [data.co2 for data in sensordata]
-            elif index == 3:
-                lst = [data.humidity for data in sensordata]
-            elif index == 4:
-                lst = [data.pressure for data in sensordata]
-            else:
-                return None
-            print("get_recent_sensor_readings time taken", datetime.now() - curr_time)
-            return lst
-         
-        return dict(get_recent_sensor_readings=get_recent_sensor_readings)
 
     # Routes for static files
     @app.route('/favicon.ico')
