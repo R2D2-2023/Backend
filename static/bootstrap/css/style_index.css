@@ -165,10 +165,26 @@ body {
 }
 
 .notification {
-    height: 650px;
+    max-height: calc(100vh - 150px);
+    height: calc(100vh - 150px);
+    overflow: hidden;
     /* border: 2px solid rgba(255, 255, 255, 0.5); */
     color: white;
 }
+
+/* @media (max-height: 600px) {
+    .notification {
+        max-height: 70vh;
+        height: 70vh;
+    }
+}
+
+@media (max-height: 400px) {
+    .notification {
+        max-height: 65vh;
+        height: 65vh;
+    }
+} */
 
 .temp,
 .humid,
@@ -197,47 +213,39 @@ body {
     border: 2px solid #1aef9a;
 }
 
-/* .kaart {
-    height: 390px;
-    background-color: rgba(40, 40, 40, .1);
-    border: 2px solid rgba(255, 255, 255, 0.5);
-}
-
-.meer-info {
-    height: 390px;
-    background-color: rgba(40, 40, 40, .1);
-    border: 2px solid rgba(255, 255, 255, 0.5);
-} */
-
-.notification-title {
-    padding-left: 10%;
+/* .notification-title {
+    padding-left: 5%;
     padding-top: 10px;
-    padding-bottom: 10px;
     font-size: 20px;
-    border-left: 2px solid #1aef9a;
-    background-color: rgba(40, 40, 40, .4);
-}
+    margin-right: 2%;
+} */
 
 .bericht-1,
 .bericht-2,
 .bericht-3,
-.bericht-4 {
-    border-left: 2px solid #1aef9a;
-    background-color: rgba(40, 40, 40, .4);
-
+.bericht-4,
+.bericht-5,
+.bericht-6 {
+    margin-bottom: 8px;
 }
 
 .notificartion-bericht-title {
-    margin-top: 20px;
     padding-top: 10px;
-    padding-left: 10%;
+    padding-bottom: 5px;
+    padding-left: 5%;
+    font-size: 15px;
+    font-weight: 1000;
 }
 
 .notificartion-bericht {
     padding-left: 5%;
     padding-right: 3%;
-    padding-bottom: 10px;
-    padding-top: 2px;
+    margin-right: 2%;
+    padding-bottom: 8px;
+    padding-top: 8px;
+    border-left: 2px solid #1aef9a;
+    background: rgba(26, 239, 154, 0.1);
+    border-radius: 4px;
 }
 
 
@@ -260,13 +268,17 @@ body {
 }
 
 .kaart {
+    max-height: calc(100vh - 401px);
+    height: calc(100vh - 401px);
+    overflow: hidden;
     color: white;
-    border: 2px solid #1aef9a;
+    /* border: 2px solid #1aef9a; */
+    background: rgba(26, 239, 154, 0.08);
 }
 
 .kaart-text {
-    margin-left: 3%;
-    margin-top: 10px;
+    padding-left: 3%;
+    padding-top: 10px;
 }
 
 .title {
@@ -274,14 +286,17 @@ body {
 }
 
 .kaart-img {
-    margin-left: 6%;
-    margin-right: 8%;
-    margin-top: 15px;
-    margin-bottom: 15px;
+    padding-left: 3%;
+    padding-right: 4%;
+    padding-top: 15px;
+    padding-bottom: 15px;
 }
 
 .kaart-img img {
     width: 100%;
+    height: auto;
+    opacity: 90%;
+    align-items: center;
 }
 
 
@@ -345,6 +360,15 @@ body {
 
     .col-1-3 {
         width: 49.2%;
+    }
+
+    .temp,
+    .humid,
+    .co2,
+    .pres,
+    .qual,
+    .overig {
+        height: 90px;
     }
 
 
