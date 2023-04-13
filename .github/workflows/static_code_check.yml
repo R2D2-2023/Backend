@@ -3,7 +3,7 @@ name: Static Code Check
 on:
   push:
     branches: 
-      - '*'
+      - '**'
 
 jobs:
   test_package:
