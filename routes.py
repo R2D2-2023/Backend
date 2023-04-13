@@ -65,30 +65,8 @@ def config_route(app, csrf, db):
 
     @app.context_processor
     def utility_processor():
-        def get_recent_sensor_readings(index, limit):
-            global sensordata
-            global cachetime 
-            curr_time = datetime.now()
-            disable = False
-            if sensordata is None or (datetime.now() - cachetime).total_seconds() > 30 or limit > len(sensordata) or disable:
-                sensordata = SensorData.query.order_by(SensorData.datetime.desc()).limit(limit).all()
-                cachetime = curr_time
-            if index == 0:
-                lst = [data.datetime.isoformat() for data in sensordata]
-            elif index == 1:
-                lst = [data.temperature for data in sensordata]
-            elif index == 2:
-                lst = [data.co2 for data in sensordata]
-            elif index == 3:
-                lst = [data.humidity for data in sensordata]
-            elif index == 4:
-                lst = [data.pressure for data in sensordata]
-            else:
-                return None
-            print("get_recent_sensor_readings time taken", datetime.now() - curr_time)
-            return lst
          
-        return dict(get_recent_sensor_readings=get_recent_sensor_readings)
+        return dict()
 
     # Routes for static files
     @app.route('/favicon.ico')
