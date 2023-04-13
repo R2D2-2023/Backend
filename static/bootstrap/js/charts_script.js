@@ -21,15 +21,11 @@ function createCharts(graphs) {
 
 function createGraph(graph) {
     const canvas = document.getElementById(graph.canvasID);
-    time_luxon = []
-    for (dt of graph.time_labels) {
-        time_luxon.push(luxon.DateTime.fromISO(dt))
-    }
 
     return new Chart(canvas, {
         type: 'line',
         data: {
-            labels: time_luxon,
+            labels: graph.time_labels,
             datasets: [{
                 label: graph.data_label,
                 data: graph.data,                           // de data die je laat zien
@@ -71,7 +67,11 @@ function updateCharts(charts, graphs, index) {
     }
 }
 
-
+function append(value, array) {
+    var newArray = array.slice();
+    newArray.shift(value);
+    return newArray;
+}
 
 function prepend(value, array) {
     var newArray = array.slice();
@@ -79,31 +79,74 @@ function prepend(value, array) {
     return newArray;
 }
 
-function getNewData(charts, graphs, location) {
-    console.log(graphs[0].time_labels[0]);
+function getNewData(charts, graphs, timestamp) {
+    let location = 1;
     $.ajax({
         url: "/get_new_data",
         type: "GET",
-        data: {'last_datapoint':graphs[0].time_labels[0], 'location':location},
+        data: {'last_datapoint': timestamp, 'location': location, 'max_data': 100},
         success: function(ret_data) {
             if (ret_data) {
-                // console.log(ret_data);
-                // console.log(ret_data['timestamp'].length);
-                for (var i = 0; i < ret_data['timestamp'].length; i++) {
+                console.log(ret_data)
+                for (let i = 0; i < ret_data.timestamp.length; i++) {
                     for (let j = 0; j < charts.length; j++) {
-                        chart = charts[j];
-                        graph = graphs[j];
-                        console.log(ret_data['data'][graph.type])
-                        chart.data.datasets[0].data = prepend(ret_data['data'][graph.type][i], chart.data.datasets[0].data);
-                        chart.data.labels = prepend(luxon.DateTime.fromISO(ret_data['timestamp'][i]), chart.data.labels);
-                        chart.data.datasets[0].data.pop();
-                        chart.data.labels.pop();
-                        graph.time_labels = prepend(ret_data['timestamp'][i], graph.time_labels);
-                    }
-                    
+                        charts[j].data.datasets.forEach((dataset) => {
+                            dataset.data.push(ret_data.data[graphs[j].type][i])
+                        });
+                    }                    
+                    charts[0].data.labels.push(ret_data.timestamp[i])
                 }
-                for (let i = 0; i < charts.length; i++) charts[i].update();
             }
+            for (chart in charts) charts[chart].update()
         }
-    });
+    })
+}
+
+
+// function getNewData(charts, graphs, location, timestamp) {
+//     if (timestamp === undefined) {
+//         timestamp = graphs[0].time_labels[0]
+//     }
+//     console.log(timestamp);
+//     $.ajax({
+//         url: "/get_new_data",
+//         type: "GET",
+//         data: {'last_datapoint':timestamp, 'location':location},
+//         success: function(ret_data) {
+//             if (ret_data) {
+//                 // console.log(ret_data);
+//                 // console.log(ret_data['timestamp'].length);
+//                 let empty = false;
+//                 if (charts[0].data.datasets[0].data.length == 0) empty = true;
+//                 for (var i = ret_data['timestamp'].length; i > 0; i--) {
+//                     for (let j = 0; j < charts.length; j++) {
+//                         chart = charts[j];
+//                         graph = graphs[j];
+//                         // console.log(chart.data.datasets[0].data)
+//                         // console.log(chart.data.labels)
+//                         chart.data.datasets[0].data = prepend(ret_data['data'][graph.type][i], chart.data.datasets[0].data);
+//                         chart.data.labels = prepend(luxon.DateTime.fromISO(ret_data['timestamp'][i]), chart.data.labels);
+//                         if (!empty) {
+//                             chart.data.datasets[0].data.pop();
+//                             chart.data.labels.pop();
+//                         }
+//                         else{
+//                         }
+//                     }
+//                     if (empty)
+
+//                     graphs[0].time_labels.unshift(ret_data['timestamp'][i]);
+                    
+//                 }
+//                 for (let i = 0; i < charts.length; i++) charts[i].update();
+//             }
+//         }
+//     });
+// }
+
+function dateMinHours(hours) {
+    d = new Date();
+    d.setMinutes(d.getMinutes() - d.getTimezoneOffset())
+    d.setHours(d.getHours() - hours);
+    return d.toISOString().slice(0, -1);
 }

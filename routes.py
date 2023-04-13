@@ -19,18 +19,23 @@ def config_route(app, csrf, db):
         if last_datapoint is None:
             return ""
         location = request.args.get('location')
+        max_data = int(request.args.get('max_data'))
         last_datapoint = datetime.strptime(last_datapoint, '%Y-%m-%dT%H:%M:%S.%f')
         # query for new data with and location and datetime after last_datapoint. return all columns
         new_data = SensorData.query.order_by(SensorData.datetime.desc()).filter(SensorData.datetime > last_datapoint, SensorData.location == location).all()
         # new_data = aabbccddeeff7778.query.order_by(aabbccddeeff7778.datetime.desc()).filter(aabbccddeeff7778.datetime > last_datapoint, aabbccddeeff7778.position == location).all()
-        timestamp = [data.datetime.isoformat() for data in new_data]
+        new_data.reverse()
+        filter_data = []
+        for i in range(0, len(new_data), (len(new_data) // max_data)):
+            filter_data.append(new_data[i])
+        timestamp = [data.datetime.isoformat() for data in filter_data]
         data = {}
-        data['temperature'] = [data.temperature for data in new_data]
-        data['humidity'] = [data.humidity for data in new_data]
-        # data['co2'] = [data.ppm for data in new_data]
-        data['co2'] = [data.co2 for data in new_data]
-        data['pressure'] = [data.pressure for data in new_data]
-        # data['pressure'] = [data.air_pressure for data in new_data]
+        data['temperature'] = [data.temperature for data in filter_data]
+        data['humidity'] = [data.humidity for data in filter_data]
+        # data['co2'] = [data.ppm for data in filter_data]
+        data['co2'] = [data.co2 for data in filter_data]
+        data['pressure'] = [data.pressure for data in filter_data]
+        # data['pressure'] = [data.air_pressure for data in filter_data]
         
         return jsonify(timestamp=timestamp, data=data)
         
