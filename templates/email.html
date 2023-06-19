@@ -30,11 +30,11 @@
     <h1>Blank Template with Email Input</h1>
   </header>
   <div class="container">
-    <form>
+    <form method="POST" action="{{ url_for('set_email_data') }}">
       <label for="email">Email Address:</label>
       <input type="text" id="email" name="email" required>
       <br><br>
-      <input type="submit" value="Submit">
+      <button type="submit">Submit</button>
     </form>
   </div>
   <footer>

@@ -47,9 +47,9 @@ class aabbccddeeff7778(db.Model):
         return self.name
     
     
-class EmailAddress(db.model):
+class EmailAddress(db.Model):
     __tablename__ = 'emailaddress'
-    adress = Column(String)
+    address = Column(String, primary_key=True)
 
     def __str__(self):
         return self.name

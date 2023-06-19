@@ -63,12 +63,16 @@ def config_route(app, csrf, db):
         print("get_recent_sensor_readings time taken", datetime.now() - curr_time)
         return jsonify(timestamp=timestamp, data=data)
     
-    @app.route('/get_email_data')
-    def get_email_data():
-        [data.address for data in EmailAddress] =  data['address']
+    @app.route('/set_email_data', methods=['POST'])
+    def set_email_data():
+        address = request.values.get('email')
+        emailaddress = EmailAddress()
+        emailaddress.address = address        
+        db.session.add(emailaddress)
+        db.session.commit()
+        return redirect(url_for('email'))
 
 
-    
     @app.route('/test_is_data_avalable')
     def test_is_data_avalable():
         SensorData.query.order_by(SensorData.datetime.desc()).limit(100).all()
