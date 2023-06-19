@@ -5,10 +5,11 @@ import os
 from flask import jsonify
 
 # The import must be done after db initialization due to circular import issue
-from models import SensorData, aabbccddeeff7778
+from models import SensorData, aabbccddeeff7778, EmailAddress
 
 sensordata = None
 cachetime = None
+
 
 def config_route(app, csrf, db):
 
@@ -62,6 +63,12 @@ def config_route(app, csrf, db):
         print("get_recent_sensor_readings time taken", datetime.now() - curr_time)
         return jsonify(timestamp=timestamp, data=data)
     
+    @app.route('/get_email_data')
+    def get_email_data():
+        [data.address for data in EmailAddress] =  data['address']
+
+
+    
     @app.route('/test_is_data_avalable')
     def test_is_data_avalable():
         SensorData.query.order_by(SensorData.datetime.desc()).limit(100).all()
@@ -82,6 +89,12 @@ def config_route(app, csrf, db):
     def lege_pagina():
         print('Request for lege_pagina page received')
         return render_template('lege_pagina.html')
+    
+    @app.route('/email')
+    def email():
+        print('Request for email page received')
+        return render_template('email.html')
+
 
 
     # Routes for static files

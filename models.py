@@ -45,3 +45,11 @@ class aabbccddeeff7778(db.Model):
 
     def __str__(self):
         return self.name
+    
+    
+class EmailAddress(db.model):
+    __tablename__ = 'emailaddress'
+    adress = Column(String)
+
+    def __str__(self):
+        return self.name
