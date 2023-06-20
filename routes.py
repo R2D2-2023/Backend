@@ -69,7 +69,7 @@ def config_route(app, db):
         return [data.address for data in EmailAddress]
 
 
-    
+
     @app.route('/test_is_data_avalable')
     def test_is_data_avalable():
         SensorData.query.order_by(SensorData.datetime.desc()).limit(100).all()

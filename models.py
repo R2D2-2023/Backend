@@ -50,6 +50,7 @@ class aabbccddeeff7778(db.Model):
     
     
 class EmailAddress(db.Model):
+class EmailAddress(db.Model):
     __tablename__ = 'emailaddress'
     adress = Column(String, primary_key=True)
 
