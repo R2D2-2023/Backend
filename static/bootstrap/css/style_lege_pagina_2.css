@@ -1,0 +1,170 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    list-style: none;
+    text-decoration: none;
+}
+
+header {
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 33px 9%;
+    background: rgba(255, 255, 255, 0.0);
+}
+
+body {
+    background-color: #0d0d0d;
+}
+
+.logo {
+    font-size: 30px;
+    font-weight: 700;
+    color: white;
+}
+
+.backgroundimage {
+    background: linear-gradient(to bottom, #230e1a, #22111f, #211324, #1e1629, #1a192d, #18192c, #16192a, #141929, #141622, #13131c, #111015, #0d0d0d);
+    padding-top: 80px;
+    padding-left: 10%;
+    padding-right: 10%;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.navlist {
+    display: flex;
+
+}
+
+.navlist a {
+    color: white;
+    margin-left: 60px;
+    font-size: 15px;
+    font-weight: 600;
+    border-bottom: 2px solid transparent;
+    transition: all .55s ease;
+}
+
+.navlist a:hover {
+    border-bottom: 2px solid #1aef9a;
+}
+
+#menu-icon {
+    color: white;
+    font-size: 30px;
+    z-index: 10001;
+    cursor: pointer;
+    display: none;
+}
+
+/* tot hier is het menu styling */
+
+.col-1-2 {
+    width: 49.2%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.niet_zichtbaar {
+    opacity: 0%;
+    font-size: 0px;
+}
+
+.map {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    color: white;
+    /* border: 2px solid #1aef9a; */
+    background: rgba(26, 239, 154, 0.0);
+}
+
+.map-text {
+    /* padding-left: 3%;
+    padding-top: 10px; */
+}
+
+.title {
+    font-size: 20px;
+}
+
+.map-img {
+    padding-left: 3%;
+    padding-right: 3%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.map-img img {
+    width: 100%;
+    height: auto;
+    opacity: 95%;
+    align-items: center;
+}
+
+
+
+
+/* vanaf hier schaaling */
+
+@media (max-width: 1535px) {
+    header {
+        padding: 15px 3%;
+        transition: .2s;
+    }
+}
+
+/* @media (max-width: 1460px) {
+} */
+
+/* @media (max-width: 1340px) {
+} */
+
+/* @media (max-width: 1000px) {
+} */
+
+@media (max-width: 990px) {
+    #menu-icon {
+        display: block;
+    }
+
+    .navlist {
+        position: absolute;
+        top: 100%;
+        right: -100%;
+        width: 220px;
+        height: 30vh;
+        background: rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        padding: 40px 20px;
+        transition: all .55s ease;
+    }
+
+    .navlist a {
+        margin-left: 0;
+        display: block;
+        margin: 9px 0;
+    }
+
+    .navlist.open {
+        right: 0;
+    }
+
+    .backgroundimage {
+        padding-left: 7%;
+        padding-right: 7%;
+    }
+}
+
+/* @media (max-width: 780px) {
+} */
