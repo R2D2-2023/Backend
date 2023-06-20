@@ -1,4 +1,4 @@
-
+from sqlalchemy import insert, delete
 from flask import Flask, redirect, render_template, request, send_from_directory, url_for
 from datetime import datetime, timedelta
 import os
@@ -11,7 +11,7 @@ sensordata = None
 cachetime = None
 
 
-def config_route(app, csrf, db):
+def config_route(app, db):
 
     # Routes for API's   
     @app.route('/get_new_data')
@@ -65,7 +65,8 @@ def config_route(app, csrf, db):
     
     @app.route('/get_email_data')
     def get_email_data():
-        [data.address for data in EmailAddress] =  data['address']
+
+        return [data.address for data in EmailAddress]
 
 
     
@@ -95,7 +96,33 @@ def config_route(app, csrf, db):
         print('Request for email page received')
         return render_template('email.html')
 
+    @app.route('/submit_email', methods = ['POST'])
+    def submit_email():
+        newMail = EmailAddress(adress=request.form.get("email"))
+        submitButton = request.form.get("submit")
+        removeButton = request.form.get("remove")
 
+        if submitButton is not None:
+            print("Submit")        
+            try:
+                db.session.add(newMail)
+                db.session.commit()
+            except:
+                print("Given mail adress is already in the database")
+        elif removeButton is not None:
+            if db.session.query(EmailAddress.adress).filter_by(adress=newMail.adress).first() is not None:
+                print("Adress found")
+                try:
+                    print("Removed the adress form our database")
+                    EmailAddress.query.filter_by(adress=newMail.adress).delete()
+                    db.session.commit()
+                except:
+                    print("An error occurred while removing your mail adress")
+            else:
+                print("Mail adress not found in our database")
+        else:
+            print("Invalid input")
+        return redirect(url_for('email'))
 
     # Routes for static files
     @app.route('/favicon.ico')
