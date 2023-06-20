@@ -66,6 +66,92 @@ body {
 }
 
 /* tot hier is het menu styling */
+/* vanaf hier styling map */
+
+.map_container {
+    position: relative;
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    color: white;
+    /* border: 2px solid #1aef9a; */
+    background: rgba(26, 239, 154, 0.0);
+}
+
+.btn_zone_1,
+.btn_zone_2,
+.btn_zone_3,
+.btn_zone_4,
+.btn_zone_5,
+.btn_zone_6,
+.btn_zone_7,
+.btn_zone_8 {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  background-color: white;
+  color: white;
+  font-size: 1px;
+  padding: 6px 6px;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px
+}
+
+.btn_zone_1 {
+  top: 26%;
+  left: 20%;
+}
+
+.btn_zone_2 {
+  top: 26%;
+  left: 44%;
+}
+
+.btn_zone_3 {
+  top: 26%;
+  left: 68%;
+}
+
+.btn_zone_4 {
+  top: 26%;
+  left: 92%;
+}
+
+.btn_zone_5 {
+  top: 74%;
+  left: 20%;
+}
+
+.btn_zone_6 {
+  top: 74%;
+  left: 44%;
+}
+
+.btn_zone_7 {
+  top: 74%;
+  left: 68%;
+}
+
+.btn_zone_8 {
+  top: 74%;
+  left: 92%;
+}
+
+/* .map-img {
+    padding-left: 3%;
+    padding-right: 3%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+} */
+
+.map-img img {
+    width: 100%;
+    height: auto;
+    opacity: 95%;
+}
+
+/* vanaf hier styling charts */
 
 .col-1-2 {
     width: 49.2%;
@@ -77,41 +163,6 @@ body {
     opacity: 0%;
     font-size: 0px;
 }
-
-.map {
-    width: 100%;
-    height: auto;
-    overflow: hidden;
-    color: white;
-    /* border: 2px solid #1aef9a; */
-    background: rgba(26, 239, 154, 0.0);
-}
-
-.map-text {
-    /* padding-left: 3%;
-    padding-top: 10px; */
-}
-
-.title {
-    font-size: 20px;
-}
-
-.map-img {
-    padding-left: 3%;
-    padding-right: 3%;
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
-
-.map-img img {
-    width: 100%;
-    height: auto;
-    opacity: 95%;
-    align-items: center;
-}
-
-
-
 
 /* vanaf hier schaaling */
 
