@@ -2,6 +2,7 @@ from sqlalchemy import insert, delete
 from flask import Flask, redirect, render_template, request, send_from_directory, url_for
 from datetime import datetime, timedelta
 import os
+import re
 from flask import jsonify
 
 # The import must be done after db initialization due to circular import issue
@@ -9,7 +10,13 @@ from models import SensorData, aabbccddeeff7778, EmailAddress
 
 sensordata = None
 cachetime = None
+regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
 
+def validate_mail(mail_adress):
+    if (re.fullmatch(regex, mail_adress)):
+        return
+    else:
+        return False
 
 def config_route(app, db):
 
@@ -90,39 +97,45 @@ def config_route(app, db):
     def lege_pagina():
         print('Request for lege_pagina page received')
         return render_template('lege_pagina.html')
-    
-    @app.route('/email')
+
+    @app.route('/email', methods = ['GET', 'POST'])
     def email():
-        print('Request for email page received')
-        return render_template('email.html')
+        if request.method == 'POST':
+            message = ""
+            newMail = EmailAddress(adress=request.form.get("email"))
+            submitButton = request.form.get("submit")
+            removeButton = request.form.get("remove")
 
-    @app.route('/submit_email', methods = ['POST'])
-    def submit_email():
-        newMail = EmailAddress(adress=request.form.get("email"))
-        submitButton = request.form.get("submit")
-        removeButton = request.form.get("remove")
+            if (validate_mail(newMail.adress) == False):
+                message = "Not a valid mail adress"
+                return render_template("email.html", value=message)
 
-        if submitButton is not None:
-            print("Submit")        
-            try:
-                db.session.add(newMail)
-                db.session.commit()
-            except:
-                print("Given mail adress is already in the database")
-        elif removeButton is not None:
-            if db.session.query(EmailAddress.adress).filter_by(adress=newMail.adress).first() is not None:
-                print("Adress found")
+
+            if submitButton is not None:        
                 try:
-                    print("Removed the adress form our database")
-                    EmailAddress.query.filter_by(adress=newMail.adress).delete()
+                    db.session.add(newMail)
                     db.session.commit()
+                    message = "Given e-mail has been added to our database" 
                 except:
-                    print("An error occurred while removing your mail adress")
+                    message = "Your e-mail is already in our database"
+            
+            elif removeButton is not None:
+                if db.session.query(EmailAddress.adress).filter_by(adress=newMail.adress).first() is not None:
+                    try:
+                        EmailAddress.query.filter_by(adress=newMail.adress).delete()
+                        db.session.commit()
+                        message = "The given e-mail has been removed from our database"
+                    except:
+                        message = "An error occurred while removing your mail adress"
+                else:
+                    message = "Mail adress not found in our database"
             else:
-                print("Mail adress not found in our database")
-        else:
-            print("Invalid input")
-        return redirect(url_for('email'))
+                print("Invalid input")
+            return render_template('email.html', value=message)
+            
+        
+        elif request.method == 'GET':
+            return render_template("email.html", value="")
 
     # Routes for static files
     @app.route('/favicon.ico')
