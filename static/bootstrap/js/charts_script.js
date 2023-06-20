@@ -103,7 +103,7 @@ function getNewData(charts, graphs, location, timestamp, cutoff_time) {
             else {
             }
             if (cutoff_time != undefined) {
-                while (charts[0].time_labels[0] < cutoff_time) {
+                while (charts[0].data.labels[0] < cutoff_time) {
                     for (let i = 0; i < charts.length; i++) {
                         charts[i].data.datasets.forEach((dataset) => {
                             dataset.data.shift();
