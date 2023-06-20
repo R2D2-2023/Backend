@@ -29,13 +29,39 @@ conn.commit()
 
 time.sleep(0.1)
 
+co2 = random.randint(400, 1000)
+temperature = random.randint(20, 30)
+humidity = random.randint(40, 60)
+pressure = random.randint(1000, 1100)
+
 while True:
     # generate random data
     print("Generating random data and inserting into database...")
-    co2 = random.randint(400, 1000)
-    temperature = random.randint(20, 30)
-    humidity = random.randint(40, 60)
-    pressure = random.randint(1000, 1100)
+    while True:
+        diff = random.randint(-20, 20)
+        if co2 + diff < 400 or co2 + diff > 1000:
+            continue
+        co2 += diff
+        break
+    while True:
+        diff = random.randint(-2, 2) * 0.5
+        if temperature + diff < 20 or temperature + diff > 30:
+            continue
+        temperature += diff
+        break
+    while True:
+        diff = random.randint(-1, 1)
+        if humidity + diff < 40 or humidity + diff > 60:
+            continue
+        humidity += diff
+        break
+    while True:
+        diff = random.randint(-5, 5)
+        if pressure + diff < 1000 or pressure + diff > 1100:
+            continue
+        pressure += diff
+        break
+        
     # location = random.randint(1, 10)
     location = 1
 

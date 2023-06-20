@@ -27,8 +27,16 @@ def config_route(app, csrf, db):
         filter_data = []
         # if len(new_data) == 0:
         #     return jsonify(timestamp=[], data={})
-        # for i in range(0, len(new_data), (len(new_data) // max_data)):
-        #     filter_data.append(new_data[i])
+        # if len(new_data) > 100:
+        #     filter_step = len(new_data) // 100
+        #     print(len(new_data), filter_step)
+        #     for i in range(0, len(new_data)-1, (filter_step)):
+        #         total = 0
+        #         for j in range(i, i+filter_step):
+        #             total += new_data[j].co2
+        #         mean = total / filter_step
+        #         filter_data.append(mean)
+
         timestamp = [data.datetime.isoformat() for data in new_data]
         data = {}
         data['temperature'] = [data.temperature for data in new_data]
