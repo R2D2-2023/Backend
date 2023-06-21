@@ -21,30 +21,32 @@ def config_route(app, csrf, db):
             return "Not the right parameters are given."
         last_datapoint = datetime.strptime(last_datapoint, '%Y-%m-%dT%H:%M:%S.%f')
         # query for new data with and location and datetime after last_datapoint. return all columns
-        new_data = SensorData.query.order_by(SensorData.datetime.desc()).filter(SensorData.datetime > last_datapoint, SensorData.location == location).all()
-        # new_data = aabbccddeeff7778.query.order_by(aabbccddeeff7778.datetime.desc()).filter(aabbccddeeff7778.datetime > last_datapoint, aabbccddeeff7778.position == location).all()
-        new_data.reverse()
-        filter_data = []
-        # if len(new_data) == 0:
+        raw_data = SensorData.query.order_by(SensorData.datetime.desc()).filter(SensorData.datetime > last_datapoint, SensorData.location == location).all()
+        raw_data.reverse()
+        # if len(raw_data) == 0:
         #     return jsonify(timestamp=[], data={})
-        # if len(new_data) > 100:
-        #     filter_step = len(new_data) // 100
-        #     print(len(new_data), filter_step)
-        #     for i in range(0, len(new_data)-1, (filter_step)):
-        #         total = 0
-        #         for j in range(i, i+filter_step):
-        #             total += new_data[j].co2
-        #         mean = total / filter_step
-        #         filter_data.append(mean)
+        final_data = []
+        if len(raw_data) > 1000:
+            filter_step_size = len(raw_data) / 1000
+            filter_step_count = 0
+            for data in raw_data:
+                filter_step_count += 1
+                if filter_step_count > filter_step_size:
+                    filter_step_count -= filter_step_size
+                    final_data.append(data)
+            print(len(raw_data), len(final_data))
+        else:
+            final_data = raw_data
+        
 
-        timestamp = [data.datetime.isoformat() for data in new_data]
+        timestamp = [data.datetime.isoformat() for data in final_data]
         data = {}
-        data['temperature'] = [data.temperature for data in new_data]
-        data['humidity'] = [data.humidity for data in new_data]
-        # data['co2'] = [data.ppm for data in filter_data]
-        data['co2'] = [data.co2 for data in new_data]
-        data['pressure'] = [data.pressure for data in new_data]
-        # data['pressure'] = [data.air_pressure for data in new_data]
+        data['temperature'] = [data.temperature for data in final_data]
+        data['humidity'] = [data.humidity for data in final_data]
+        # data['co2'] = [data.ppm for data in final_data]
+        data['co2'] = [data.co2 for data in final_data]
+        data['pressure'] = [data.pressure for data in final_data]
+        # data['pressure'] = [data.air_pressure for data in final_data]
         if timestamp == []:
             return "No new data available."
         
