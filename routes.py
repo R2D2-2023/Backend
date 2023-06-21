@@ -103,6 +103,10 @@ def config_route(app, db):
         if request.method == 'POST':
             message = ""
             newMail = EmailAddress(adress=request.form.get("email"))
+            if (len(newMail.adress) > 255):
+                message = "The input has too many characters"
+                return render_template('email.html', value=message)
+            
             submitButton = request.form.get("submit")
             removeButton = request.form.get("remove")
 
