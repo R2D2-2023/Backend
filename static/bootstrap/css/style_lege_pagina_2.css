@@ -66,11 +66,30 @@ body {
 }
 
 /* tot hier is het menu styling */
+/* vanaf hier styling instellingen */
+
+.instellingen_container {
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    width: 18%;
+    height: 90%;
+    background-color: white;
+}
+
+.instellingen_logo img {
+    width: 40%;
+    height: auto;
+    opacity: 95%;
+    align-self: center;
+}
+
 /* vanaf hier styling map */
 
 .map_container {
+    display: inline-block;
     position: relative;
-    width: 100%;
+    width: 80%;
     height: auto;
     overflow: hidden;
     color: white;
@@ -151,10 +170,12 @@ body {
     opacity: 95%;
 }
 
+
+
 /* vanaf hier styling charts */
 
 .col-1-2 {
-    width: 49.2%;
+    width: 39.2%;
     display: inline-block;
     vertical-align: top;
 }
@@ -163,6 +184,17 @@ body {
     opacity: 0%;
     font-size: 0px;
 }
+
+
+.temp_chart,
+.CO2_chart,
+.humid_chart,
+.pres_chart {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    padding: 2%;
+}
+
 
 /* vanaf hier schaaling */
 

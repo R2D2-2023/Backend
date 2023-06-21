@@ -56,6 +56,19 @@
 
     <section class="backgroundimage">
 
+        <div class="instellingen_container">
+            <div class="instellingen_logo">
+                <img src="../static/images/instellingen_zwart.png" alt="instellingen logo">
+            </div>
+            <div class="temp_buttons">
+                <button type="submit" id="button_10" name="button" onclick="setTimeView(charts, graphs, 1, 0, 1)" class="btn btn-primary">1 min</button>
+                <button type="submit" id="button_50" name="button" onclick="setTimeView(charts, graphs, 1, 0, 5)" class="btn btn-primary">5 min</button>
+                <button type="submit" id="button_100" name="button" onclick="setTimeView(charts, graphs, 1, 0, 10)" class="btn btn-primary">10 min</button>
+                <button type="submit" id="button_100" name="button" onclick="setTimeView(charts, graphs, 1, 1, 0)" class="btn btn-primary">1 uur</button>
+            </div>
+
+        </div>
+
         <div class="map_container">
             <div class="map-img">
                 <img src="../static/images/kaart4de-verdieping.png" alt="Plategrond van de 4de verdieping van de hogeschool utrecht heidelberglaan 15">
@@ -76,7 +89,7 @@
         </div>
 
 
-        <div class="charts">
+        <div class="charts_container">
             <section class="col-1-2">
                 <div class="temp_chart">
                     <h8 class="niet_zichtbaar">niet zichtbare text</h8>
@@ -104,17 +117,6 @@
         </div>
 
 
-        <div class="temp_buttons">
-            <button type="submit" id="button_10" name="button" onclick="setTimeView(charts, graphs, 1, 0, 1)" class="btn btn-primary">1 min</button>
-            <button type="submit" id="button_50" name="button" onclick="setTimeView(charts, graphs, 1, 0, 5)" class="btn btn-primary">5 min</button>
-            <button type="submit" id="button_100" name="button" onclick="setTimeView(charts, graphs, 1, 0, 10)" class="btn btn-primary">10 min</button>
-            <button type="submit" id="button_100" name="button" onclick="setTimeView(charts, graphs, 1, 1, 0)" class="btn btn-primary">1 uur</button>
-            <div>
-                <!-- <input type="range" min="1" max="100" value="10" class="slider" id="myRange"
-                    oninput="updateCharts(charts, graphs, value)"></input> -->
-            </div>
-        </div>
-
 
     </section>
 
@@ -130,7 +132,7 @@
 
 <script>
     let graphs = [
-        new GraphData('temperature', 'temp_chart', [], 'Temperature (°C)', [], '#28B414', '#C8F0C8', 20, 30),
+        new GraphData('temperature', 'temp_chart', [], 'Temperature (°C)', [], '#1AEF9A', '#C8F0C8', 20, 30),
         new GraphData('co2', 'co2_chart', [], 'CO2 (ppm)', [], '#FF396A', '#FAACC2', 400, 1000),
         new GraphData('humidity', 'humid_chart', [], 'Humidity (%)', [], '#39CF9A', '#82EDC7', 40, 60),
         new GraphData('pressure', 'pres_chart', [], 'Air pressure (hPa)', [], '#FFAA00', '#FFD175', 1000, 1100)
