@@ -42,6 +42,7 @@ while True:
     # create the query
     query = "INSERT INTO sensor_data (datetime, co2, temperature, humidity, pressure, location) VALUES ('{time_with_offset}', {co2}, {temperature}, {humidity}, {pressure}, {location});".format(time_with_offset=datetime.datetime.now(), co2=co2, temperature=temperature, humidity=humidity, pressure=pressure, location=location)
 
+    print(query)
     # execute the query
     cursor.execute(query)
 

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, ARRAY
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
 from flask_migrate import Migrate
@@ -33,6 +33,10 @@ class SensorData(db.Model):
     def __str__(self):
         return self.name
  
+class aabbccddeeff7778route(db.Model):
+    __tablename__ = 'aabbccddeeff7778route'
+    datetime = Column(DateTime, primary_key=True)
+    route = Column(ARRAY(Integer()))
 
 class aabbccddeeff7778(db.Model):
     __tablename__ = 'aabbccddeeff7778'
