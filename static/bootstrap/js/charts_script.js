@@ -118,12 +118,14 @@ function getNewData(charts, graphs, location, timestamp, cutoff_time) {
             counter.textContent = charts[0].data.labels.length;
             let counterwarning = document.getElementById("counterwarning");
             if (dataAmount >= 100){
-                counterwarning.textContent = "Datapunten gelimiteerd tot 100" ;
+                Chart.defaults.datasets.line.pointRadius = 0.5;
             }
+            // else if (dataAmount >= 50){
+            //     Chart.defaults.datasets.line.pointRadius = 1.5;
+            // }
             else {
-                counterwarning.textContent = "";
+                Chart.defaults.datasets.line.pointRadius = 3 - dataAmount / 40;
             }
-
             for (let chart in charts) charts[chart].update();
             
         }
@@ -131,15 +133,18 @@ function getNewData(charts, graphs, location, timestamp, cutoff_time) {
 }
 
 function setTimeView(charts, graphs, location, hours, mins) {
-    // Clear the data from the graphs and charts
-    for (let i = 0; i < charts.length; i++) {
-        charts[i].data.datasets[0].data = [];
-        charts[i].data.labels = [];
-        graphs[i].time_labels = [];
+    if ($.active === 0) {
+        // Clear the data from the graphs and charts
+        for (let i = 0; i < charts.length; i++) {
+            charts[i].data.datasets[0].data = [];
+            charts[i].data.labels = [];
+            graphs[i].time_labels = [];
+        }
+        min_global = mins;
+        hour_global = hours;
+        getNewData(charts, graphs, location, dateMinHours(hour_global, min_global), undefined);
     }
-    min_global = mins;
-    hour_global = hours;
-    getNewData(charts, graphs, location, dateMinHours(hour_global, min_global), undefined);
+    
 }
 
 function dateMinHours(hours, minutes) {
