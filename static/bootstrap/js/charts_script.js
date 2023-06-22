@@ -118,13 +118,10 @@ function getNewData(charts, graphs, location, timestamp, cutoff_time) {
             counter.textContent = charts[0].data.labels.length;
             let counterwarning = document.getElementById("counterwarning");
             if (dataAmount >= 100){
-                Chart.defaults.datasets.line.pointRadius = 0.5;
+                Chart.defaults.datasets.line.pointRadius = 0;
             }
-            // else if (dataAmount >= 50){
-            //     Chart.defaults.datasets.line.pointRadius = 1.5;
-            // }
             else {
-                Chart.defaults.datasets.line.pointRadius = 3 - dataAmount / 40;
+                Chart.defaults.datasets.line.pointRadius = 3 - dataAmount / 34;
             }
             for (let chart in charts) charts[chart].update();
             
