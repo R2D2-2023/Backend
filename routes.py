@@ -102,6 +102,13 @@ def config_route(app, csrf, db):
         for i in range(len(route)):
             route[str(i)][0] = int(route[str(i)][0] / max_route * max_x)
             route[str(i)][1] = int(route[str(i)][1] / max_route * max_y)
+
+        # # Draw grid on the map for debugging per 10 pixels
+        # for i in range(0, max_x, 50):
+        #     img = cv2.line(img, (i, 0), (i, max_y), (0,255,0), 1)
+        # for i in range(0, max_y, 50):
+        #     img = cv2.line(img, (0, i), (max_x, i), (0,255,0), 1)
+        print(route)
         
         # Draw the route
         for i in range(len(route) - 1):
