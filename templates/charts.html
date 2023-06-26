@@ -70,14 +70,16 @@
                 <h4>TIME:</h4>
             </div>
             <div class="time_buttons">
-                <button type="submit" id="button_10" name="button" onclick="setTimeView(charts, graphs, 1, 0, 1)" class="btn btn-primary">1 min</button>
-                <button type="submit" id="button_50" name="button" onclick="setTimeView(charts, graphs, 1, 0, 5)" class="btn btn-primary">5 min</button>
-                <button type="submit" id="button_100" name="button" onclick="setTimeView(charts, graphs, 1, 0, 10)" class="btn btn-primary">10 min</button>
-                <button type="submit" id="button_100" name="button" onclick="setTimeView(charts, graphs, 1, 1, 0)" class="btn btn-primary">1 uur</button>
+                <button type="submit" id="button_1min" name="button" onclick="setTimeView(charts, graphs, 1, 0, 1)" class="btn btn-primary">1 min</button>
+                <button type="submit" id="button_5min" name="button" onclick="setTimeView(charts, graphs, 1, 0, 5)" class="btn btn-primary">5 min</button>
+                <button type="submit" id="button_10min" name="button" onclick="setTimeView(charts, graphs, 1, 0, 10)" class="btn btn-primary">10 min</button>
+                <button type="submit" id="button_1hour" name="button" onclick="setTimeView(charts, graphs, 1, 1, 0)" class="btn btn-primary">1 uur</button>
+                <button type="submit" id="button_1day" name="button" onclick="setTimeView(charts, graphs, 1, 24, 0)" class="btn btn-primary">1 dag</button>
+                <button type="submit" id="button_1week" name="button" onclick="setTimeView(charts, graphs, 1, 168, 0)" class="btn btn-primary">1 week</button>
             </div>
             <div class="time_custom">
+                <input type="datetime-local" id="start-time" name="start-time" style="font-size: 0.6rem" size="3">
                 
-
             </div>
         </div>
         <div class="procent_80">
@@ -170,9 +172,9 @@
                     </div>
                 </section>
                 <section class="col-1-2">
-                    <div class="pres_chart">
+                    <div class="pm_chart">
                         <h8 class="niet_zichtbaar">niet zichtbare text</h8>
-                        <canvas id="pres_chart"></canvas>
+                        <canvas id="pm_chart"></canvas>
                     </div>
                 </section>
             </div>
@@ -210,7 +212,7 @@
         new GraphData('co2', 'co2_chart', [], 'CO2 (ppm)', [], '#FF396A', '#FAACC2', 400, 1000),
         new GraphData('humidity', 'humid_chart', [], 'Humidity (%)', [], '#39CF9A', '#82EDC7', 40, 60),
         new GraphData('pressure', 'pres_chart', [], 'Air pressure (hPa)', [], '#FFAA00', '#FFD175', 1000, 1100),
-        new GraphData('air quality', 'air_q_hart', [], 'air quality (PPM)', [], '', '', 1000, 1100)
+        // new GraphData('particulate matter', 'pm_chart', [], 'Particulate Matter (PPM)', [], '', '', 1000, 1100)
     ];
     charts = createCharts(graphs);
     getNewData(charts, graphs, 1, dateMinHours(hour_global, min_global)) 

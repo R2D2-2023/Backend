@@ -114,9 +114,6 @@ function getNewData(charts, graphs, location, timestamp, cutoff_time) {
                 }
             }
             dataAmount = charts[0].data.labels.length;
-            let counter = document.getElementById("counter");
-            counter.textContent = charts[0].data.labels.length;
-            let counterwarning = document.getElementById("counterwarning");
             if (dataAmount >= 100){
                 Chart.defaults.datasets.line.pointRadius = 0;
             }
