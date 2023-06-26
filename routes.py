@@ -124,6 +124,14 @@ def config_route(app, csrf, db):
         
         # Save the image
         cv2.imwrite('static/images/plategrond4_route.png', img)
+
+        img = cv2.imread('static/images/plategrond4.png')
+
+        # get recent temperature sensor data from database
+        aabbccddeeff7778.query.order_by(aabbccddeeff7778.datetime.desc()).
+
+        cv2.imwrite('static/images/plategrond4_heatmap.png', img)
+
         return render_template('drawn_route.html')
     
     @app.route('/lege_pagina')
