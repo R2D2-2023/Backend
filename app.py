@@ -13,6 +13,7 @@ from models import config_db
 from routes import config_route
 
 
+
 def create_app():
     app = Flask(__name__)
     # if config_filename is not None:

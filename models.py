@@ -1,4 +1,5 @@
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, DECIMAL
+import os
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
 from flask_migrate import Migrate
@@ -7,18 +8,19 @@ from sqlalchemy.orm import validates
 # Initialize the database connection
 db = SQLAlchemy()
 migrate = Migrate()
-csrf = CSRFProtect()
+# csrf = CSRFProtect()
 
 def config_db(app):
     # Initialize the database connection
     app.config.update(
         SQLALCHEMY_DATABASE_URI=app.config.get('DATABASE_URI'),
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
+        SECRET_KEY = os.urandom(32)
     )
     db.init_app(app)
     migrate.init_app(app, db)
-    csrf.init_app(app)
-    return db, migrate, csrf
+    # csrf.init_app(app)
+    return db, migrate
 
     
 class SensorData(db.Model):
@@ -27,7 +29,7 @@ class SensorData(db.Model):
     co2 = Column(Integer)
     humidity = Column(Integer)
     pressure = Column(Integer)
-    temperature = Column(Integer)
+    temperature = Column(DECIMAL(3,1))
     location = Column(Integer)
 
     def __str__(self):
@@ -45,3 +47,12 @@ class aabbccddeeff7778(db.Model):
 
     def __str__(self):
         return self.name
+    
+
+class EmailAddress(db.Model):
+    __tablename__ = 'emailaddress'
+    adress = Column(String, primary_key=True)
+
+    def __str__(self):
+        return self.name
+    
