@@ -18,7 +18,7 @@ def validate_mail(mail_adress):
     else:
         return False
 
-def config_route(app, db):
+def config_route(app, csrf, db):
 
     # Routes for API's   
     @app.route('/get_new_data')

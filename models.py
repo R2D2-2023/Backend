@@ -8,10 +8,11 @@ from sqlalchemy.orm import validates
 # Initialize the database connection
 db = SQLAlchemy()
 migrate = Migrate()
-# csrf = CSRFProtect()
+csrf = CSRFProtect()
 
 def config_db(app):
     # Initialize the database connection
+    print("DATABASE_URI: " + app.config.get('DATABASE_URI'))
     app.config.update(
         SQLALCHEMY_DATABASE_URI=app.config.get('DATABASE_URI'),
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
@@ -19,8 +20,8 @@ def config_db(app):
     )
     db.init_app(app)
     migrate.init_app(app, db)
-    # csrf.init_app(app)
-    return db, migrate
+    csrf.init_app(app)
+    return db, migrate, csrf
 
     
 class SensorData(db.Model):
