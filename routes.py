@@ -82,11 +82,6 @@ def config_route(app, csrf, db):
     def lege_pagina():
         print('Request for lege_pagina page received')
         return render_template('lege_pagina.html')
-    
-    @app.route('/lege_pagina_2')
-    def lege_pagina_2():
-        print('Request for lege_pagina_2 page received')
-        return render_template('lege_pagina_2.html')
 
 
     # Routes for static files

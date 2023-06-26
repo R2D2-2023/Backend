@@ -15,3 +15,19 @@ const sr = ScrollReveal({
 
 sr.reveal('.hero-text', { delay: 100, origin: 'top' });
 sr.reveal('.hero-image', { delay: 100, origin: 'top' });
+
+
+const button = document.querySelector('.btn_zone_1');
+
+button.addEventListener('click', () => {
+  console.log('Button clicked');
+});
+
+var checkboxes = document.querySelectorAll("input [type = 'checkbox']");
+function checkAll(myCheckbox) {
+    if (myCheckbox.checked == true) {
+        checkboxes.forEach(function (checkbox) {
+            checkbox.checked = true;
+        });
+    }
+}
