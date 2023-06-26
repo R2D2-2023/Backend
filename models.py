@@ -1,4 +1,4 @@
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, DECIMAL
 import os
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
@@ -29,7 +29,7 @@ class SensorData(db.Model):
     co2 = Column(Integer)
     humidity = Column(Integer)
     pressure = Column(Integer)
-    temperature = Column(Integer)
+    temperature = Column(DECIMAL(3,1))
     location = Column(Integer)
 
     def __str__(self):
