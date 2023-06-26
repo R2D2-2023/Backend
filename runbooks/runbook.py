@@ -119,7 +119,31 @@ elif (jsonBody["uplink_message"]["f_port"] == 2):
     except Exception as inst:
         print(inst)
         
+elif (jsonBody["uplink_message"]["f_port"] == 3):
+    decoded_device_error = decoded_device + "error"
 
+    # Byte 0	Bit 0	Error	Sensoren	BME280 sensor kapot	Geen waarden ontvangen
+    # Byte 0	Bit 1	Warning	Sensoren	temperatuur out of range	Waarde onder 15/boven 25
+    #         Warning	Sensoren	luchtvochtigheid out of range	Waarde onder 30/boven 70
+    #         Warning	Sensoren	luchtdruk out of range	Waarde onder 960/boven 1050
+    # Byte 0	Bit 2	Error	Sensoren	SCD30 sensor kapot	Geen waarden ontvangen
+    #         Warning	Sensoren	CO2 out of range	Waarde onder 200/boven 800
+    # Byte 0	Bit 4	Error	Sensoren	SPS30 sensor kapot	Geen waarden ontvangen
+    # Byte 0	Bit 5	Warning	Sensoren	PM1.0 out of range	
+    #         Warning	Sensoren	PM2.5 out of range	
+    #         Warning	Sensoren	PM10 out of range	
+    # Byte 0	Bit 6	Error	Sensoren	INA266 sensor kapot	Waarde boven 12,5
+                        
+    # Byte 1	Bit 0	Error	Locatie	Locatie not found	
+    # Byte 1	Bit 1	Error	Locatie	Locatie Inaccurate	
+    # Byte 1	Bit 2	Error	Locatie	Locatie onveranderd (staan stil)	
+    # Byte 1	Bit 3	Warning	Sensoren	Voltage low	Waarde onder 11,6
+    # Byte 1	Bit 4	??	??		
+    # Byte 1	Bit 5	??	??	??	
+    # Byte 1	Bit 6	??	??	??	
+    # Byte 1	Bit 7	Error	Sensoren	Reading timeout	
+
+    
 
 # Commit the changes to the database
 conn.commit()
