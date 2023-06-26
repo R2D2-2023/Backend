@@ -10,7 +10,7 @@ from models import SensorData, aabbccddeeff7778
 sensordata = None
 cachetime = None
 
-def config_route(app, csrf, db):
+def config_route(app, db):
 
     # Routes for API's   
     @app.route('/get_new_data')
