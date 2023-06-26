@@ -31,8 +31,8 @@ def create_app():
         print("Loading config.production.")
         app.config.from_object('azureproject.production')
 
-    db, migrate, csrf = config_db(app)
-    config_route(app, csrf, db)
+    db, migrate = config_db(app)
+    config_route(app, db)
     return app
 
 if os.environ.get("WEBSITE_HOSTNAME") is not None:
