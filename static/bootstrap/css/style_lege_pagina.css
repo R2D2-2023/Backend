@@ -17,23 +17,21 @@ header {
     align-items: center;
     justify-content: space-between;
     padding: 33px 9%;
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.0);
 }
 
 body {
-    background: #133917;
+    background-color: #0d0d0d;
 }
 
 .logo {
     font-size: 30px;
     font-weight: 700;
-    color: #133917;
+    color: white;
 }
 
 .backgroundimage {
-    background-image: url("../../images/achtergrond8.png");
-    height: 800px;
-    width: 100%;
+    background: linear-gradient(to bottom, #230e1a, #22111f, #211324, #1e1629, #1a192d, #18192c, #16192a, #141929, #141622, #13131c, #111015, #0d0d0d);
     padding-top: 80px;
     padding-left: 10%;
     padding-right: 10%;
@@ -47,7 +45,7 @@ body {
 }
 
 .navlist a {
-    color: #133917;
+    color: white;
     margin-left: 60px;
     font-size: 15px;
     font-weight: 600;
@@ -55,20 +53,23 @@ body {
     transition: all .55s ease;
 }
 
-
 .navlist a:hover {
-    border-bottom: 2px solid #133917;
+    border-bottom: 2px solid #1aef9a;
 }
 
 #menu-icon {
-    color: #133917;
+    color: white;
     font-size: 30px;
     z-index: 10001;
     cursor: pointer;
     display: none;
 }
 
+/* tot hier is het menu styling */
 
+
+
+/* vanaf hier schaaling */
 
 @media (max-width: 1535px) {
     header {
@@ -97,7 +98,7 @@ body {
         right: -100%;
         width: 220px;
         height: 30vh;
-        background: rgba(255, 255, 255, 0.8);
+        background: rgba(255, 255, 255, 0.2);
         display: flex;
         align-items: center;
         flex-direction: column;
@@ -119,8 +120,6 @@ body {
         padding-left: 7%;
         padding-right: 7%;
     }
-
-
 }
 
 /* @media (max-width: 780px) {
