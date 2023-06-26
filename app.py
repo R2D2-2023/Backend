@@ -13,18 +13,26 @@ from models import config_db
 from routes import config_route
 
 
+
 def create_app():
     app = Flask(__name__)
     # if config_filename is not None:
     #     app.config.from_object(config_filename)
 
-   
-    # production
-    print("Loading config.production.")
-    app.config.from_object('azureproject.production')
+    if 'FLASK_TEST' in os.environ:
+        app.config.from_object('azureproject.test')
+    #     # WEBSITE_HOSTNAME exists only in production environment
+    elif 'WEBSITE_HOSTNAME' not in os.environ:
+        # local development, where we'll use environment variables
+        print("Loading config.development and environment variables from .env file.")
+        app.config.from_object('azureproject.development')
+    else:
+        # production
+        print("Loading config.production.")
+        app.config.from_object('azureproject.production')
 
-    db, migrate = config_db(app)
-    config_route(app, db)
+    db, migrate, csrf = config_db(app)
+    config_route(app, csrf, db)
     return app
 
 if os.environ.get("WEBSITE_HOSTNAME") is not None:
