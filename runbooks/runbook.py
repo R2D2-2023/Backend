@@ -107,8 +107,8 @@ elif (jsonBody["uplink_message"]["f_port"] == 2):
 
     list_of_uint16_t = []
     for i in range(len(jsonBody["uplink_message"]["decoded_payload"])):
-        list_of_uint16_t.append(jsonBody["uplink_message"]["decoded_payload"][str(i)][0])
-        list_of_uint16_t[-1] += jsonBody["uplink_message"]["decoded_payload"][str(i)][1] << 8
+        list_of_uint16_t.append(jsonBody["uplink_message"]["decoded_payload"][str(i)]["0"])
+        list_of_uint16_t[-1] += jsonBody["uplink_message"]["decoded_payload"][str(i)]["1"] << 8
 
     list_of_uint16_t = str(list_of_uint16_t).replace("[", "{").replace("]", "}")
     print(list_of_uint16_t)
@@ -122,27 +122,62 @@ elif (jsonBody["uplink_message"]["f_port"] == 2):
 elif (jsonBody["uplink_message"]["f_port"] == 3):
     decoded_device_error = decoded_device + "error"
 
-    # Byte 0	Bit 0	Error	Sensoren	BME280 sensor kapot	Geen waarden ontvangen
-    # Byte 0	Bit 1	Warning	Sensoren	temperatuur out of range	Waarde onder 15/boven 25
-    #         Warning	Sensoren	luchtvochtigheid out of range	Waarde onder 30/boven 70
-    #         Warning	Sensoren	luchtdruk out of range	Waarde onder 960/boven 1050
-    # Byte 0	Bit 2	Error	Sensoren	SCD30 sensor kapot	Geen waarden ontvangen
-    #         Warning	Sensoren	CO2 out of range	Waarde onder 200/boven 800
-    # Byte 0	Bit 4	Error	Sensoren	SPS30 sensor kapot	Geen waarden ontvangen
-    # Byte 0	Bit 5	Warning	Sensoren	PM1.0 out of range	
-    #         Warning	Sensoren	PM2.5 out of range	
-    #         Warning	Sensoren	PM10 out of range	
-    # Byte 0	Bit 6	Error	Sensoren	INA266 sensor kapot	Waarde boven 12,5
-                        
-    # Byte 1	Bit 0	Error	Locatie	Locatie not found	
-    # Byte 1	Bit 1	Error	Locatie	Locatie Inaccurate	
-    # Byte 1	Bit 2	Error	Locatie	Locatie onveranderd (staan stil)	
-    # Byte 1	Bit 3	Warning	Sensoren	Voltage low	Waarde onder 11,6
-    # Byte 1	Bit 4	??	??		
-    # Byte 1	Bit 5	??	??	??	
-    # Byte 1	Bit 6	??	??	??	
-    # Byte 1	Bit 7	Error	Sensoren	Reading timeout	
+    # Byte	    Bit	    Severity	Component	Wat
+    # Byte 0	Bit 0	Error	    Sensoren	BME280 sensor kapot
+    # Byte 0	Bit 1	Warning	    Sensoren	temperatuur out of safe range
+    # Byte 0	Bit 2	Warning	    Sensoren	luchtvochtigheid out of safe range
+    # Byte 0	Bit 3	Warning	    Sensoren	luchtdruk out of safe range
+    # Byte 0	Bit 4	Error	    Sensoren	SCD30 sensor kapot
+    # Byte 0	Bit 5	Warning	    Sensoren	CO2 out of safe range
+    # Byte 0	Bit 6	Error	    Sensoren	SPS30 sensor kapot
+    # Byte 0	Bit 7	Warning	    Sensoren	PM1.0 out of safe range
+    # Byte 1	Bit 0	Warning	    Sensoren	PM2.5 out of safe range
+    # Byte 1	Bit 1	Warning	    Sensoren	PM10 out of safe range
+    # Byte 1	Bit 2	Error	    Sensoren	Batterij kapot
+    # Byte 1	Bit 3	Warning	    Sensoren	Batterij low
+    # Byte 1	Bit 4	Error	    Locatie	    Locatie not found
+    # Byte 1	Bit 5	Warning	    Locatie	    Locatie Inaccurate
+    # Byte 1	Bit 6	Warning	    Locatie	    Locatie onveranderd (staan stil)
+    # Byte 1	Bit 7	Error	    Sensoren	Reading timeout
 
+    messages = []
+    if (jsonBody["uplink_message"]["decoded_payload"]["0"] & 0b00000001):
+        messages.append({"discription":"BME280 sensor kapot", "severity":"error", "component":"sensoren"})
+    if (jsonBody["uplink_message"]["decoded_payload"]["0"] & 0b00000010):
+        messages.append({"discription":"temperatuur out of safe range", "severity":"warning", "component":"sensoren"})
+    if (jsonBody["uplink_message"]["decoded_payload"]["0"] & 0b00000100):
+        messages.append({"discription":"luchtvochtigheid out of safe range", "severity":"warning", "component":"sensoren"})
+    if (jsonBody["uplink_message"]["decoded_payload"]["0"] & 0b00001000):
+        messages.append({"discription":"luchtdruk out of safe range", "severity":"warning", "component":"sensoren"})
+    if (jsonBody["uplink_message"]["decoded_payload"]["0"] & 0b00010000):
+        messages.append({"discription":"SCD30 sensor kapot", "severity":"error", "component":"sensoren"})
+    if (jsonBody["uplink_message"]["decoded_payload"]["0"] & 0b00100000):
+        messages.append({"discription":"CO2 out of safe range", "severity":"warning", "component":"sensoren"})
+    if (jsonBody["uplink_message"]["decoded_payload"]["0"] & 0b01000000):
+        messages.append({"discription":"SPS30 sensor kapot", "severity":"error", "component":"sensoren"})
+    if (jsonBody["uplink_message"]["decoded_payload"]["0"] & 0b10000000):
+        messages.append({"discription":"PM1.0 out of safe range", "severity":"warning", "component":"sensoren"})
+    if (jsonBody["uplink_message"]["decoded_payload"]["1"] & 0b00000001):
+        messages.append({"discription":"PM2.5 out of safe range", "severity":"warning", "component":"sensoren"})
+    if (jsonBody["uplink_message"]["decoded_payload"]["1"] & 0b00000010):
+        messages.append({"discription":"PM10 out of safe range", "severity":"warning", "component":"sensoren"})
+    if (jsonBody["uplink_message"]["decoded_payload"]["1"] & 0b00000100):
+        messages.append({"discription":"Batterij kapot", "severity":"error", "component":"sensoren"})
+    if (jsonBody["uplink_message"]["decoded_payload"]["1"] & 0b00001000):
+        messages.append({"discription":"Batterij low", "severity":"warning", "component":"sensoren"})
+    if (jsonBody["uplink_message"]["decoded_payload"]["1"] & 0b00010000):
+        messages.append({"discription":"Locatie not found", "severity":"error", "component":"locatie"})
+    if (jsonBody["uplink_message"]["decoded_payload"]["1"] & 0b00100000):
+        messages.append({"discription":"Locatie Inaccurate", "severity":"warning", "component":"locatie"})
+    if (jsonBody["uplink_message"]["decoded_payload"]["1"] & 0b01000000):
+        messages.append({"discription":"Locatie onveranderd (staan stil)", "severity":"warning", "component":"locatie"})
+    if (jsonBody["uplink_message"]["decoded_payload"]["1"] & 0b10000000):
+        messages.append({"discription":"Reading timeout", "severity":"error", "component":"sensoren"})
+    
+    cur.execute(f"CREATE TABLE IF NOT EXISTS {decoded_device_error} (datetime TIMESTAMPTZ NOT NULL, message VARCHAR(255) NOT NULL, severity VARCHAR(255) NOT NULL, component VARCHAR(255) NOT NULL);")
+
+    for message in messages:
+        cur.execute(f"INSERT INTO {decoded_device_error} (datetime, message, severity, component) VALUES (CURRENT_TIMESTAMP AT TIME ZONE 'CEST', '{message['discription']}', '{message['severity']}', '{message['component']}');")
     
 
 # Commit the changes to the database
