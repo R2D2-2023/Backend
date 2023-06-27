@@ -1,4 +1,77 @@
 <!DOCTYPE html>
+<html lang="nl">
+
+<!-- voor ajax functionaliteit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+
+    <!---link naar CSS opmaak--->
+    <link rel="stylesheet" type="text/css" href="../static/bootstrap/css/style_email.css">
+
+    <!---boxicons link--->
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+
+    <!----remixicons link--->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+
+    <!---google fonts link --->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Poppins:ital,wght@1,300&display=swap"
+        rel="stylesheet">
+</head>
+
+
+<body>
+    <header>
+        <a href={{ url_for('index') }} class="logo">Binnenklimaat</a>
+        <ul class="navlist">
+            <li><a href={{ url_for('index') }}>HOME</a></li>
+            <li><a href={{ url_for('charts') }}>STATISTIEKEN</a></li>
+            <li><a href={{ url_for('email') }}>ABONEREN</a></li>
+            <li><a href={{ url_for('lege_pagina') }}>LEGE PAGINA</a></li>
+        </ul>
+        <div class="bx bx-menu" id="menu-icon"></div>
+    </header>
+
+    <section class="backgroundimage">
+      <div class="gmail_container">
+        <form method="POST" action="{{ url_for('email') }}">
+          <label for="email">E-mail Address:</label>
+          <input class="input_bar" type="text" id="email" name="email" required>
+          <label for="messages"> {{ value }} </label>
+          <br><br>
+          <input class="button" type="submit" name ="submit" value="submit">
+          <input class="button" type="submit" name ="remove" value="remove"> 
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        </form>
+      </div>
+    </section>
+
+    <!-- scrollreveal effect -->
+    <script src="https://unpkg.com/scrollreveal"></script>
+
+    <!-- custom javascript link -->
+    <script src="../static/bootstrap/js/script.js"></script>
+
+</body>
+
+
+</html>
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
 <html>
 <head>
   <title>E-mail news form</title>
@@ -40,4 +113,4 @@
     </form>
   </div>
 </body>
-</html>
+</html> -->
