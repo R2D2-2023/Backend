@@ -150,7 +150,7 @@ function setTimeView(charts, graphs, location, hours, mins, end_hours, end_mins)
     
 }
 
-function timeInputChanged(datetime_object) {
+function timeInputChanged() {
     let times = document.getElementsByClassName("time_input");
     let cur_time_ms = Math.round(Date.parse(dateMinHours()) / 60000) * 60000;
     let start_time_ms = cur_time_ms - Date.parse(times.start_time.value);
@@ -164,7 +164,7 @@ function timeInputChanged(datetime_object) {
 
         console.log(start_time_hrs, start_time_mins);
         console.log(end_time_hrs, end_time_mins);
-        
+        setTimeView(charts, graphs, 1, start_time_hrs, start_time_mins)
     }
 }
 
