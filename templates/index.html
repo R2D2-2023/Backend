@@ -49,6 +49,8 @@
                 pressure_value.innerHTML = ret_data['data']['pressure'][0];
                 var time_value = document.getElementById("time-value");
                 time_value.innerHTML = ret_data['timestamp'][0];
+                var fijnstof_value = document.getElementById("fijnstof-value");
+                fijnstof_value.innerHTML = ret_data['data']['fijnstof'][0];
             }
         })
     }

@@ -6,7 +6,7 @@ import re
 from flask import jsonify
 
 # The import must be done after db initialization due to circular import issue
-from models import SensorData, aabbccddeeff7778, EmailAddress
+from models import SensorData, aabbccddeeff7778, EmailAddress, LocatieOnly, SensorDataWithForeignLocation
 
 sensordata = None
 cachetime = None
@@ -69,7 +69,8 @@ def config_route(app, csrf, db):
         curr_time = datetime.now()
         # disable = False
         # if sensordata is None or (datetime.now() - cachetime).total_seconds() > 30 or int(limit) > len(sensordata) or disable:
-        sensordata = SensorData.query.order_by(SensorData.datetime.desc()).filter(SensorData.location == location).limit(limit).all()
+        # sensordata = SensorData.query.order_by(SensorData.datetime.desc()).filter(SensorData.location == location).limit(limit).all()
+        sensordata = SensorDataWithForeignLocation.query.order_by(SensorDataWithForeignLocation.datetime.desc()).limit(limit).all()
         # cachetime = curr_time
         timestamp = [data.datetime.strftime("%H:%M") for data in sensordata]
         data = {}
@@ -77,15 +78,13 @@ def config_route(app, csrf, db):
         data['humidity'] = [data.humidity for data in sensordata]
         data['co2'] = [data.co2 for data in sensordata]
         data['pressure'] = [data.pressure for data in sensordata]
+        data['fijnstof'] = [(data.pm10 + data.pm25 + data.pm100) for data in sensordata]
         print("get_recent_sensor_readings time taken", datetime.now() - curr_time)
         return jsonify(timestamp=timestamp, data=data)
     
     @app.route('/get_email_data')
     def get_email_data():
-
         return [data.address for data in EmailAddress]
-
-
 
     @app.route('/test_is_data_avalable')
     def test_is_data_avalable():
