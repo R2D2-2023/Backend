@@ -113,6 +113,14 @@ body {
   background: rgba(26, 239, 154, 0.7);
 }
 
+.time_custom {
+    padding-left: 5%;
+    padding-right: 5%;
+}
+.time_custom h4 {
+    color: white;
+}
+
 .procent_80 {
     padding-left: 14%;
 }
