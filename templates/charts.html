@@ -67,7 +67,7 @@
                 <img src="../static/images/instellingen.png" alt="instellingen logo">
             </div>
             <div class="time_title">
-                <h4>TIME:</h4>
+                <h4>TIME RANGE</h4>
             </div>
                 <div class="time_buttons">
                 <button type="submit" id="button_1min" name="button" onclick="setTimeView(charts, graphs, 1, 0, 1)" class="btn btn-primary">1 min</button>
@@ -78,18 +78,17 @@
                 <button type="submit" id="button_1week" name="button" onclick="setTimeView(charts, graphs, 1, 168, 0)" class="btn btn-primary">1 week</button>
             </div>
             <div class="time_custom">
-                <h4>From:</h4>
-                <input type="datetime-local" id="start-time" name="start-time" style="font-size: 0.7rem">
-                <h4>To:</h4>
-                <input type="datetime-local" id="end-time" name="end-time" style="font-size: 0.7rem">
+                <h4>FROM</h4>
+                <input type="datetime-local" id="start_time" name="start_time" class="time_input" onchange="timeInputChanged(this)">
+                <h4>TO</h4>
+                <input type="datetime-local" id="end_time" name="end_time" class="time_input" onchange="timeInputChanged(this)">
                 
             </div>
             <script>
-                const startDateControl = document.getElementById("start-time");
-                const endDateControl = document.getElementById("end-time");
+                const startDateControl = document.getElementById("start_time");
+                const endDateControl = document.getElementById("end_time");
                 startDateControl.value = dateMinHours(0, 2).slice(0, -7);
-                endDateControl.value = dateMinHours().slice(0, -7);
-
+                endDateControl.value = dateMinHours(0, -1).slice(0, -7);
             </script>
         </div>
         <div class="procent_80">
@@ -108,7 +107,7 @@
 
             <div class="map_img_container">
                 <div class="map_img">
-                    <img src="../static/images/kaart4de-verdieping.png" alt="Plategrond van de 4de verdieping van de hogeschool utrecht heidelberglaan 15">
+                    <img src="../static/images/kaart4de-verdieping.png" alt="Plattegrond van de 4de verdieping van de hogeschool utrecht heidelberglaan 15">
                 </div>
                 
 

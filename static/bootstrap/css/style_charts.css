@@ -116,9 +116,22 @@ body {
 .time_custom {
     padding-left: 5%;
     padding-right: 5%;
+    color: white;
 }
+
 .time_custom h4 {
     color: white;
+}
+
+.time_input {
+    background-color: rgba(5, 5, 5, 0.1);
+    border: 1px solid #1aef9a;
+    border-radius: 3px;
+    color: white;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    width: 85%;
+    font-size: 0.6rem;
 }
 
 .procent_80 {

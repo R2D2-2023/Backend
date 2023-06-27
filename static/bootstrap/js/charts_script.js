@@ -126,7 +126,7 @@ function getNewData(charts, graphs, location, timestamp, cutoff_time) {
     })
 }
 
-function setTimeView(charts, graphs, location, hours, mins) {
+function setTimeView(charts, graphs, location, hours, mins, end_hours, end_mins) {
     if ($.active === 0) {
         // Clear the data from the graphs and charts
         for (let i = 0; i < charts.length; i++) {
@@ -134,11 +134,38 @@ function setTimeView(charts, graphs, location, hours, mins) {
             charts[i].data.labels = [];
             graphs[i].time_labels = [];
         }
+        if (end_mins === undefined) end_mins = -1;
+        if (end_hours === undefined) end_hours = 0;
         min_global = mins;
         hour_global = hours;
-        getNewData(charts, graphs, location, dateMinHours(hour_global, min_global), undefined);
+        // TODO: end_min_global, end_hour_global
+        let date = dateMinHours(hour_global, min_global);
+        let end_date = dateMinHours(end_hours, end_mins);
+        if (end_mins === -1 && end_hours === 0) { // if button is used
+            document.getElementById("start_time").value = date.slice(0,-7);
+            document.getElementById("end_time").value = end_date.slice(0,-7);
+        }
+        getNewData(charts, graphs, location, date, undefined);
     }
     
+}
+
+function timeInputChanged(datetime_object) {
+    let times = document.getElementsByClassName("time_input");
+    let cur_time_ms = Math.round(Date.parse(dateMinHours()) / 60000) * 60000;
+    let start_time_ms = cur_time_ms - Date.parse(times.start_time.value);
+    let end_time_ms = cur_time_ms - Date.parse(times.end_time.value);
+    console.log(cur_time_ms, start_time_ms, end_time_ms);
+    if (start_time_ms - end_time_ms > 0) {
+        let start_time_mins = start_time_ms / 60000 % 60;
+        let start_time_hrs = Math.floor(start_time_ms / 3600000);
+        let end_time_mins = end_time_ms / 60000 % 60;
+        let end_time_hrs = Math.floor(end_time_ms / 3600000);
+
+        console.log(start_time_hrs, start_time_mins);
+        console.log(end_time_hrs, end_time_mins);
+        
+    }
 }
 
 function dateMinHours(hours, minutes) {
