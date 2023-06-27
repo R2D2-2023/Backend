@@ -48,6 +48,7 @@
           <br><br>
           <input class="button" type="submit" name ="submit" value="submit">
           <input class="button" type="submit" name ="remove" value="remove"> 
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         </form>
       </div>
     </section>
