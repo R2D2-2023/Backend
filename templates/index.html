@@ -49,6 +49,8 @@
                 pressure_value.innerHTML = ret_data['data']['pressure'][0];
                 var time_value = document.getElementById("time-value");
                 time_value.innerHTML = ret_data['timestamp'][0];
+                var fijnstof_value = document.getElementById("fijnstof-value");
+                fijnstof_value.innerHTML = ret_data['data']['fijnstof'][0];
             }
         })
     }
@@ -65,6 +67,7 @@
             <li><a href={{ url_for('index') }}>HOME</a></li>
             <li><a href={{ url_for('charts') }}>STATISTIEKEN</a></li>
             <li><a href={{ url_for('drawn_route') }}>ROUTE</a></li>
+            <li><a href={{ url_for('email') }}>ABONNEREN</a></li>
             <li><a href={{ url_for('lege_pagina') }}>LEGE PAGINA</a></li>
         </ul>
         <div class="bx bx-menu" id="menu-icon"></div>

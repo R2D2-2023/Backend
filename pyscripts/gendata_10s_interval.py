@@ -18,33 +18,74 @@ conn = psycopg2.connect(conn_string)
 # create a cursor object
 cursor = conn.cursor()
 
-# # Create table in the database with the following columns
-# # datetime, co2 (ppm), temperature (C), humidity (%), pressure (hPa)
-query = "CREATE TABLE IF NOT EXISTS sensor_data (datetime timestamp, co2 integer, temperature integer, humidity integer, pressure integer);"
-
-cursor.execute(query)
-
-# commit the transaction
-conn.commit()
-
-time.sleep(0.1)
+co2 = random.randint(400, 1000)
+temperature = random.randint(20*2, 30*2) / 2.0
+humidity = random.randint(40, 60)
+pressure = random.randint(1000, 1100)
+pm10 = random.randint(0, 100)
+pm25 = random.randint(0, 100)
+pm100 = random.randint(0, 100)
+zone = random.randint(1, 10)
 
 while True:
     # generate random data
     print("Generating random data and inserting into database...")
-    co2 = random.randint(400, 1000)
-    temperature = random.randint(20, 30)
-    humidity = random.randint(40, 60)
-    pressure = random.randint(1000, 1100)
-    # location = random.randint(1, 10)
-    location = 1
-
+    while True:
+        diff = random.randint(-20, 20)
+        if co2 + diff < 400 or co2 + diff > 1000:
+            continue
+        co2 += diff
+        break
+    while True:
+        diff = random.randint(-2, 2) * 0.5
+        if temperature + diff < 20.0 or temperature + diff > 30.0:
+            continue
+        temperature += diff
+        break
+    while True:
+        diff = random.randint(-1, 1)
+        if humidity + diff < 40 or humidity + diff > 60:
+            continue
+        humidity += diff
+        break
+    while True:
+        diff = random.randint(-5, 5)
+        if pressure + diff < 1000 or pressure + diff > 1100:
+            continue
+        pressure += diff
+        break
+    while True:
+        diff = random.randint(-10, 10)
+        if pm10 + diff < 0 or pm10 + diff > 100:
+            continue
+        pm10 += diff
+        break
+    while True:
+        diff = random.randint(-10, 10)
+        if pm25 + diff < 0 or pm25 + diff > 100:
+            continue
+        pm25 += diff
+        break
+    while True:
+        diff = random.randint(-10, 10)
+        if pm100 + diff < 0 or pm100 + diff > 100:
+            continue
+        pm100 += diff
+        break
+    while True:
+        diff = random.randint(-1, 1)
+        if zone + diff < 1 or zone + diff > 10:
+            continue
+        zone += diff
+        break
+        
     # create the query
-    query = "INSERT INTO sensor_data (datetime, co2, temperature, humidity, pressure, location) VALUES ('{time_with_offset}', {co2}, {temperature}, {humidity}, {pressure}, {location});".format(time_with_offset=datetime.datetime.now(), co2=co2, temperature=temperature, humidity=humidity, pressure=pressure, location=location)
+    query_location = f"INSERT INTO locatie_only (x_loc, y_loc, datetime) VALUES ({random.randint(0,10)}, {random.randint(0,10)}, CURRENT_TIMESTAMP AT TIME ZONE 'CEST');"
+    query_sensor_data = f"INSERT INTO sensor_data_with_foreign_location (co2, temperature, humidity, pressure, pm10, pm25, pm100, zone, datetime) VALUES ({co2}, {temperature}, {humidity}, {pressure}, {pm10}, {pm25}, {pm100}, {zone}, CURRENT_TIMESTAMP AT TIME ZONE 'CEST');"
 
-    print(query)
     # execute the query
-    cursor.execute(query)
+    cursor.execute(query_location)
+    cursor.execute(query_sensor_data)
 
     # commit the transaction
     conn.commit()

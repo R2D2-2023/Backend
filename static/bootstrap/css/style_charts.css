@@ -17,43 +17,21 @@ header {
     align-items: center;
     justify-content: space-between;
     padding: 33px 9%;
-    background: rgba(255, 255, 255, 0.8);
-    ;
-
-}
-
-.background {
-    /* height: 100%;
-    width: 100%;
-    min-height: 100vh; */
-    /* background: linear-gradient(245.59deg, #4d9559 0%, #38703d 28.53%, #133917 75.52%); */
-    /* position: relative;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    align-items: center;
-    gap: 2rem; */
+    background: rgba(255, 255, 255, 0.0);
 }
 
 body {
-    /* background: linear-gradient(245.59deg, #4d9559 0%, #38703d 28.53%, #133917 75.52%); */
-    /* background: #133917; */
-    /* background-image: url("../../images/achtergrond3.png");
-    background-repeat: repeat;
-    background-size: cover; */
-    background: #133917;
+    background-color: #0d0d0d;
 }
 
 .logo {
     font-size: 30px;
     font-weight: 700;
-    /* color: white; */
-    color: #133917;
+    color: white;
 }
 
 .backgroundimage {
-    background-image: url("../../images/achtergrond8.png");
-    height: 800px;
-    width: 100%;
+    background: linear-gradient(to bottom, #230e1a, #22111f, #211324, #1e1629, #1a192d, #18192c, #16192a, #141929, #141622, #13131c, #111015, #0d0d0d);
     padding-top: 80px;
     padding-left: 10%;
     padding-right: 10%;
@@ -67,8 +45,7 @@ body {
 }
 
 .navlist a {
-    /* color: white; */
-    color: #133917;
+    color: white;
     margin-left: 60px;
     font-size: 15px;
     font-weight: 600;
@@ -76,93 +53,232 @@ body {
     transition: all .55s ease;
 }
 
-
 .navlist a:hover {
-    border-bottom: 2px solid #133917;
+    border-bottom: 2px solid #1aef9a;
 }
 
 #menu-icon {
-    /* color: white; */
-    color: #133917;
+    color: white;
     font-size: 30px;
     z-index: 10001;
     cursor: pointer;
     display: none;
 }
 
-.block_container {
-    text-align: center;
-    /* display: flex;*/
-    justify-content: center;
-}
+/* tot hier is het menu styling */
+/* vanaf hier styling instellingen */
 
-.plategrond,
-.notification,
-.temp,
-.CO2,
-.humid,
-.pres {
-    margin-top: 1.5%;
-    margin-left: .5%;
-    margin-right: .5%;
+.instellingen_container {
+    position: relative;
     display: inline-block;
-    vertical-align: middle;
-    border-radius: 40px;
-    /* display: inline; */
+    position: fixed;
+    width: 10%;
+    height: 83%;
+    background-color: rgba(5, 5, 5, 0.1);
+    border: 2px solid #1aef9a;
+    border-radius: 4px;
 }
 
-
-.plategrond {
-    /* background-color: rgba(163, 186, 133, 0.8); */
-    background-color: rgba(195, 216, 173, 0.8);
-    padding: 3%;
-    width: 67%;
-}
-
-.plategrond-text {
-    color: white;
-
-}
-
-.plategrond-image img {
-    width: 100%;
-}
-
-.notification {
-    background-color: rgba(255, 255, 255, 0.8);
-    width: 30%;
+.instellingen_logo img {
+    width: 40%;
     height: auto;
+    left: 50%;
+    margin-top: 15%;
+    margin-bottom: 13%;
+    transform: translateX(+70%);
 }
 
-.notification_title {
-    color: black;
+.time_title {
+    color: white;
+    padding-left: 5%;
+    margin-bottom: 2%;
+}
+
+.time_buttons {
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+.time_buttons button {
+    background-color: rgba(5, 5, 5, 0.1);
+    border: 1px solid #1aef9a;
+    border-radius: 3px;
+    color: white;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    width: 40%;
+}
+
+.time_buttons button:hover {
+  background: rgba(26, 239, 154, 0.7);
+}
+
+.procent_80 {
+    padding-left: 14%;
 }
 
 
-.temp,
-.CO2,
-.humid,
-.pres {
-    /* margin-top: 70px; */
-    /* margin-left: 5%;
-    margin-right: 52%; */
-    background-color: rgba(255, 255, 255, 0.8);
-    padding: 3%;
-    width: 48%;
+/* vanaf hier styling map */
+
+.map_title_container {
+    position: relative;
 }
 
-.temp_tex,
-.CO2-text,
-.humid_text,
-.pres_text {
-    padding: 1%;
+.map_title {
+    display: inline-block;
+    margin-left: 6%;
+    color: white;
+    left: 1%;
+    border-bottom: 1px solid #1aef9a;
+    /* transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%); */
 }
 
-.temp_chart,
-.CO2_chart,
-.humid_chart,
-.pres_chart {
-    /* padding: 3%; */
+.map_select_all {
+    display: inline-block;
+    margin-left: 10%;
+    margin-right: 1%;
+    color: white;
+    left: 1%;
+    border-bottom: 1px solid #1aef9a;
+}
+
+.checkbox_select_all {
+    display: inline-block;
+    /* position: relative; */
+}
+
+.checkbox_select_all label {
+    display: flex;
+    position: relative;
+    cursor: pointer;
+}
+
+.checkbox_select_all input[type='checkbox'] {
+    display: flex;
+    opacity: 0;
+    position: relative;
+}
+
+
+
+
+.map_img_container {
+    position: relative;
+    overflow: hidden;
+    color: white;
+    background: rgba(26, 239, 154, 0.0);
+    margin-left: 6%;
+    margin-right: 6%;
+    margin-top: 1%;
+    margin-bottom: 2%;
+}
+
+.checkbox_container {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox_container label {
+    display: flex;
+    position: absolute;
+    cursor: pointer;
+}
+
+.checkbox_container input[type='checkbox'] {
+    display: flex;
+    opacity: 0;
+    position: absolute;
+}
+
+.checkbox_container label::before,
+.checkbox_select_all label::before {
+    content: '';
+    width: 1em;
+    height: 1em;
+    border-radius: 1em;
+    border: .2em solid #1aef9a;
+}
+
+.checkbox_container label:hover::before,
+.checkbox_select_all label:hover::before {
+    background-color: rgba(26, 239, 154, 0.4);
+}
+
+.checkbox_container input[type='checkbox']:checked + label::before,
+.checkbox_select_all input[type='checkbox']:checked + label::before {
+    background-color: rgba(26, 239, 154, 0.6);
+}
+
+.checkbox_container input[type='checkbox']:focus + label::before,
+.checkbox_select_all input[type='checkbox']:focus + label::before {
+    box-shadow: 0 0 20px white;
+}
+
+
+#cb_1 {
+    top: 15%;
+    left: 10%;
+}
+
+#cb_2 {
+    top: 15%;
+    left: 30%;
+}
+
+#cb_3 {
+    top: 15%;
+    left: 50%;
+}
+
+#cb_4 {
+    top: 15%;
+    left: 70%;
+}
+
+#cb_5 {
+    top: 15%;
+    left: 90%;
+}
+
+#cb_6 {
+    top: 79%;
+    left: 10%;
+}
+
+#cb_7 {
+    top: 79%;
+    left: 30%;
+}
+
+#cb_8 {
+    top: 79%;
+    left: 50%;
+}
+
+#cb_9 {
+    top: 79%;
+    left: 70%;
+}
+
+#cb_10 {
+    top: 79%;
+    left: 90%;
+}
+
+.map_img img {
+    width: 100%;
+    height: auto;
+    opacity: 95%;
+}
+
+/* vanaf hier styling charts */
+
+.col-1-2 {
+    width: 49%;
+    display: inline-block;
+    vertical-align: top;
+    margin-bottom: 1.5%;
 }
 
 .niet_zichtbaar {
@@ -170,13 +286,23 @@ body {
     font-size: 0px;
 }
 
-
-
-.buttons {
-    margin-left: 5%;
-    margin-right: 5%;
+.temp_chart,
+.humid_chart {
+    margin-right: 2%;
 }
 
+
+.temp_chart,
+.CO2_chart,
+.humid_chart,
+.pres_chart {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    padding: 2%;
+}
+
+
+/* vanaf hier schaaling */
 
 @media (max-width: 1535px) {
     header {
@@ -205,7 +331,7 @@ body {
         right: -100%;
         width: 220px;
         height: 30vh;
-        background: rgba(255, 255, 255, 0.8);
+        background: rgba(255, 255, 255, 0.2);
         display: flex;
         align-items: center;
         flex-direction: column;
@@ -223,46 +349,11 @@ body {
         right: 0;
     }
 
-    .plategrond,
-    .notification {
-        width: 100%;
-    }
-
-    .temp,
-    .CO2,
-    .plategrond,
-    .notification,
-    .humid,
-    .pres {
-        border-radius: 30px;
-        margin-top: 2%;
-        /* display: inline; */
-    }
-
     .backgroundimage {
         padding-left: 7%;
         padding-right: 7%;
     }
-
-
 }
 
-@media (max-width: 780px) {
-
-    .temp,
-    .CO2,
-    .humid,
-    .pres {
-        width: 100%;
-    }
-
-    .temp,
-    .CO2,
-    .plategrond,
-    .notification,
-    .humid,
-    .pres {
-        border-radius: 25px;
-        /* display: inline; */
-    }
-}
+/* @media (max-width: 780px) {
+} */

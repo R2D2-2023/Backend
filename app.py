@@ -13,6 +13,7 @@ from models import config_db
 from routes import config_route
 
 
+
 def create_app():
     app = Flask(__name__)
     # if config_filename is not None:
@@ -30,8 +31,8 @@ def create_app():
         print("Loading config.production.")
         app.config.from_object('azureproject.production')
 
-    db, migrate, csrf = config_db(app)
-    config_route(app, csrf, db)
+    db, migrate, crsf = config_db(app)
+    config_route(app, crsf, db)
     return app
 
 if os.environ.get("WEBSITE_HOSTNAME") is not None:
