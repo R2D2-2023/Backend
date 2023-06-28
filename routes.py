@@ -150,6 +150,11 @@ def config_route(app, csrf, db):
         
         elif request.method == 'GET':
             return render_template("email.html", value="")
+        
+    @app.route('/dev')
+    def dev():
+        
+        return render_template("notif_test.html", value="")
 
     # Routes for static files
     @app.route('/favicon.ico')
