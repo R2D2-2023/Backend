@@ -1,36 +1,5 @@
-const zones = [
-    { x: 3, y: 8 },
-    { x: 12, y: 6 },
-    { x: 7, y: 15 }
-];
-
-
-function findClosestZone(robotLocation, zones) {
-    let closestZone = null;
-    let closestDistance = Infinity;
-
-    for (let zone of zones) {
-        // calculate the distance between robot location and current zone
-        const distance = calculateDistance(robotLocation, zone);
-
-        if (distance < closestDistance) {
-            closestZone = JSON.parse(JSON.stringify(zone));
-            closestDistance = distance;
-        }
-    }
-
-    return zones[0];
-}
-
-
-function calculateDistance(location1, location2) {
-    const dx = location2.x - location1.x;
-    const dy = location2.y - location1.y;
-
-    return Math.sqrt(dx * dx + dy * dy);
-}
-
 function decodeUplink(input) {
+    // Sensor readings
     if (input.fPort === 1) {
         if (input.bytes.length !== 10) {
             return {
@@ -49,11 +18,7 @@ function decodeUplink(input) {
         sensorReadings.PM25 = input.bytes[6];
         sensorReadings.PM100 = input.bytes[7];
         sensorReadings.loc_x = input.bytes[8];
-        sensorReadings.loc_y = input.bytes[9];
-
-        let closestZone = findClosestZone(sensorReadings, zones);
-        let closestZoneX = closestZone.x;
-        let closestZoneY = closestZone.y;
+        sensorReadings.loc_y = input.bytes[9]; 
 
         return {
             data: {
@@ -66,21 +31,19 @@ function decodeUplink(input) {
                 PM25: sensorReadings.PM25,
                 PM100: sensorReadings.PM100,
                 loc_x: sensorReadings.loc_x,
-                loc_y: sensorReadings.loc_y,
-                closestZoneX: closestZoneX,
-                closestZoneY: closestZoneY
+                loc_y: sensorReadings.loc_y
             },
             warnings: [],
             errors: []
         };
     }
 
+    // Path and location of the robot
     if (input.fPort === 2) {
         let path = [];
         for (let i = 0; i < input.bytes.length; i = i + 2) {
             path.push([input.bytes[i], input.bytes[i + 1]]);
         }
-
 
         return {
             data: path,
@@ -90,6 +53,7 @@ function decodeUplink(input) {
 
     }
 
+    // Error codes
     if (input.fPort === 3) {
         if (input.bytes.length !== 2) {
             return {
@@ -103,8 +67,22 @@ function decodeUplink(input) {
             warnings: [],
             errors: []
         }
+    }
 
-
+    // Location of the robot
+    if (input.fPort === 4) {
+        if (input.bytes.length !== 2) {
+            return {
+                data: [],
+                warnings: [],
+                errors: ["fPort4: Invalid input length, got " + input.bytes.length + " bytes, expected 2 bytes"]
+            };
+        }
+        return {
+            data: [input.bytes[0], input.bytes[1]],
+            warnings: [],
+            errors: []
+        }
     }
 }
 
