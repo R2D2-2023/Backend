@@ -10,8 +10,11 @@ function GraphData(type, canvasID, data, data_label, time_labels, color, backgro
     this.suggestedMax = suggestedMax;
 }
 
-var min_global = 2;
+var min_global = 5;
 var hour_global = 0;
+var end_min_global = -1;
+var end_hour_global = 0;
+var liveUpdate = true;
 
 function createCharts(graphs) {
     charts = [];
@@ -57,7 +60,7 @@ function createGraph(graph) {
 
 
 // function to update the graph with new data
-function updateCharts(charts, graphs, index) {
+function updateCharts(index) {
     document.getElementById('myRange').value=index
     // update the chart data
     for (let i = 0; i < charts.length; i++) {
@@ -81,7 +84,7 @@ function prepend(value, array) {
     return newArray;
 }
 
-function getNewData(charts, graphs, location, timestamp, cutoff_time) {
+function getNewData(location, timestamp, cutoff_time) {
     if (timestamp === undefined) {
         timestamp = charts[0].data.labels[charts[0].data.labels.length - 1]
     }
@@ -126,7 +129,7 @@ function getNewData(charts, graphs, location, timestamp, cutoff_time) {
     })
 }
 
-function setTimeView(charts, graphs, location, hours, mins, end_hours, end_mins) {
+function setTimeView(location, hours, mins, end_hours, end_mins) {
     if ($.active === 0) {
         // Clear the data from the graphs and charts
         for (let i = 0; i < charts.length; i++) {
@@ -145,7 +148,7 @@ function setTimeView(charts, graphs, location, hours, mins, end_hours, end_mins)
             document.getElementById("start_time").value = date.slice(0,-7);
             document.getElementById("end_time").value = end_date.slice(0,-7);
         }
-        getNewData(charts, graphs, location, date, undefined);
+        getNewData(location, date, undefined);
     }
     
 }
@@ -164,7 +167,17 @@ function timeInputChanged() {
 
         console.log(start_time_hrs, start_time_mins);
         console.log(end_time_hrs, end_time_mins);
-        setTimeView(charts, graphs, 1, start_time_hrs, start_time_mins)
+        setTimeView(1, start_time_hrs, start_time_mins)
+    }
+}
+
+// fill datetime selection with current datetime
+function updateTimeInputValue() {
+    if (liveUpdate) {
+        const startDateControl = document.getElementById("start_time");
+        const endDateControl = document.getElementById("end_time");
+        startDateControl.value = dateMinHours(hour_global, min_global).slice(0, -7);
+        endDateControl.value = dateMinHours(end_hour_global, end_min_global).slice(0, -7);
     }
 }
 
