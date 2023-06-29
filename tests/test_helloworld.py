@@ -46,6 +46,7 @@ def test_request_example(client):
 def test_get_new_data_expect_empty(client, database):
     data = {
     'last_datapoint': f'{datetime.now().isoformat()}',
+    'first_datapoint': f'{(datetime.now()).isoformat()}',
     'location': '1'}
     response = client.get("/get_new_data", query_string=data)
     assert response.status_code == 200
@@ -64,6 +65,7 @@ def test_get_new_data_expect_wrong_parameters(client, database):
 def test_get_new_data_expect_data(client, database):
     data = {
     'last_datapoint': f'{(datetime.now() - timedelta(minutes=50)).isoformat()}',
+    'first_datapoint': f'{(datetime.now()).isoformat()}',
     'location': '1'}
     response = client.get("/get_new_data", query_string=data)
     assert response.status_code == 200
@@ -74,6 +76,7 @@ def test_get_new_data_expect_data(client, database):
 def test_get_new_data_only_get_newer_data(client, database):
     data = {
     'last_datapoint': f'{(datetime.now() - timedelta(minutes=10)).isoformat()}',
+    'first_datapoint': f'{(datetime.now()).isoformat()}',
     'location': '1'}
     response = client.get("/get_new_data", query_string=data)
     assert response.status_code == 200
