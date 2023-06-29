@@ -43,8 +43,6 @@
 <!-- scrollreveal effect -->
 <script src="https://unpkg.com/scrollreveal"></script>
 
-<!-- custom javascript link -->
-<script src="{{url_for('static', filename='bootstrap/js/script.js')}}"></script>
 
 
 
@@ -67,17 +65,22 @@
                 <img src="../static/images/instellingen.png" alt="instellingen logo">
             </div>
             <div class="time_title">
-                <h4>TIME:</h4>
+                <h4>TIME RANGE</h4>
             </div>
-            <div class="time_buttons">
-                <button type="submit" id="button_10" name="button" onclick="setTimeView(charts, graphs, 1, 0, 1)" class="btn btn-primary">1 min</button>
-                <button type="submit" id="button_50" name="button" onclick="setTimeView(charts, graphs, 1, 0, 5)" class="btn btn-primary">5 min</button>
-                <button type="submit" id="button_100" name="button" onclick="setTimeView(charts, graphs, 1, 0, 10)" class="btn btn-primary">10 min</button>
-                <button type="submit" id="button_100" name="button" onclick="setTimeView(charts, graphs, 1, 1, 0)" class="btn btn-primary">1 uur</button>
+                <div class="time_buttons">
+                <button type="submit" id="button_1min" name="button" onclick="setTimeView(1, 0, 1)" class="btn btn-primary">1 min</button>
+                <button type="submit" id="button_5min" name="button" onclick="setTimeView(1, 0, 5)" class="btn btn-primary">5 min</button>
+                <button type="submit" id="button_10min" name="button" onclick="setTimeView(1, 0, 10)" class="btn btn-primary">10 min</button>
+                <button type="submit" id="button_1hour" name="button" onclick="setTimeView(1, 1, 0)" class="btn btn-primary">1 uur</button>
+                <button type="submit" id="button_1day" name="button" onclick="setTimeView(1, 24, 0)" class="btn btn-primary">1 dag</button>
+                <button type="submit" id="button_1week" name="button" onclick="setTimeView(1, 168, 0)" class="btn btn-primary">1 week</button>
             </div>
             <div class="time_custom">
+                <h4>FROM</h4>
+                <input type="datetime-local" id="start_time" name="start_time" class="time_input" onchange="timeInputChanged()">
+                <h4>TO</h4>
+                <input type="datetime-local" id="end_time" name="end_time" class="time_input" onchange="timeInputChanged()">
                 
-
             </div>
         </div>
         <div class="procent_80">
@@ -96,7 +99,7 @@
 
             <div class="map_img_container">
                 <div class="map_img">
-                    <img src="../static/images/kaart4de-verdieping.png" alt="Plategrond van de 4de verdieping van de hogeschool utrecht heidelberglaan 15">
+                    <img src="../static/images/kaart4de-verdieping.png" alt="Plattegrond van de 4e verdieping van de Hogeschool Utrecht Heidelberglaan 15">
                 </div>
                 
 
@@ -170,9 +173,9 @@
                     </div>
                 </section>
                 <section class="col-1-2">
-                    <div class="pres_chart">
+                    <div class="pm_chart">
                         <h8 class="niet_zichtbaar">niet zichtbare text</h8>
-                        <canvas id="pres_chart"></canvas>
+                        <canvas id="pm_chart"></canvas>
                     </div>
                 </section>
             </div>
@@ -210,11 +213,17 @@
         new GraphData('co2', 'co2_chart', [], 'CO2 (ppm)', [], '#FF396A', '#FAACC2', 400, 1000),
         new GraphData('humidity', 'humid_chart', [], 'Humidity (%)', [], '#39CF9A', '#82EDC7', 40, 60),
         new GraphData('pressure', 'pres_chart', [], 'Air pressure (hPa)', [], '#FFAA00', '#FFD175', 1000, 1100),
-        new GraphData('air quality', 'air_q_hart', [], 'air quality (PPM)', [], '', '', 1000, 1100)
+        // new GraphData('particulate matter', 'pm_chart', [], 'Particulate Matter (PPM)', [], '', '', 1000, 1100)
     ];
     charts = createCharts(graphs);
-    getNewData(charts, graphs, 1, dateMinHours(hour_global, min_global)) 
-    myInterval = setInterval(function(){getNewData(charts, graphs, 1, undefined, dateMinHours(hour_global, min_global))}, 1000);
+    getNewData(1, dateMinHours(hour_global, min_global)) 
+    updateTimeInputValue();
+    dataInterval = setInterval(function() {if (liveUpdate) {getNewData(1, undefined, dateMinHours(hour_global, min_global))}}, 1000);
+    timeUpdateInterval = setInterval(function(){updateTimeInputValue()}, 30000)
 </script>
+
+<!-- custom javascript link -->
+<script src="{{url_for('static', filename='bootstrap/js/script.js')}}"></script>
+
 
 </html>
