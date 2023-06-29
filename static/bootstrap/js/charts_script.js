@@ -10,11 +10,12 @@ function GraphData(type, canvasID, data, data_label, time_labels, color, backgro
     this.suggestedMax = suggestedMax;
 }
 
-var min_global = 5;
-var hour_global = 0;
-var end_min_global = -1;
-var end_hour_global = 0;
-var liveUpdate = true;
+let min_global = 5;
+let hour_global = 0;
+let end_min_global = -1;
+let end_hour_global = 0;
+let location_global = 0;
+let liveUpdate = true;
 
 function createCharts(graphs) {
     charts = [];
@@ -84,7 +85,7 @@ function prepend(value, array) {
     return newArray;
 }
 
-function getNewData(location, timestamp, cutoff_time, end_timestamp) {
+function getNewData(timestamp, cutoff_time, end_timestamp) {
     if (timestamp === undefined) {
         timestamp = charts[0].data.labels[charts[0].data.labels.length - 1];
     }
@@ -94,7 +95,7 @@ function getNewData(location, timestamp, cutoff_time, end_timestamp) {
     $.ajax({
         url: "/get_new_data",
         type: "GET",
-        data: {'last_datapoint': timestamp, 'first_datapoint': end_timestamp, 'location': location, 'max_data': 100},
+        data: {'last_datapoint': timestamp, 'first_datapoint': end_timestamp, 'location': location_global, 'max_data': 100},
         success: function(ret_data) {
             if (typeof ret_data === 'object') {
                 for (let i = 0; i < ret_data.timestamp.length; i++) {
@@ -131,14 +132,10 @@ function getNewData(location, timestamp, cutoff_time, end_timestamp) {
     })
 }
 
-async function setTimeView(location, hours, mins, end_hours, end_mins) {
+async function setTimeView(hours, mins, end_hours, end_mins) {
     if ($.active === 0) {
         // Clear the data from the graphs and charts
-        for (let i = 0; i < charts.length; i++) {
-            charts[i].data.datasets[0].data = [];
-            charts[i].data.labels = [];
-            graphs[i].time_labels = [];
-        }
+        clearGraphs();
         if (end_mins === undefined) end_mins = -1;
         if (end_hours === undefined) end_hours = 0;
         min_global = mins;
@@ -152,7 +149,7 @@ async function setTimeView(location, hours, mins, end_hours, end_mins) {
             document.getElementById("end_time").value = end_date.slice(0,-7);
             liveUpdate = true;
         }
-        getNewData(location, date, undefined, end_date);
+        getNewData(date, undefined, end_date);
     }
     
 }
@@ -171,7 +168,7 @@ function timeInputChanged() {
         let end_time_mins = end_time_ms / 60000 % 60;
         let end_time_hrs = Math.floor(end_time_ms / 3600000);
 
-        setTimeView(1, start_time_hrs, start_time_mins, end_time_hrs, end_time_mins)
+        setTimeView(start_time_hrs, start_time_mins, end_time_hrs, end_time_mins)
     }
 }
 
@@ -192,9 +189,49 @@ function dateMinHours(hours, minutes) {
     if (hours === undefined) {
         hours = 0;
     }
-    d = new Date();
+    let d = new Date();
     d.setMinutes(d.getMinutes() - minutes);
     d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
     d.setHours(d.getHours() - hours);
     return d.toISOString().slice(0, -1);
 }
+
+function clearGraphs() {
+    for (let i = 0; i < charts.length; i++) {
+        charts[i].data.datasets[0].data = [];
+        charts[i].data.labels = [];
+        graphs[i].time_labels = [];
+    }
+}
+
+function handle_graph_buttons(){
+    let cb_1 = document.getElementById("cb_1");
+    let cb_2 = document.getElementById("cb_2");
+    let cb_3 = document.getElementById("cb_3");
+    let cb_4 = document.getElementById("cb_4");
+    let cb_5 = document.getElementById("cb_5");
+    let cb_6 = document.getElementById("cb_6");
+    let cb_7 = document.getElementById("cb_7");
+    let cb_8 = document.getElementById("cb_8");
+    let cb_9 = document.getElementById("cb_9");
+    let cb_10 = document.getElementById("cb_10");
+
+    let uint16_t = 0;
+    if (cb_1.checked) uint16_t += 1;
+    if (cb_2.checked) uint16_t += 2;
+    if (cb_3.checked) uint16_t += 4;
+    if (cb_4.checked) uint16_t += 8;
+    if (cb_5.checked) uint16_t += 16;
+    if (cb_6.checked) uint16_t += 32;
+    if (cb_7.checked) uint16_t += 64;
+    if (cb_8.checked) uint16_t += 128;
+    if (cb_9.checked) uint16_t += 256;
+    if (cb_10.checked) uint16_t += 512;
+
+    location_global = uint16_t;
+
+    clearGraphs();
+
+    getNewData(dateMinHours(hour_global, min_global), undefined, dateMinHours(end_hour_global, end_min_global));
+
+};
