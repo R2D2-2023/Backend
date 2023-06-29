@@ -1,0 +1,51 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.notification-container {
+    position: fixed;
+    left: 3%;
+    top: 50%;
+    height: 65%;
+    width: 20%;
+    transform: translateY(-40%);
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    overflow-y: scroll;
+    user-select: none;
+    flex-direction: column-reverse;
+}
+
+.notification {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Hide scrollbar when not being interacted with */
+.notification-container::-webkit-scrollbar {
+    width: 0.5em;
+    background-color: #ffffff;
+}
+
+.notification-container::-webkit-scrollbar-thumb {
+    background-color: #ffffff;
+}
+
+/* Show scrollbar when being interacted with */
+.notification-container:hover::-webkit-scrollbar-thumb {
+    background-color: #ffffff;
+}
+
+/* Prevent text selection while scrolling */
+.notification-container.unselectable {
+    user-select: none;
+}
