@@ -15,6 +15,7 @@ var hour_global = 0;
 var end_min_global = -1;
 var end_hour_global = 0;
 var liveUpdate = true;
+var ajaxQueue = [];
 
 function createCharts(graphs) {
     charts = [];
@@ -85,6 +86,7 @@ function prepend(value, array) {
 }
 
 function getNewData(location, timestamp, cutoff_time, end_timestamp) {
+    if (charts[0].data.labels.length > 0 && timestamp != undefined) console.log("AAA");
     if (timestamp === undefined) {
         timestamp = charts[0].data.labels[charts[0].data.labels.length - 1];
     }
@@ -126,34 +128,29 @@ function getNewData(location, timestamp, cutoff_time, end_timestamp) {
                 Chart.defaults.datasets.line.pointRadius = 3 - dataAmount / 34;
             }
             for (let chart in charts) charts[chart].update();
-            
+        },
+        complete: function() {
+            ajaxQueue.shift();
+            processNewDataRequest()
         }
     })
 }
 
-async function setTimeView(location, hours, mins, end_hours, end_mins) {
-    if ($.active === 0) {
-        // Clear the data from the graphs and charts
-        for (let i = 0; i < charts.length; i++) {
-            charts[i].data.datasets[0].data = [];
-            charts[i].data.labels = [];
-            graphs[i].time_labels = [];
-        }
-        if (end_mins === undefined) end_mins = -1;
-        if (end_hours === undefined) end_hours = 0;
-        min_global = mins;
-        hour_global = hours;
-        end_min_global = end_mins;
-        end_hour_global = end_hours;
-        let date = dateMinHours(hour_global, min_global);
-        let end_date = dateMinHours(end_hours, end_mins);
-        if (end_mins === -1 && end_hours === 0) { // if button is used
-            document.getElementById("start_time").value = date.slice(0,-7);
-            document.getElementById("end_time").value = end_date.slice(0,-7);
-            liveUpdate = true;
-        }
-        getNewData(location, date, undefined, end_date);
+function setTimeView(location, hours, mins, end_hours, end_mins) {
+    if (end_mins === undefined) end_mins = -1;
+    if (end_hours === undefined) end_hours = 0;
+    min_global = mins;
+    hour_global = hours;
+    end_min_global = end_mins;
+    end_hour_global = end_hours;
+    let date = dateMinHours(hour_global, min_global);
+    let end_date = dateMinHours(end_hours, end_mins);
+    if (end_mins === -1 && end_hours === 0) { // if button is used
+        document.getElementById("start_time").value = date.slice(0,-7);
+        document.getElementById("end_time").value = end_date.slice(0,-7);
+        liveUpdate = true;
     }
+    addNewDataRequest(date, end_date);
     
 }
 
@@ -162,9 +159,7 @@ function timeInputChanged() {
     let cur_time_ms = Math.round(Date.parse(dateMinHours()) / 60000) * 60000;
     let start_time_ms = cur_time_ms - Date.parse(times.start_time.value);
     let end_time_ms = cur_time_ms - Date.parse(times.end_time.value);
-    console.log(end_time_ms)
     liveUpdate = end_time_ms <= 0;
-    console.log(liveUpdate);
     if (start_time_ms - end_time_ms > 0) {
         let start_time_mins = start_time_ms / 60000 % 60;
         let start_time_hrs = Math.floor(start_time_ms / 3600000);
@@ -197,4 +192,28 @@ function dateMinHours(hours, minutes) {
     d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
     d.setHours(d.getHours() - hours);
     return d.toISOString().slice(0, -1);
+}
+
+function processNewDataRequest() {
+    console.log(ajaxQueue.length);
+    if (ajaxQueue.length != 0) {
+        clearGraphs();
+        request = ajaxQueue[0];
+        getNewData(1, request[0], undefined, request[1]);
+    }
+}
+
+function addNewDataRequest(date, end_date) {
+    if (ajaxQueue.push([date, end_date]) === 1) {
+        processNewDataRequest();
+    }
+}
+
+function clearGraphs() {
+    // Clear the data from the graphs and charts
+    for (let i = 0; i < charts.length; i++) {
+        charts[i].data.datasets[0].data = [];
+        charts[i].data.labels = [];
+        graphs[i].time_labels = [];
+    }
 }

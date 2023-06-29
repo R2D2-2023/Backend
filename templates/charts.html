@@ -218,7 +218,7 @@
     charts = createCharts(graphs);
     getNewData(1, dateMinHours(hour_global, min_global)) 
     updateTimeInputValue();
-    dataInterval = setInterval(function() {if (liveUpdate) {getNewData(1, undefined, dateMinHours(hour_global, min_global))}}, 1000);
+    dataInterval = setInterval(function() {if (liveUpdate && ajaxQueue.length === 0) {getNewData(1, undefined, dateMinHours(hour_global, min_global))}}, 1000);
     timeUpdateInterval = setInterval(function(){updateTimeInputValue()}, 30000)
 </script>
 
