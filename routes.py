@@ -4,9 +4,11 @@ from datetime import datetime, timedelta
 import os
 import re
 from flask import jsonify
+import cv2
+import numpy as np
 
 # The import must be done after db initialization due to circular import issue
-from models import SensorData, aabbccddeeff7778, EmailAddress
+from models import SensorData, aabbccddeeff7778, EmailAddress, LocOnly, SensorDataWithLoc
 
 sensordata = None
 cachetime = None
@@ -96,7 +98,104 @@ def config_route(app, csrf, db):
     @app.route('/')
     def index():
         print('Request for index page received')
+
+        # Haal de temperatuurgegevens op uit de SQL-database
+        last_location = LocOnly.query.order_by(LocOnly.datetime.desc()).limit(1).all()
+        # per locatie en dan de temperatuur index 0 is zone 0 enz..
+        sens_data = []
+        for i in range(1,11):
+            sens_data.append(SensorDataWithLoc.query.order_by(SensorDataWithLoc.datetime.desc()).filter(SensorDataWithLoc.zone == i).limit(1).all())
+        
+        i = 0
+        temp = []
+        for zone_data in sens_data:
+            if zone_data:
+                sensor_data = zone_data[0]
+                temp.append(sensor_data.temperature)
+                print(i)
+                i += 1
+
+
+        # Definieer de kleuren voor de temperatuurgradient
+        color_min = (0, 0, 255)  # Blauw (lage temperatuur)
+        color_max = (255, 0, 0)  # Rood (hoge temperatuur)
+
+        min_temp = min(temp)
+        max_temp = max(temp)
+
+        intensities = []
+        colors = []
+        for temperature in temp:
+            # logica om de intensiteit te berekenen op basis van de temperatuur
+            intensity = (temperature - min_temp) / (max_temp - min_temp)
+            # intensity = (temperature-10)*12  # Bereken de intensiteit op basis van de temperatuur
+            intensities.append(intensity)
+
+            # Bereken de kleur op basis van de temperatuurwaarde en de kleurengradient
+            color = tuple(int(c_min + (c_max - c_min) * intensity) for c_min, c_max in zip(color_min, color_max))
+            colors.append(color)
+
+
+
+        # Laad de afbeelding
+        image = cv2.imread('static/images/kaart4de-verdieping-solid.png', cv2.IMREAD_UNCHANGED)
+        # Maak een lege heatmap-overlay
+        heatmap_overlay = np.zeros_like(image)
+
+        # # zone's waneer je circles gebruikt     
+        # steps_y = int(heatmap_overlay.shape[0]/5)
+        # steps_x = int(heatmap_overlay.shape[1]/10)
+        # zones = [
+        #     [steps_x*1, steps_y*1],
+        #     [steps_x*3, steps_y*1],
+        #     [steps_x*5, steps_y*1],
+        #     [steps_x*7, steps_y*1],
+        #     [steps_x*9, steps_y*1],
+        #     [steps_x*1, steps_y*4],
+        #     [steps_x*3, steps_y*4],
+        #     [steps_x*5, steps_y*4],
+        #     [steps_x*7, steps_y*4],
+        #     [steps_x*9, steps_y*4]]
+
+        # zone's bij het gebruik van rectangles
+        steps_x = int(heatmap_overlay.shape[1]/5)
+        steps_y = int(heatmap_overlay.shape[0]/2)
+        zones = [
+            [steps_x*0, steps_y*0],
+            [steps_x*1, steps_y*0],
+            [steps_x*2, steps_y*0],
+            [steps_x*3, steps_y*0],
+            [steps_x*4, steps_y*0],
+            [steps_x*0, steps_y*1],
+            [steps_x*1, steps_y*1],
+            [steps_x*2, steps_y*1],
+            [steps_x*3, steps_y*1],
+            [steps_x*4, steps_y*1]]
+        
+        i = 0
+        outline = -1
+        for color in colors:
+            # Teken een cirkel op de heatmap-overlay op de bijbehorende positie (x, y)
+            # cv2.circle(heatmap_overlay, (zones[i][0], zones[i][1]), radius, color, outline)
+            cv2.rectangle(heatmap_overlay, (zones[i][0], zones[i][1]),(zones[i][0]+steps_x, zones[i][1]+steps_y), color, outline)
+            print(i)
+            i += 1
+
+        # plaatsing circle waar de auto nu is !!! locatie word nog niet goed berekend !!!
+        # circle staat nu net niet op de kaart dus kan zijn dat je hem niet ziet
+        cv2.circle(heatmap_overlay, (int(heatmap_overlay.shape[1]/100*last_location[0].x_loc), int(heatmap_overlay.shape[0]/100*last_location[0].y_loc)), 100, (255,255,255), outline)
+
+        # Combineer de originele afbeelding met de heatmap-overlay
+        alpha = 0.5
+        beta = 0.5
+        combined_image = cv2.addWeighted(heatmap_overlay, alpha, image, beta, 0)
+
+        # Bewaar of toon de gegenereerde afbeelding
+        cv2.imwrite('static/images/kaart4de-verdieping-solid_heatmap.png', combined_image)
+
         return render_template('index.html')
+
+
 
     @app.route('/charts')
     def charts():

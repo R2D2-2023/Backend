@@ -35,6 +35,34 @@ class SensorData(db.Model):
 
     def __str__(self):
         return self.name
+    
+
+class LocOnly(db.Model):
+    __tablename__ = 'locatie_only'
+    datetime = Column(DateTime, primary_key=True)
+    x_loc = Column(Integer)
+    y_loc = Column(Integer)    
+
+    def __str__(self):
+        return self.name
+    
+    
+class SensorDataWithLoc(db.Model):
+    __tablename__ = 'sensor_data_with_foreign_location'
+    datetime = Column(DateTime, ForeignKey('locatie_only.datetime'), primary_key=True)
+    co2 = Column(Integer)
+    humidity = Column(Integer)
+    pressure = Column(Integer)
+    temperature = Column(DECIMAL(3,1))
+    # location = Column(Integer)
+    pm10 = Column(Integer)
+    pm25 = Column(Integer)
+    pm100 = Column(Integer)
+    zone = Column(Integer)
+
+    def __str__(self):
+        return self.name
+    
  
 
 class aabbccddeeff7778(db.Model):
