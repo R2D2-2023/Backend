@@ -127,11 +127,14 @@ body {
     background-color: rgba(5, 5, 5, 0.1);
     border: 1px solid #1aef9a;
     border-radius: 3px;
-    color: white;
     padding-top: 1px;
     padding-bottom: 1px;
     width: 85%;
     font-size: 0.6rem;
+    color-scheme: dark;
+}
+.time_input::-webkit-calendar-picker-indicator {
+    width: 10%;    
 }
 
 .procent_80 {

@@ -84,14 +84,17 @@ function prepend(value, array) {
     return newArray;
 }
 
-function getNewData(location, timestamp, cutoff_time) {
+function getNewData(location, timestamp, cutoff_time, end_timestamp) {
     if (timestamp === undefined) {
-        timestamp = charts[0].data.labels[charts[0].data.labels.length - 1]
+        timestamp = charts[0].data.labels[charts[0].data.labels.length - 1];
+    }
+    if (end_timestamp === undefined) {
+        end_timestamp = dateMinHours(end_hour_global, end_min_global);
     }
     $.ajax({
         url: "/get_new_data",
         type: "GET",
-        data: {'last_datapoint': timestamp, 'location': location, 'max_data': 100},
+        data: {'last_datapoint': timestamp, 'first_datapoint': end_timestamp, 'location': location, 'max_data': 100},
         success: function(ret_data) {
             if (typeof ret_data === 'object') {
                 for (let i = 0; i < ret_data.timestamp.length; i++) {
@@ -103,8 +106,7 @@ function getNewData(location, timestamp, cutoff_time) {
                     }                    
                 }
             }
-            else {
-            }
+
             if (cutoff_time != undefined) {
                 while (charts[0].data.labels[0] < cutoff_time) {
                     for (let i = 0; i < charts.length; i++) {
@@ -112,7 +114,7 @@ function getNewData(location, timestamp, cutoff_time) {
                             dataset.data.shift();
                         });
                         charts[i].data.labels.shift();
-                        // graphs[i].ti me_labels.shift();
+                        // graphs[i].time_labels.shift();
                     }
                 }
             }
@@ -129,7 +131,7 @@ function getNewData(location, timestamp, cutoff_time) {
     })
 }
 
-function setTimeView(location, hours, mins, end_hours, end_mins) {
+async function setTimeView(location, hours, mins, end_hours, end_mins) {
     if ($.active === 0) {
         // Clear the data from the graphs and charts
         for (let i = 0; i < charts.length; i++) {
@@ -141,14 +143,16 @@ function setTimeView(location, hours, mins, end_hours, end_mins) {
         if (end_hours === undefined) end_hours = 0;
         min_global = mins;
         hour_global = hours;
-        // TODO: end_min_global, end_hour_global
+        end_min_global = end_mins;
+        end_hour_global = end_hours;
         let date = dateMinHours(hour_global, min_global);
         let end_date = dateMinHours(end_hours, end_mins);
         if (end_mins === -1 && end_hours === 0) { // if button is used
             document.getElementById("start_time").value = date.slice(0,-7);
             document.getElementById("end_time").value = end_date.slice(0,-7);
+            liveUpdate = true;
         }
-        getNewData(location, date, undefined);
+        getNewData(location, date, undefined, end_date);
     }
     
 }
@@ -158,16 +162,16 @@ function timeInputChanged() {
     let cur_time_ms = Math.round(Date.parse(dateMinHours()) / 60000) * 60000;
     let start_time_ms = cur_time_ms - Date.parse(times.start_time.value);
     let end_time_ms = cur_time_ms - Date.parse(times.end_time.value);
-    console.log(cur_time_ms, start_time_ms, end_time_ms);
+    console.log(end_time_ms)
+    liveUpdate = end_time_ms <= 0;
+    console.log(liveUpdate);
     if (start_time_ms - end_time_ms > 0) {
         let start_time_mins = start_time_ms / 60000 % 60;
         let start_time_hrs = Math.floor(start_time_ms / 3600000);
         let end_time_mins = end_time_ms / 60000 % 60;
         let end_time_hrs = Math.floor(end_time_ms / 3600000);
 
-        console.log(start_time_hrs, start_time_mins);
-        console.log(end_time_hrs, end_time_mins);
-        setTimeView(1, start_time_hrs, start_time_mins)
+        setTimeView(1, start_time_hrs, start_time_mins, end_time_hrs, end_time_mins)
     }
 }
 

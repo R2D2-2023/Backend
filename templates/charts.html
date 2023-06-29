@@ -99,7 +99,7 @@
 
             <div class="map_img_container">
                 <div class="map_img">
-                    <img src="../static/images/kaart4de-verdieping.png" alt="Plattegrond van de 4de verdieping van de hogeschool utrecht heidelberglaan 15">
+                    <img src="../static/images/kaart4de-verdieping.png" alt="Plattegrond van de 4e verdieping van de Hogeschool Utrecht Heidelberglaan 15">
                 </div>
                 
 
@@ -218,8 +218,8 @@
     charts = createCharts(graphs);
     getNewData(1, dateMinHours(hour_global, min_global)) 
     updateTimeInputValue();
-    dataInterval = setInterval(function(){getNewData(1, undefined, dateMinHours(hour_global, min_global))}, 1000);
-    timeUpdateInterval = setInterval(function(){updateTimeInputValue()}, 5000);
+    dataInterval = setInterval(function() {if (liveUpdate) {getNewData(1, undefined, dateMinHours(hour_global, min_global))}}, 1000);
+    timeUpdateInterval = setInterval(function(){updateTimeInputValue()}, 30000)
 </script>
 
 <!-- custom javascript link -->

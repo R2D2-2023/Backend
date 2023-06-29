@@ -24,12 +24,14 @@ def config_route(app, csrf, db):
     @app.route('/get_new_data')
     def get_new_data():
         last_datapoint = request.args.get('last_datapoint')
+        first_datapoint = request.args.get('first_datapoint')
         location = request.args.get('location')
-        if last_datapoint is None or location is None:
+        if last_datapoint is None or first_datapoint is None or location is None:
             return "Not the right parameters are given."
         last_datapoint = datetime.strptime(last_datapoint, '%Y-%m-%dT%H:%M:%S.%f')
+        first_datapoint = datetime.strptime(first_datapoint, '%Y-%m-%dT%H:%M:%S.%f')
         # query for new data with and location and datetime after last_datapoint. return all columns
-        raw_data = SensorData.query.order_by(SensorData.datetime.desc()).filter(SensorData.datetime > last_datapoint, SensorData.location == location).all()
+        raw_data = SensorData.query.order_by(SensorData.datetime.desc()).filter(SensorData.datetime > last_datapoint, SensorData.datetime < first_datapoint, SensorData.location == location).all()
         raw_data.reverse()
         # if len(raw_data) == 0:
         #     return jsonify(timestamp=[], data={})

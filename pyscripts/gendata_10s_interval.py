@@ -62,8 +62,8 @@ while True:
         pressure += diff
         break
         
-    # location = random.randint(1, 10)
-    location = 1
+    location = random.randint(1, 10)
+    # location = 1
 
     # create the query
     query = "INSERT INTO sensor_data (datetime, co2, temperature, humidity, pressure, location) VALUES ('{time_with_offset}', {co2}, {temperature}, {humidity}, {pressure}, {location});".format(time_with_offset=datetime.datetime.now(), co2=co2, temperature=temperature, humidity=humidity, pressure=pressure, location=location)
