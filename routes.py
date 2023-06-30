@@ -172,14 +172,11 @@ def config_route(app, csrf, db):
             [steps_x*3, steps_y*1],
             [steps_x*4, steps_y*1]]
         
-        i = 0
         outline = -1
-        for color in colors:
+        for i, color in enumerate(colors):
             # Teken een cirkel op de heatmap-overlay op de bijbehorende positie (x, y)
             # cv2.circle(heatmap_overlay, (zones[i][0], zones[i][1]), radius, color, outline)
-            cv2.rectangle(heatmap_overlay, (zones[i][0], zones[i][1]),(zones[i][0]+steps_x, zones[i][1]+steps_y), color, outline)
-            print(i)
-            i += 1
+            cv2.rectangle(heatmap_overlay, (zones[i][0], zones[i][1]),(zones[i][0]+steps_x, zones[i][1]+steps_y), color, outline)  
 
         # plaatsing circle waar de auto nu is !!! locatie word nog niet goed berekend !!!
         # circle staat nu net niet op de kaart dus kan zijn dat je hem niet ziet
