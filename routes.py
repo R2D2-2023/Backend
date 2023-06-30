@@ -35,6 +35,7 @@ def config_route(app, csrf, db):
         for i in range( 0, 10):
             if location >> i & 1:
                 loc_arr.append(i+1)
+
         try:
             last_datapoint = datetime.strptime(last_datapoint, '%Y-%m-%dT%H:%M:%S.%f')
         except:
@@ -179,7 +180,10 @@ def config_route(app, csrf, db):
 
         # plaatsing circle waar de auto nu is !!! locatie word nog niet goed berekend !!!
         # circle staat nu net niet op de kaart dus kan zijn dat je hem niet ziet
-        cv2.circle(heatmap_overlay, (int(heatmap_overlay.shape[1]/100*last_location[0].x_loc), int(heatmap_overlay.shape[0]/100*last_location[0].y_loc)), 100, (255,255,255), outline)
+        max_x = 232
+        max_y = 65 
+
+        cv2.circle(heatmap_overlay, (int(heatmap_overlay.shape[1]/max_x * last_location[0].x_loc), int(heatmap_overlay.shape[0]/max_y * last_location[0].y_loc)), 100, (255,255,255), outline)
 
         # Combineer de originele afbeelding met de heatmap-overlay
         alpha = 0.5

@@ -89,7 +89,7 @@ while True:
         break
         
     # create the query
-    query_location = f"INSERT INTO locatie_only (x_loc, y_loc, datetime) VALUES ({random.randint(0,10)}, {random.randint(0,10)}, CURRENT_TIMESTAMP AT TIME ZONE 'CEST');"
+    query_location = f"INSERT INTO locatie_only (x_loc, y_loc, datetime) VALUES ({random.randint(0,232)}, {random.randint(0,65)}, CURRENT_TIMESTAMP AT TIME ZONE 'CEST');"
     query_sensor_data = f"INSERT INTO sensor_data_with_foreign_location (co2, temperature, humidity, pressure, pm10, pm25, pm100, zone, datetime) VALUES ({co2}, {temperature}, {humidity}, {pressure}, {pm10}, {pm25}, {pm100}, {zone}, CURRENT_TIMESTAMP AT TIME ZONE 'CEST');"
 
     # execute the query
