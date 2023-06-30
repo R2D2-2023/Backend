@@ -132,7 +132,7 @@ function getNewData(timestamp, cutoff_time, end_timestamp) {
 }
 
 
-function setTimeView(location, hours, mins, end_hours, end_mins) {
+function setTimeView(hours, mins, end_hours, end_mins) {
     if ($.active === 0) {
         clearGraphs();
         if (end_mins === undefined) end_mins = -1;
