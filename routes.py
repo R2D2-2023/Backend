@@ -1,4 +1,4 @@
-from sqlalchemy import insert, delete
+from sqlalchemy import insert, delete, and_, or_, not_
 from flask import Flask, redirect, render_template, request, send_from_directory, url_for
 from datetime import datetime, timedelta
 import os
@@ -35,14 +35,19 @@ def config_route(app, csrf, db):
     @app.route('/get_new_data')
     def get_new_data():
         last_datapoint = request.args.get('last_datapoint')
-        first_datapoint = request.args.get('first_datapoint')
-        location = request.args.get('location')
+        first_datapoint = request.args.get('first_datapoint')    
+        location = request.args.get('location')       
         if last_datapoint is None or first_datapoint is None or location is None:
             return "Not the right parameters are given."
+        loc_arr = []
+        location = int(location)
+        for i in range( 0, 10):
+            if location >> i & 1:
+                loc_arr.append(i+1)
         last_datapoint = datetime.strptime(last_datapoint, '%Y-%m-%dT%H:%M:%S.%f')
         first_datapoint = datetime.strptime(first_datapoint, '%Y-%m-%dT%H:%M:%S.%f')
         # query for new data with and location and datetime after last_datapoint. return all columns
-        raw_data = SensorData.query.order_by(SensorData.datetime.desc()).filter(SensorData.datetime > last_datapoint, SensorData.datetime < first_datapoint, SensorData.location == location).all()
+        raw_data = SensorData.query.order_by(SensorData.datetime.desc()).filter(SensorData.datetime > last_datapoint, SensorData.datetime < first_datapoint, SensorData.location.in_(loc_arr)).all()
         raw_data.reverse()
         # if len(raw_data) == 0:
         #     return jsonify(timestamp=[], data={})
@@ -96,8 +101,6 @@ def config_route(app, csrf, db):
     @app.route('/get_email_data')
     def get_email_data():
         return [data.address for data in EmailAddress]
-
-
 
     @app.route('/test_is_data_avalable')
     def test_is_data_avalable():
