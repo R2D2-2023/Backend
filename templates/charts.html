@@ -60,9 +60,10 @@
 
     <section class="backgroundimage">
 
-        <div class="instellingen_container">
+        <div class="instellingen_container" id="instellingen_container">
             <div class="instellingen_logo">
-                <img src="../static/images/instellingen.png" alt="instellingen logo">
+                <img src="../static/images/instellingen.png" alt="instellingen logo" id="instellingen_logo">
+                <img src="../static/images/instellingen.gif" alt="instellingen animatie" id="instellingen_animatie" hidden>
             </div>
             <div class="time_title">
                 <h4>TIME RANGE</h4>
@@ -83,7 +84,7 @@
                 
             </div>
         </div>
-        <div class="procent_80">
+        <div class="procent_80" id="content_container">
             <div class="map_title_container">
                 <div class="map_title">
                     <h4>SELECT REGION:</h4>
@@ -104,43 +105,43 @@
                 
 
                 <div class="checkbox_container">
-                    <input type="checkbox" id="cb_1" name="cb_1" checked onclick="handle_graph_buttons()">
+                    <input type="checkbox" id="cb_1" name="cb_1" checked onclick="handleGraphButtons()">
                     <label  id="cb_1" for="cb_1"></label>
                 </div>
                 <div class="checkbox_container">
-                    <input type="checkbox" id="cb_2" name="cb_2" checked onclick="handle_graph_buttons()">
+                    <input type="checkbox" id="cb_2" name="cb_2" checked onclick="handleGraphButtons()">
                     <label  id="cb_2" for="cb_2"></label>
                 </div>
                 <div class="checkbox_container">
-                    <input type="checkbox" id="cb_3" name="cb_3" checked onclick="handle_graph_buttons()">
+                    <input type="checkbox" id="cb_3" name="cb_3" checked onclick="handleGraphButtons()">
                     <label  id="cb_3" for="cb_3"></label>
                 </div>
                 <div class="checkbox_container">
-                    <input type="checkbox" id="cb_4" name="cb_4" checked onclick="handle_graph_buttons()">
+                    <input type="checkbox" id="cb_4" name="cb_4" checked onclick="handleGraphButtons()">
                     <label  id="cb_4" for="cb_4"></label>
                 </div>
                 <div class="checkbox_container">
-                    <input type="checkbox" id="cb_5" name="cb_5" checked onclick="handle_graph_buttons()">
+                    <input type="checkbox" id="cb_5" name="cb_5" checked onclick="handleGraphButtons()">
                     <label  id="cb_5" for="cb_5"></label>
                 </div>
                 <div class="checkbox_container">
-                    <input type="checkbox" id="cb_6" name="cb_6" checked onclick="handle_graph_buttons()">
+                    <input type="checkbox" id="cb_6" name="cb_6" checked onclick="handleGraphButtons()">
                     <label  id="cb_6" for="cb_6"></label>
                 </div>
                 <div class="checkbox_container">
-                    <input type="checkbox" id="cb_7" name="cb_7" checked onclick="handle_graph_buttons()">
+                    <input type="checkbox" id="cb_7" name="cb_7" checked onclick="handleGraphButtons()">
                     <label  id="cb_7" for="cb_7"></label>
                 </div>
                 <div class="checkbox_container">
-                    <input type="checkbox" id="cb_8" name="cb_8" checked onclick="handle_graph_buttons()">
+                    <input type="checkbox" id="cb_8" name="cb_8" checked onclick="handleGraphButtons()">
                     <label  id="cb_8" for="cb_8"></label>
                 </div>
                 <div class="checkbox_container">
-                    <input type="checkbox" id="cb_9" name="cb_9" checked onclick="handle_graph_buttons()">
+                    <input type="checkbox" id="cb_9" name="cb_9" checked onclick="handleGraphButtons()">
                     <label  id="cb_9" for="cb_9"></label>
                 </div>
                 <div class="checkbox_container">
-                    <input type="checkbox" id="cb_10" name="cb_10" checked onclick="handle_graph_buttons()">
+                    <input type="checkbox" id="cb_10" name="cb_10" checked onclick="handleGraphButtons()">
                     <label  id="cb_10" for="cb_10"></label>
                 </div>
 
@@ -199,7 +200,7 @@
                 checkbox.checked = source.checked;
             }
         });
-        handle_graph_buttons();
+        handleGraphButtons();
     }
 </script>
 
@@ -217,7 +218,7 @@
     updateTimeInputValue();
     dataInterval = setInterval(function() {if (liveUpdate) {getNewData(undefined, dateMinHours(hour_global, min_global))}}, 1000);
     timeUpdateInterval = setInterval(function(){updateTimeInputValue()}, 30000);
-    handle_graph_buttons();
+    handleGraphButtons();
 </script>
 
 <!-- custom javascript link -->
