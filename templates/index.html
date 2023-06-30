@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- voor ajax functionaliteit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,31 +21,33 @@
     <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Poppins:ital,wght@1,300&display=swap"
         rel="stylesheet">
+
+    <!-- D3.js import
+    <script src="https://d3js.org/d3.v6.min.js"></script> -->
+
+    <!-- voor ajax functionaliteit -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 </head>
 
+
 <script>
-    function getRecentData(location, max_data) {
-        if (location == undefined) {
-            location = 1;
-        }
-        if (max_data == undefined) {
-            max_data = 1;
-        }
+    function getRecentData() {
         $.ajax({
             url: "/get_recent_data",
             type: "GET",
-            data: { 'location': location, 'limit': max_data },
             success: function (ret_data) {
-                var temp_value = document.getElementById("temperature-value");
-                temp_value.innerHTML = ret_data['data']['temperature'][0];
-                var humid_value = document.getElementById("humidity-value");
-                humid_value.innerHTML = ret_data['data']['humidity'][0];
-                var co2_value = document.getElementById("co2-value");
-                co2_value.innerHTML = ret_data['data']['co2'][0];
-                var pressure_value = document.getElementById("pressure-value");
-                pressure_value.innerHTML = ret_data['data']['pressure'][0];
-                var time_value = document.getElementById("time-value");
-                time_value.innerHTML = ret_data['timestamp'][0];
+                let temp_value = document.getElementById("temperature-value");
+                temp_value.innerHTML = ret_data['data']['temperature'];
+                let humid_value = document.getElementById("humidity-value");
+                humid_value.innerHTML = ret_data['data']['humidity'];
+                let co2_value = document.getElementById("co2-value");
+                co2_value.innerHTML = ret_data['data']['co2'];
+                let pressure_value = document.getElementById("pressure-value");
+                pressure_value.innerHTML = ret_data['data']['pressure'];
+                let fijnstof_value = document.getElementById("fijnstof-value");
+                fijnstof_value.innerHTML = ret_data['data']['pm'];
+                let time_value = document.getElementById("time-value");
+                time_value.innerHTML = ret_data['timestamp'];
             }
         })
     }
@@ -187,11 +186,12 @@
                 </div>
                 <div class="kaart">
                     <div class="kaart-text">
-                        <h1 class="title">Route van de robot</h1>
+                        <!-- <h1 class="title">Route van de robot</h1> -->
                     </div>
                     <div class="kaart-img">
-                        <img src="../static/images/plategrond6.3.png"
-                            alt="Plategrond van de 4de verdieping van de hogeschool utrecht heidelberglaan 15">
+                        <!-- <canvas id="heatmap-canvas"></canvas> -->
+                        <!-- <img id="heatmap-image" src="../static/images/kaart4de-verdieping-solid.png" alt="Plategrond van de 4de verdieping van de hogeschool utrecht heidelberglaan 15"> -->
+                        <img id="heatmap-image" src="../static/images/kaart4de-verdieping-solid_heatmap.png" alt="Plategrond van de 4de verdieping van de hogeschool utrecht heidelberglaan 15">
                     </div>
                 </div>
             </section>
@@ -203,11 +203,107 @@
 
 
 
+
+    <!-- <script>
+        // Functie om de heatmap te genereren
+        function generateHeatmap() {
+            // Definieer de coördinaten van de zones op de kaart
+            var zones = [
+                { x: 0, y: 0, width: 85, height: 75 },
+                { x: 85, y: 0, width: 65, height: 75 },
+                { x: 150, y: 0, width: 65, height: 75 },
+                { x: 215, y: 0, width: 85, height: 75 },
+                { x: 0, y: 75, width: 100, height: 75 },
+                { x: 100, y: 75, width: 50, height: 75 },
+                { x: 150, y: 75, width: 50, height: 75 },
+                { x: 200, y: 75, width: 100, height: 75 }
+            ];
+
+            // Selecteer het canvas-element
+            var canvas = document.getElementById('heatmap-canvas');
+            var context = canvas.getContext('2d');
+
+            // Selecteer het afbeeldingselement
+            var image = document.querySelector('#heatmap-image');
+
+            // Loop door elke zone en teken een rechthoek op het canvas
+            zones.forEach(function(zone) {
+                // Simuleer willekeurige hittekaartgegevens voor elke zone
+                var heatmapValue = Math.random();
+
+                // Pas de kleur van de rechthoek aan op basis van de heatmapgegevens
+                var color = d3.interpolateViridis(heatmapValue);
+
+                // Teken de rechthoek op het canvas
+                context.fillStyle = color;
+                context.fillRect(zone.x, zone.y, zone.width, zone.height);
+        });
+        }
+
+        // Roep de functie aan om de heatmap te genereren wanneer de pagina is geladen
+        window.onload = generateHeatmap;
+    </script> -->
+
+
+    <!-- <script>
+        // Functie om de heatmap te genereren
+        function generateHeatmap() {
+            // Definieer de coördinaten van de zones op de kaart
+            var zones = [
+                { x: 0, y: 0, width: 85, height: 75 },
+                { x: 85, y: 0, width: 65, height: 75 },
+                { x: 150, y: 0, width: 65, height: 75 },
+                { x: 215, y: 0, width: 85, height: 75 },
+                { x: 0, y: 75, width: 100, height: 75 },
+                { x: 100, y: 75, width: 50, height: 75 },
+                { x: 150, y: 75, width: 50, height: 75 },
+                { x: 200, y: 75, width: 100, height: 75 }
+            ];
+
+            // Selecteer het canvas-element
+            var canvas = document.getElementById('heatmap-canvas');
+            var context = canvas.getContext('2d');
+
+            // Selecteer het afbeeldingselement
+            var image = document.querySelector('#heatmap-image');
+
+            // Wacht tot de afbeelding is geladen
+            image.onload = function() {
+                // Pas de grootte van het canvas aan op basis van de afbeelding
+                canvas.width = image.width;
+                canvas.height = image.height;
+
+                // Teken de afbeelding op het canvas
+                context.drawImage(image, 0, 0);
+
+                // Loop door elke zone en teken een rechthoek op het canvas
+                zones.forEach(function(zone) {
+                // Simuleer willekeurige hittekaartgegevens voor elke zone
+                var heatmapValue = Math.random();
+
+                // Pas de kleur van de rechthoek aan op basis van de heatmapgegevens
+                var color = d3.interpolateViridis(heatmapValue);
+
+                // Teken de rechthoek op het canvas
+                context.fillStyle = color;
+                context.fillRect(zone.x, zone.y, zone.width, zone.height);
+                });
+            };
+            }
+
+        // Roep de functie aan om de heatmap te genereren wanneer de pagina is geladen
+        window.onload = generateHeatmap;
+
+    </script> -->
+
+
+
     <!-- scrollreveal effect -->
     <script src="https://unpkg.com/scrollreveal"></script>
 
     <!-- custom javascript link -->
     <script src="../static/bootstrap/js/script.js"></script>
+
 
 </body>
 
