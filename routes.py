@@ -4,9 +4,21 @@ from datetime import datetime, timedelta
 import os
 import re
 from flask import jsonify
+from flask_login import login_required, current_user, login_user, logout_user
+from models import UserModel
+from flask_login import LoginManager
+import random
+
+
+
+
+
+
 
 # The import must be done after db initialization due to circular import issue
-from models import SensorData, aabbccddeeff7778, EmailAddress
+from models import SensorData, aabbccddeeff7778, EmailAddress, UserModel
+
+
 
 sensordata = None
 cachetime = None
@@ -19,7 +31,6 @@ def validate_mail(mail_adress):
         return False
 
 def config_route(app, csrf, db):
-
     # Routes for API's   
     @app.route('/get_new_data')
     def get_new_data():
@@ -84,7 +95,6 @@ def config_route(app, csrf, db):
     
     @app.route('/get_email_data')
     def get_email_data():
-
         return [data.address for data in EmailAddress]
 
 
@@ -96,21 +106,34 @@ def config_route(app, csrf, db):
 
     # Routes for html pages
     @app.route('/')
+    @login_required
     def index():
         print('Request for index page received')
         return render_template('index.html')
+    
+ 
 
     @app.route('/charts')
+    @login_required
     def charts():
         print('Request for charts page received')
         return render_template('charts.html')
 
+    # @app.route('/lege_pagina')
+    # @login_required
+    # def lege_pagina():
+    #     print('Request for lege_pagina page received')
+    #     return render_template('lege_pagina.html')
+    
     @app.route('/lege_pagina')
+    @login_required
     def lege_pagina():
         print('Request for lege_pagina page received')
-        return render_template('lege_pagina.html')
+        logout_user()  # Logout the current user
+        return redirect('/login')
 
     @app.route('/email', methods = ['GET', 'POST'])
+    @login_required
     def email():
         if request.method == 'POST':
             message = ""
@@ -158,3 +181,43 @@ def config_route(app, csrf, db):
     def favicon():
         return send_from_directory(os.path.join(app.root_path, 'static'),
                                 'favicon.ico', mimetype='image/vnd.microsoft.icon')
+    
+    @app.route('/login', methods = ['POST', 'GET'])
+    def login():
+        if current_user.is_authenticated:
+            return redirect('/')
+        
+        if request.method == 'POST':
+            email = request.form['email']
+            user = UserModel.query.filter_by(email = email).first()
+            if user is not None and user.check_password(request.form['password']):
+                login_user(user)
+                return redirect('/')
+        
+        return render_template('login.html')
+ 
+    @app.route('/register', methods=['POST', 'GET'])
+    def register():
+        if current_user.is_authenticated:
+            return redirect('/')
+
+        if request.method == 'POST':
+            email = request.form['email']
+            username = request.form['username']
+            password = request.form['password']
+
+            if UserModel.query.filter_by(email=email).first():
+                return 'Email already exists'
+
+            user = UserModel(email=email, username=username)
+            user.set_password(password)
+            db.session.add(user)
+            db.session.commit()
+            return redirect('/login')
+        
+        return render_template('register.html')
+ 
+    # @app.route('/lege_pagina')
+    # def logout():
+    #     logout_user()
+    #     return redirect('/login')
