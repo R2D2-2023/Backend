@@ -113,6 +113,11 @@ body {
   background: rgba(26, 239, 154, 0.7);
 }
 
+.time_buttons button[disabled] {
+    color: gray;
+    background: rgba(5, 5, 5, 0.1)
+}
+
 .time_custom {
     padding-left: 5%;
     padding-right: 5%;
@@ -237,6 +242,22 @@ body {
 .checkbox_container input[type='checkbox']:focus + label::before,
 .checkbox_select_all input[type='checkbox']:focus + label::before {
     box-shadow: 0 0 20px white;
+}
+
+.checkbox_container input[type='checkbox'][disabled] + label::before,
+.checkbox_select_all input[type='checkbox'][disabled] + label::before {
+    border-color: lightgray;
+}
+
+.checkbox_container input[type='checkbox'][disabled]:checked + label::before,
+.checkbox_select_all input[type='checkbox'][disabled]:checked + label::before {
+    border-color: lightgray;
+    background-color: gray;
+}
+
+.checkbox_container input[type='checkbox'][disabled] + label:hover::before,
+.checkbox_select_all input[type='checkbox'][disabled] + label:hover::before {
+    background-color: transparent;
 }
 
 

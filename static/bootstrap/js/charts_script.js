@@ -127,13 +127,15 @@ function getNewData(timestamp, cutoff_time, end_timestamp) {
                 Chart.defaults.datasets.line.pointRadius = 3 - dataAmount / 34;
             }
             for (let chart in charts) charts[chart].update();
+            setControlsLock(false);
+            
         }
     })
 }
 
-
 function setTimeView(hours, mins, end_hours, end_mins) {
     if ($.active === 0) {
+        setControlsLock(true);
         clearGraphs();
         if (end_mins === undefined) end_mins = -1;
         if (end_hours === undefined) end_hours = 0;
@@ -201,34 +203,54 @@ function clearGraphs() {
     }
 }
 
-function handle_graph_buttons(){
-    let cb_1 = document.getElementById("cb_1");
-    let cb_2 = document.getElementById("cb_2");
-    let cb_3 = document.getElementById("cb_3");
-    let cb_4 = document.getElementById("cb_4");
-    let cb_5 = document.getElementById("cb_5");
-    let cb_6 = document.getElementById("cb_6");
-    let cb_7 = document.getElementById("cb_7");
-    let cb_8 = document.getElementById("cb_8");
-    let cb_9 = document.getElementById("cb_9");
-    let cb_10 = document.getElementById("cb_10");
+function handleGraphButtons(){
+    if ($.active === 0) {
+        let cb_1 = document.getElementById("cb_1");
+        let cb_2 = document.getElementById("cb_2");
+        let cb_3 = document.getElementById("cb_3");
+        let cb_4 = document.getElementById("cb_4");
+        let cb_5 = document.getElementById("cb_5");
+        let cb_6 = document.getElementById("cb_6");
+        let cb_7 = document.getElementById("cb_7");
+        let cb_8 = document.getElementById("cb_8");
+        let cb_9 = document.getElementById("cb_9");
+        let cb_10 = document.getElementById("cb_10");
 
-    let uint16_t = 0;
-    if (cb_1.checked) uint16_t += 1;
-    if (cb_2.checked) uint16_t += 2;
-    if (cb_3.checked) uint16_t += 4;
-    if (cb_4.checked) uint16_t += 8;
-    if (cb_5.checked) uint16_t += 16;
-    if (cb_6.checked) uint16_t += 32;
-    if (cb_7.checked) uint16_t += 64;
-    if (cb_8.checked) uint16_t += 128;
-    if (cb_9.checked) uint16_t += 256;
-    if (cb_10.checked) uint16_t += 512;
+        let uint16_t = 0;
+        if (cb_1.checked) uint16_t += 1;
+        if (cb_2.checked) uint16_t += 2;
+        if (cb_3.checked) uint16_t += 4;
+        if (cb_4.checked) uint16_t += 8;
+        if (cb_5.checked) uint16_t += 16;
+        if (cb_6.checked) uint16_t += 32;
+        if (cb_7.checked) uint16_t += 64;
+        if (cb_8.checked) uint16_t += 128;
+        if (cb_9.checked) uint16_t += 256;
+        if (cb_10.checked) uint16_t += 512;
 
-    location_global = uint16_t;
+        location_global = uint16_t;
 
-    clearGraphs();
+        clearGraphs();
+        setControlsLock(true);
 
-    getNewData(dateMinHours(hour_global, min_global), undefined, dateMinHours(end_hour_global, end_min_global));
+
+        getNewData(dateMinHours(hour_global, min_global), undefined, dateMinHours(end_hour_global, end_min_global));
+    }
 
 };
+
+function setControlsLock(locked){
+    let time_controls = document.getElementById("instellingen_container").querySelectorAll(".time_input, button");
+    let loc_controls = document.getElementById("content_container").querySelectorAll("input[type='checkbox']");
+    console.log(loc_controls);
+    for (let i = 0; i < time_controls.length; i++) {
+        time_controls[i].disabled = locked;
+    }
+    for (let i = 0; i < loc_controls.length; i++) {
+        loc_controls[i].disabled = locked;
+    }
+    let image = document.getElementById("instellingen_logo");
+    let animation = document.getElementById("instellingen_animatie")
+    image.hidden = locked; 
+    animation.hidden = !locked; 
+}
