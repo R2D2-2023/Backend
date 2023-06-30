@@ -133,9 +133,7 @@ function getNewData(timestamp, cutoff_time, end_timestamp) {
     })
 }
 
-async function setTimeView(hours, mins, end_hours, end_mins) {
-    console.log("hoi");
-
+function setTimeView(hours, mins, end_hours, end_mins) {
     if ($.active === 0) {
         setControlsLock(true);
         clearGraphs();
@@ -154,7 +152,6 @@ async function setTimeView(hours, mins, end_hours, end_mins) {
         }
         getNewData(date, undefined, end_date);
     }
-    
 }
 
 function timeInputChanged() {
@@ -162,9 +159,7 @@ function timeInputChanged() {
     let cur_time_ms = Math.round(Date.parse(dateMinHours()) / 60000) * 60000;
     let start_time_ms = cur_time_ms - Date.parse(times.start_time.value);
     let end_time_ms = cur_time_ms - Date.parse(times.end_time.value);
-    console.log(end_time_ms)
     liveUpdate = end_time_ms <= 0;
-    console.log(liveUpdate);
     if (start_time_ms - end_time_ms > 0) {
         let start_time_mins = start_time_ms / 60000 % 60;
         let start_time_hrs = Math.floor(start_time_ms / 3600000);
