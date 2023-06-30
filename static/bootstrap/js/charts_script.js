@@ -127,14 +127,13 @@ function getNewData(timestamp, cutoff_time, end_timestamp) {
                 Chart.defaults.datasets.line.pointRadius = 3 - dataAmount / 34;
             }
             for (let chart in charts) charts[chart].update();
-            
         }
     })
 }
 
-async function setTimeView(hours, mins, end_hours, end_mins) {
+
+function setTimeView(hours, mins, end_hours, end_mins) {
     if ($.active === 0) {
-        // Clear the data from the graphs and charts
         clearGraphs();
         if (end_mins === undefined) end_mins = -1;
         if (end_hours === undefined) end_hours = 0;
@@ -151,7 +150,6 @@ async function setTimeView(hours, mins, end_hours, end_mins) {
         }
         getNewData(date, undefined, end_date);
     }
-    
 }
 
 function timeInputChanged() {
@@ -159,9 +157,7 @@ function timeInputChanged() {
     let cur_time_ms = Math.round(Date.parse(dateMinHours()) / 60000) * 60000;
     let start_time_ms = cur_time_ms - Date.parse(times.start_time.value);
     let end_time_ms = cur_time_ms - Date.parse(times.end_time.value);
-    console.log(end_time_ms)
     liveUpdate = end_time_ms <= 0;
-    console.log(liveUpdate);
     if (start_time_ms - end_time_ms > 0) {
         let start_time_mins = start_time_ms / 60000 % 60;
         let start_time_hrs = Math.floor(start_time_ms / 3600000);
@@ -197,6 +193,7 @@ function dateMinHours(hours, minutes) {
 }
 
 function clearGraphs() {
+    // Clear the data from the graphs and charts
     for (let i = 0; i < charts.length; i++) {
         charts[i].data.datasets[0].data = [];
         charts[i].data.labels = [];
