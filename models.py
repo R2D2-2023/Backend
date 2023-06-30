@@ -57,3 +57,14 @@ class EmailAddress(db.Model):
     def __str__(self):
         return self.name
     
+class aabbccddeeff7778error(db.Model):
+    __tablename__ = 'aabbccddeeff7778error'
+    id = Column(Integer, primary_key=True)
+    datetime = Column(DateTime)
+    message = Column(String)
+    severity = Column(String)
+    component = Column(String)
+
+    def __str__(self):
+        return self.name
+    

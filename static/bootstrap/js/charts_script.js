@@ -124,7 +124,6 @@ function getNewData(charts, graphs, location, timestamp, cutoff_time) {
                 Chart.defaults.datasets.line.pointRadius = 3 - dataAmount / 34;
             }
             for (let chart in charts) charts[chart].update();
-            
         }
     })
 }
@@ -141,7 +140,6 @@ function setTimeView(charts, graphs, location, hours, mins) {
         hour_global = hours;
         getNewData(charts, graphs, location, dateMinHours(hour_global, min_global), undefined);
     }
-    
 }
 
 function dateMinHours(hours, minutes) {

@@ -1,8 +1,15 @@
+var last_entry = 0;
+
 function addNotification(message) {
     var notificationContainer = document.querySelector('.notification-container');
     var notification = document.createElement('div');
     notification.className = 'notification';
-    notification.textContent = message;
+    var id = document.createElement('div');
+    var text = document.createElement('div');
+    id.textContent = message;
+    text.textContent = "1";
+    notification.insertBefore(id, notification.firstChild);
+    notification.insertBefore(text, notification.firstChild);
     notificationContainer.insertBefore(notification, notificationContainer.firstChild);
     notificationContainer.scrollTop = 0;
 }
@@ -40,8 +47,21 @@ document.addEventListener('mousemove', function(event) {
     }
 });
 
-// Example usage: add a new notification        
-for (let i = 1; i < 51; i++) {
-    message = i + " notif";
-    addNotification(message); 
+function checkForNotif() {
+    $.ajax({
+        url: '/get_latest_entry',
+        type: 'GET',
+        success: function(response) {
+            for (var i = 0; i < response.data.length; i++) {
+                var id = response.data[i].id;
+                var error = response.data[i].message;
+
+                var message = id + '\n' + error;
+                if (last_entry === 0 || last_entry < id) {
+                    last_entry = id;
+                    addNotification(message);
+                }    
+            }
+        },
+    });
 }

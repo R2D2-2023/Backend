@@ -6,7 +6,7 @@ import re
 from flask import jsonify
 
 # The import must be done after db initialization due to circular import issue
-from models import SensorData, aabbccddeeff7778, EmailAddress
+from models import SensorData, aabbccddeeff7778, EmailAddress, aabbccddeeff7778error
 
 sensordata = None
 cachetime = None
@@ -45,7 +45,6 @@ def config_route(app, csrf, db):
             print(len(raw_data), len(final_data))
         else:
             final_data = raw_data
-        
 
         timestamp = [data.datetime.isoformat() for data in final_data]
         data = {}
@@ -82,7 +81,6 @@ def config_route(app, csrf, db):
     
     @app.route('/get_email_data')
     def get_email_data():
-
         return [data.address for data in EmailAddress]
 
 
@@ -153,9 +151,23 @@ def config_route(app, csrf, db):
         
     @app.route('/dev')
     def dev():
-        
         return render_template("notif_test.html", value="")
-
+    
+    @app.route('/get_latest_entry', methods=['GET'])
+    def get_all_notifs():
+        all_entries = db.session.query(aabbccddeeff7778error).all()
+        data_list = []
+        for entry in all_entries:
+            data = {
+                'id': entry.id,
+                'datetime': entry.datetime,
+                'message': entry.message,
+                'severity': entry.severity,
+                'component': entry.component
+            }
+            data_list.append(data)
+        return jsonify(data=data_list)
+   
     # Routes for static files
     @app.route('/favicon.ico')
     def favicon():
