@@ -1,4 +1,4 @@
-from sqlalchemy import insert, delete
+from sqlalchemy import insert, delete, and_, or_, not_
 from flask import Flask, redirect, render_template, request, send_from_directory, url_for
 from datetime import datetime, timedelta
 import os
@@ -26,12 +26,22 @@ def config_route(app, csrf, db):
     @app.route('/get_new_data')
     def get_new_data():
         last_datapoint = request.args.get('last_datapoint')
-        location = request.args.get('location')
-        if last_datapoint is None or location is None:
+        first_datapoint = request.args.get('first_datapoint')    
+        location = request.args.get('location')       
+        if last_datapoint is None or first_datapoint is None or location is None:
             return "Not the right parameters are given."
-        last_datapoint = datetime.strptime(last_datapoint, '%Y-%m-%dT%H:%M:%S.%f')
+        loc_arr = []
+        location = int(location)
+        for i in range( 0, 10):
+            if location >> i & 1:
+                loc_arr.append(i+1)
+        try:
+            last_datapoint = datetime.strptime(last_datapoint, '%Y-%m-%dT%H:%M:%S.%f')
+        except:
+            last_datapoint = datetime.strptime(last_datapoint[:-6], '%Y-%m-%dT%H:%M:%S.%f')
+        first_datapoint = datetime.strptime(first_datapoint, '%Y-%m-%dT%H:%M:%S.%f')
         # query for new data with and location and datetime after last_datapoint. return all columns
-        raw_data = SensorData.query.order_by(SensorData.datetime.desc()).filter(SensorData.datetime > last_datapoint, SensorData.location == location).all()
+        raw_data = SensorDataWithLoc.query.order_by(SensorDataWithLoc.datetime.desc()).filter(SensorDataWithLoc.datetime > last_datapoint, SensorDataWithLoc.datetime < first_datapoint, SensorDataWithLoc.zone.in_(loc_arr)).all()
         raw_data.reverse()
         # if len(raw_data) == 0:
         #     return jsonify(timestamp=[], data={})
@@ -64,34 +74,23 @@ def config_route(app, csrf, db):
     
     @app.route('/get_recent_data')	
     def get_recent_data():
-        limit = request.args.get('limit')
-        location = request.args.get('location')
-        # global sensordata
-        # global cachetime 
-        curr_time = datetime.now()
-        # disable = False
-        # if sensordata is None or (datetime.now() - cachetime).total_seconds() > 30 or int(limit) > len(sensordata) or disable:
-        sensordata = SensorData.query.order_by(SensorData.datetime.desc()).filter(SensorData.location == location).limit(limit).all()
-        # cachetime = curr_time
-        timestamp = [data.datetime.strftime("%H:%M") for data in sensordata]
+        sensordata = SensorDataWithLoc.query.order_by(SensorDataWithLoc.datetime.desc()).limit(1).all()
+        timestamp = sensordata[0].datetime.strftime("%H:%M")
         data = {}
-        data['temperature'] = [data.temperature for data in sensordata]
-        data['humidity'] = [data.humidity for data in sensordata]
-        data['co2'] = [data.co2 for data in sensordata]
-        data['pressure'] = [data.pressure for data in sensordata]
-        print("get_recent_sensor_readings time taken", datetime.now() - curr_time)
+        data['temperature'] = sensordata[0].temperature
+        data['humidity'] = sensordata[0].humidity
+        data['co2'] = sensordata[0].co2
+        data['pressure'] = sensordata[0].pressure
+        data['pm'] = sensordata[0].pm10 + sensordata[0].pm25 + sensordata[0].pm100
         return jsonify(timestamp=timestamp, data=data)
     
     @app.route('/get_email_data')
     def get_email_data():
-
-        return [data.address for data in EmailAddress]
-
-
+        return [email.adress for email in EmailAddress.query.all()]
 
     @app.route('/test_is_data_avalable')
     def test_is_data_avalable():
-        SensorData.query.order_by(SensorData.datetime.desc()).limit(100).all()
+        SensorDataWithLoc.query.order_by(SensorDataWithLoc.datetime.desc()).limit(100).all()
         return "ok"
 
     # Routes for html pages

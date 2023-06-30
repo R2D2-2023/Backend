@@ -54,16 +54,14 @@ class SensorDataWithLoc(db.Model):
     humidity = Column(Integer)
     pressure = Column(Integer)
     temperature = Column(DECIMAL(3,1))
-    # location = Column(Integer)
     pm10 = Column(Integer)
     pm25 = Column(Integer)
     pm100 = Column(Integer)
     zone = Column(Integer)
-
+    
     def __str__(self):
         return self.name
     
- 
 
 class aabbccddeeff7778(db.Model):
     __tablename__ = 'aabbccddeeff7778'
