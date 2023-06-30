@@ -4,12 +4,14 @@ from flask import Flask,render_template,request,redirect, url_for, send_from_dir
 from flask_login import login_required, current_user, login_user, logout_user
 import sys
 from pathlib import Path
-from models import config_db, config_login
-from routes import config_route
+
 
 path_root = Path(__file__).parents[0]
 sys.path.append(str(path_root))
 print(sys.path)
+
+from models import config_db, config_login
+from routes import config_route
 
 
 def create_app():
