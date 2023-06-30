@@ -2,31 +2,18 @@ import os
 from datetime import datetime
 from flask import Flask,render_template,request,redirect, url_for, send_from_directory
 from flask_login import login_required, current_user, login_user, logout_user
-
-from flask_sqlalchemy import SQLAlchemy
-
-
-
-
 import sys
 from pathlib import Path
+from models import config_db, config_login
+from routes import config_route
+
 path_root = Path(__file__).parents[0]
 sys.path.append(str(path_root))
 print(sys.path)
 
 
-
-from models import config_db, config_login
-from routes import config_route
-
-
-
 def create_app():
     app = Flask(__name__)
-    
-
-
-
     # if config_filename is not None:
     #     app.config.from_object(config_filename)
 
@@ -46,6 +33,7 @@ def create_app():
     config_route(app, crsf, db)
     config_login(app)
     return app
+
 
 if os.environ.get("WEBSITE_HOSTNAME") is not None:
     # running on Azure Web App

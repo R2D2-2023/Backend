@@ -6,19 +6,8 @@ import re
 from flask import jsonify
 from flask_login import login_required, current_user, login_user, logout_user
 from models import UserModel
-from flask_login import LoginManager
 import random
-
-
-
-
-
-
-
-# The import must be done after db initialization due to circular import issue
 from models import SensorData, aabbccddeeff7778, EmailAddress, UserModel
-
-
 
 sensordata = None
 cachetime = None
@@ -199,26 +188,26 @@ def config_route(app, csrf, db):
         
         return render_template('login.html')
  
-    @app.route('/register', methods=['POST', 'GET'])
-    def register():
-        if current_user.is_authenticated:
-            return redirect('/')
+    # @app.route('/register', methods=['POST', 'GET'])
+    # def register():
+    #     if current_user.is_authenticated:
+    #         return redirect('/')
 
-        if request.method == 'POST':
-            email = request.form['email']
-            username = request.form['username']
-            password = request.form['password']
+    #     if request.method == 'POST':
+    #         email = request.form['email']
+    #         username = request.form['username']
+    #         password = request.form['password']
 
-            if UserModel.query.filter_by(email=email).first():
-                return 'Email already exists'
+    #         if UserModel.query.filter_by(email=email).first():
+    #             return 'Email already exists'
 
-            user = UserModel(email=email, username=username)
-            user.set_password(password)
-            db.session.add(user)
-            db.session.commit()
-            return redirect('/login')
+    #         user = UserModel(email=email, username=username)
+    #         user.set_password(password)
+    #         db.session.add(user)
+    #         db.session.commit()
+    #         return redirect('/login')
         
-        return render_template('register.html')
+    #     return render_template('register.html')
  
     # @app.route('/lege_pagina')
     # def logout():

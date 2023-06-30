@@ -41,6 +41,7 @@ body {
 
 .navlist {
     display: flex;
+
 }
 
 .navlist a {
@@ -64,6 +65,10 @@ body {
     display: none;
 }
 
+/* tot hier is het menu styling */
+
+
+
 .gmail_container {
     display: flex;
     justify-content: center;
@@ -84,12 +89,14 @@ body {
 }
 
 .button:hover {
-    background: rgba(26, 239, 154, 0.7);
+  background: rgba(26, 239, 154, 0.7);
 }
 
 .input_bar {
     width: 250px;
 }
+
+/* vanaf hier schaaling */
 
 @media (max-width: 1535px) {
     header {
@@ -97,6 +104,15 @@ body {
         transition: .2s;
     }
 }
+
+/* @media (max-width: 1460px) {
+} */
+
+/* @media (max-width: 1340px) {
+} */
+
+/* @media (max-width: 1000px) {
+} */
 
 @media (max-width: 990px) {
     #menu-icon {
@@ -132,3 +148,6 @@ body {
         padding-right: 7%;
     }
 }
+
+/* @media (max-width: 780px) {
+} */

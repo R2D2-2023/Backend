@@ -7,8 +7,6 @@ from sqlalchemy.orm import validates
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager
-from flask import Flask, request, render_template
-from flask_login import current_user
 from flask_login import LoginManager
 
 
@@ -17,9 +15,6 @@ db = SQLAlchemy()
 migrate = Migrate()
 csrf = CSRFProtect()
 login = LoginManager()
-
-
-
 
 
 def config_db(app):
@@ -39,8 +34,7 @@ def config_login(app):
     login.init_app(app)
     login.login_view = 'login'
     
-
-    
+ 
 class SensorData(db.Model):
     __tablename__ = 'sensor_data'
     datetime = Column(DateTime, primary_key=True)
@@ -74,6 +68,7 @@ class EmailAddress(db.Model):
     def __str__(self):
         return self.name
     
+
 
 class UserModel(UserMixin, db.Model):
     __tablename__ = 'users'
