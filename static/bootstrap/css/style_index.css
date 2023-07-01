@@ -164,13 +164,6 @@ body {
     margin-top: 15px;
 }
 
-.notification {
-    max-height: calc(100vh - 150px);
-    height: calc(100vh - 150px);
-    overflow: hidden;
-    /* border: 2px solid rgba(255, 255, 255, 0.5); */
-    color: white;
-}
 
 /* @media (max-height: 600px) {
     .notification {
@@ -247,11 +240,11 @@ body {
 
 .notification-container {
     position: fixed;
-    left: 3%;
-    top: 50%;
-    height: 65%;
+    left: 7%;
+    top: 60%;
+    height: 80%;
     width: 20%;
-    transform: translateY(-40%);
+    transform: translateY(-60%);
     background: transparent;
     box-shadow: none;
     border: none;
@@ -260,6 +253,7 @@ body {
     overflow-y: scroll;
     user-select: none;
     flex-direction: column-reverse;
+    z-index: 1;
 }
 
 .notification-time {
@@ -305,7 +299,6 @@ body {
 .notification-container.unselectable {
     user-select: none;
 }
-
 
 .waardes-naam {
     padding-left: 10%;
