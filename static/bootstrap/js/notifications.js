@@ -1,15 +1,17 @@
 var last_entry = 0;
 
-function addNotification(message) {
+function addNotification(time, message) {
     var notificationContainer = document.querySelector('.notification-container');
     var notification = document.createElement('div');
     notification.className = 'notification';
-    var id = document.createElement('div');
-    var text = document.createElement('div');
-    id.textContent = message;
-    text.textContent = "1";
-    notification.insertBefore(id, notification.firstChild);
-    notification.insertBefore(text, notification.firstChild);
+    var timeDiv = document.createElement('div');
+    var messageDiv = document.createElement('div');
+    timeDiv.className = 'notification-time';
+    messageDiv.className = 'notification-message';
+    timeDiv.textContent = time;
+    messageDiv.textContent = message;
+    notification.appendChild(timeDiv);
+    notification.appendChild(messageDiv); 
     notificationContainer.insertBefore(notification, notificationContainer.firstChild);
     notificationContainer.scrollTop = 0;
 }
@@ -54,12 +56,17 @@ function checkForNotif() {
         success: function(response) {
             for (var i = 0; i < response.data.length; i++) {
                 var id = response.data[i].id;
+                
+                var datetime = response.data[i].datetime;
+                var date = new Date(datetime);
+                date.setUTCHours(date.getUTCHours() + 2);
+                var date_result = date.toUTCString().slice(0, -4);
+
                 var error = response.data[i].message;
 
-                var message = id + '\n' + error;
                 if (last_entry === 0 || last_entry < id) {
                     last_entry = id;
-                    addNotification(message);
+                    addNotification(date_result, error);
                 }    
             }
         },

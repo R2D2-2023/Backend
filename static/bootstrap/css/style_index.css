@@ -220,33 +220,7 @@ body {
     margin-right: 2%;
 } */
 
-.bericht-1,
-.bericht-2,
-.bericht-3,
-.bericht-4,
-.bericht-5,
-.bericht-6 {
-    margin-bottom: 8px;
-}
 
-.notificartion-bericht-title {
-    padding-top: 10px;
-    padding-bottom: 5px;
-    padding-left: 5%;
-    font-size: 15px;
-    font-weight: 1000;
-}
-
-.notificartion-bericht {
-    padding-left: 5%;
-    padding-right: 3%;
-    margin-right: 2%;
-    padding-bottom: 8px;
-    padding-top: 8px;
-    border-left: 2px solid #1aef9a;
-    background: rgba(26, 239, 154, 0.1);
-    border-radius: 4px;
-}
 
 
 .waardes-naam {
