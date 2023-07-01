@@ -71,75 +71,17 @@
     </header>
 
     <section class="backgroundimage">
-
-        <section class="grid">
-            <section class="col-1-4">
-                <div class="notification">
-                    <!-- <h1 class="notification-title">Notificaties</h1> -->
-                    <div class="bericht-1">
-                        <div class="notificartion-bericht-title">
-                            <h7 class="tijd">11:56</h7>
-                            <h7 class="spacer"> - </h7>
-                            <h7 class="date">04/04</h7>
-                        </div>
-                        <div class="notificartion-bericht">
-                            <h8 class="bericht">Er is een temperatuur van 26 graden gemeten</h8>
-                        </div>
-                    </div>
-                    <div class="bericht-2">
-                        <div class="notificartion-bericht-title">
-                            <h7 class="tijd">11:56</h7>
-                            <h7 class="spacer"> - </h7>
-                            <h7 class="date">04/04</h7>
-                        </div>
-                        <div class="notificartion-bericht">
-                            <h8 class="bericht">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam assumenda
-                                nesciunt deserunt!</h8>
-                        </div>
-                    </div>
-                    <div class="bericht-3">
-                        <div class="notificartion-bericht-title">
-                            <h7 class="tijd">11:56</h7>
-                            <h7 class="spacer"> - </h7>
-                            <h7 class="date">04/04</h7>
-                        </div>
-                        <div class="notificartion-bericht">
-                            <h8 class="bericht">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quis, nisi.
-                                Praesentium velit recusandae deserunt! Modi?</h8>
-                        </div>
-                    </div>
-                    <div class="bericht-4">
-                        <div class="notificartion-bericht-title">
-                            <h7 class="tijd">11:56</h7>
-                            <h7 class="spacer"> - </h7>
-                            <h7 class="date">04/04</h7>
-                        </div>
-                        <div class="notificartion-bericht">
-                            <h8 class="bericht">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Omnis.</h8>
-                        </div>
-                    </div>
-                    <div class="bericht-5">
-                        <div class="notificartion-bericht-title">
-                            <h7 class="tijd">11:56</h7>
-                            <h7 class="spacer"> - </h7>
-                            <h7 class="date">04/04</h7>
-                        </div>
-                        <div class="notificartion-bericht">
-                            <h8 class="bericht">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Omnis.</h8>
-                        </div>
-                    </div>
-                    <div class="bericht-6">
-                        <div class="notificartion-bericht-title">
-                            <h7 class="tijd">11:56</h7>
-                            <h7 class="spacer"> - </h7>
-                            <h7 class="date">04/04</h7>
-                        </div>
-                        <div class="notificartion-bericht">
-                            <h8 class="bericht">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Omnis.</h8>
-                        </div>
-                    </div>
-                </div>
-            </section>
+        <body>
+            <div class="notification-container"></div>
+            
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+            <script src="../static/bootstrap/js/notifications.js"></script>
+            <script >
+                checkForNotif()
+                myInterval = setInterval(function(){checkForNotif();}, 10000);
+            </script>
+        </body>
+    </section>
             <section class="col-3-4">
                 <div class="statistics">
                     <section class="col-1-3">
