@@ -17,10 +17,29 @@ let end_hour_global = 0;
 let location_global = 1023;
 let liveUpdate = true;
 
+function chartSetup() {
+    Chart.defaults.elements.line.fill = false;                          // de onderkant vullen
+    Chart.defaults.elements.line.cubicInterpolationMode = 'monotone';   // de vorm van de lijn afronden
+    Chart.defaults.elements.line.tension = 0.4;                         // hoeveel er word afgerond
+    Chart.defaults.elements.line.borderWidth = 1;                       // dikte van de lijn
+}
+
 function createCharts(graphs) {
     charts = [];
     for (let i = 0; i < graphs.length; i++) {
-        charts.push(createGraph(graphs[i]));
+        graph = graphs[i]
+        charts.push(createGraph(graph));
+        if (graph.type.length > 1) {
+            for (let j = 1; j < 3; j++) {
+                charts[i].data.datasets.push({
+                    data: [],
+                    label: graph.data_label[j],
+                    borderColor: graph.color[j],
+                    backgroundColor: graph.backgroundColor[j]
+                })
+            }
+        }
+        
     }
     return charts;
 }
@@ -33,14 +52,10 @@ function createGraph(graph) {
         data: {
             labels: graph.time_labels,
             datasets: [{
-                label: graph.data_label,
-                data: graph.data,                           // de data die je laat zien
-                borderColor: graph.color,                   // kleur van de lijn
-                backgroundColor: graph.backgroundColor,     // vul kleur van de bolletjes en blokjes
-                fill: false,                                // de onderkant vullen
-                cubicInterpolationMode: 'monotone',         // de vorm van de lijn afronden
-                tension: 0.4,                               // hoeveel er word afgerond
-                borderWidth: 1                              // dikte van de lijn
+                label: graph.data_label[0],
+                data: graph.data,                               // de data die je laat zien
+                borderColor: graph.color[0],                    // kleur van de lijn
+                backgroundColor: graph.backgroundColor[0]      // vul kleur van de bolletjes en blokjes
             }]
         },
         options: {
@@ -92,6 +107,7 @@ function getNewData(timestamp, cutoff_time, end_timestamp) {
     if (end_timestamp === undefined) {
         end_timestamp = dateMinHours(end_hour_global, end_min_global);
     }
+    setControlsLock(true);
     $.ajax({
         url: "/get_new_data",
         type: "GET",
@@ -100,15 +116,10 @@ function getNewData(timestamp, cutoff_time, end_timestamp) {
             if (typeof ret_data === 'object') {
                 for (let i = 0; i < ret_data.timestamp.length; i++) {
                     for (let j = 0; j < charts.length; j++) {
-                        if (typeof graphs[j] === 'object') {
-                            // for (let k = 0; k < graphs[j].type.length; k++) {
-
-                            // }
+                        for (let k = 0; k < graphs[j].type.length; k++) {
+                            charts[j].data.datasets[k].data.push(ret_data.data[graphs[j].type[k]][i]);
                         }
-                        charts[j].data.datasets.forEach((dataset) => {
-                            dataset.data.push(ret_data.data[graphs[j].type][i])
-                        });
-                        charts[j].data.labels.push(ret_data.timestamp[i])
+                        charts[j].data.labels.push(ret_data.timestamp[i]);
                     }                    
                 }
             }
@@ -140,7 +151,6 @@ function getNewData(timestamp, cutoff_time, end_timestamp) {
 
 function setTimeView(hours, mins, end_hours, end_mins) {
     if ($.active === 0) {
-        setControlsLock(true);
         clearGraphs();
         if (end_mins === undefined) end_mins = -1;
         if (end_hours === undefined) end_hours = 0;
@@ -236,7 +246,6 @@ function handleGraphButtons(){
         location_global = uint16_t;
         console.log(location_global);
         clearGraphs();
-        setControlsLock(true);
 
 
         getNewData(dateMinHours(hour_global, min_global), undefined, dateMinHours(end_hour_global, end_min_global));

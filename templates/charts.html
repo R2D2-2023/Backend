@@ -205,17 +205,19 @@
 </script>
 
 <script>
+    chartSetup();
+    console.log(Chart.defaults.animation)
     graphs = [
-        new GraphData('temperature', 'temp_chart', 'Temperature (°C)', '#1AEF9A', '#C8F0C8', 20, 30),
-        new GraphData('co2', 'co2_chart', 'CO2 (ppm)', '#FF396A', '#FAACC2', 400, 1000),
-        new GraphData('humidity', 'humid_chart', 'Humidity (%)', '#39CF9A', '#82EDC7', 40, 60),
-        new GraphData('pressure', 'pres_chart', 'Air pressure (hPa)', '#FFAA00', '#FFD175', 1000, 1100),
-        new GraphData('pm10', 'pm_chart', 'Particulate Matter (PPM)', '', '', 0, 50)
+        new GraphData(['temperature'], 'temp_chart', ['Temperature (°C)'], ['#1AEF9A'], ['#C8F0C8'], 20, 30),
+        new GraphData(['co2'], 'co2_chart', ['CO2 (ppm)'], ['#FF396A'], ['#FAACC2'], 400, 1000),
+        new GraphData(['humidity'], 'humid_chart', ['Humidity (%)'], ['#39CFFA'], ['#82EDF7'], 40, 60),
+        new GraphData(['pressure'], 'pres_chart', ['Air pressure (hPa)'], ['#FFAA00'], ['#FFD175'], 1000, 1100),
+        new GraphData(['pm10', 'pm25', 'pm100'], 'pm_chart', ['PM10 (ppm)', 'PM25 (ppm)', 'PM100 (ppm)'], ['#99DD80', '#88BB50', '#449950'], ['#BBFFA0', '#AADD70', '#66BB70'], 0, 50)
     ];
     charts = createCharts(graphs);
     getNewData(dateMinHours(hour_global, min_global));
     updateTimeInputValue();
-    dataInterval = setInterval(function() {if (liveUpdate) {getNewData(undefined, dateMinHours(hour_global, min_global))}}, 1000);
+    dataInterval = setInterval(function() {if (liveUpdate) {getNewData(undefined, dateMinHours(hour_global, min_global))}}, 10000);
     timeUpdateInterval = setInterval(function(){updateTimeInputValue()}, 30000);
     handleGraphButtons();
 </script>

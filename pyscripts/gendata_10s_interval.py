@@ -10,13 +10,23 @@ import sys
 
 passwd = ""
 
-with open(".env", "r") as f:
-    lines = f.readlines()
-    for line in lines:
-        if line.startswith("DBPASS"):
-            passwd = line.split("=")[1].strip()
-            break
-
+try:
+    with open(".env", "r") as f:
+        lines = f.readlines()
+        for line in lines:
+            if line.startswith("DBPASS"):
+                passwd = line.split("=")[1].strip()
+                break
+except:
+    try:
+        with open("../.env", "r") as f:
+            lines = f.readlines()
+            for line in lines:
+                if line.startswith("DBPASS"):
+                    passwd = line.split("=")[1].strip()
+                    break
+    except:
+        passwd = input("PASSWORD:")
 
 # define the connection string to connect to the database
 conn_string = "host=m3s-sql-02.postgres.database.azure.com port=5432 dbname={your_database} user=m3s_admin password={your_password} sslmode=require".format(your_database='postgres', your_password=passwd)  
