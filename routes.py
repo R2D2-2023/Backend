@@ -258,6 +258,7 @@ def config_route(app, csrf, db):
                     message = "Mail adress not found in our database"
             else:
                 print("Invalid input")
+            print(message)
             return render_template('email.html', value=message)
             
         
