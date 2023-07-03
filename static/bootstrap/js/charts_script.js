@@ -100,6 +100,11 @@ function getNewData(timestamp, cutoff_time, end_timestamp) {
             if (typeof ret_data === 'object') {
                 for (let i = 0; i < ret_data.timestamp.length; i++) {
                     for (let j = 0; j < charts.length; j++) {
+                        if (typeof graphs[j] === 'object') {
+                            // for (let k = 0; k < graphs[j].type.length; k++) {
+
+                            // }
+                        }
                         charts[j].data.datasets.forEach((dataset) => {
                             dataset.data.push(ret_data.data[graphs[j].type][i])
                         });
@@ -204,6 +209,7 @@ function clearGraphs() {
 }
 
 function handleGraphButtons(){
+    if ($.active === 0) {
         let cb_1 = document.getElementById("cb_1");
         let cb_2 = document.getElementById("cb_2");
         let cb_3 = document.getElementById("cb_3");

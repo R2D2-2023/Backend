@@ -31,9 +31,9 @@ co2 = random.randint(400, 1000)
 temperature = random.randint(20*2, 30*2) / 2.0
 humidity = random.randint(40, 60)
 pressure = random.randint(1000, 1100)
-pm10 = random.randint(0, 100)
-pm25 = random.randint(0, 100)
-pm100 = random.randint(0, 100)
+pm10 = random.randint(0, 50)
+pm25 = random.randint(0, 50)
+pm100 = random.randint(0, 50)
 zone = random.randint(1, 10)
 
 while True:
@@ -64,20 +64,20 @@ while True:
         pressure += diff
         break
     while True:
-        diff = random.randint(-10, 10)
-        if pm10 + diff < 0 or pm10 + diff > 100:
+        diff = random.randint(-2, 2)
+        if pm10 + diff < 0 or pm10 + diff > 50:
             continue
         pm10 += diff
         break
     while True:
-        diff = random.randint(-10, 10)
-        if pm25 + diff < 0 or pm25 + diff > 100:
+        diff = random.randint(-2, 2)
+        if pm25 + diff < 0 or pm25 + diff > 50:
             continue
         pm25 += diff
         break
     while True:
-        diff = random.randint(-10, 10)
-        if pm100 + diff < 0 or pm100 + diff > 100:
+        diff = random.randint(-2, 2)
+        if pm100 + diff < 0 or pm100 + diff > 50:
             continue
         pm100 += diff
         break

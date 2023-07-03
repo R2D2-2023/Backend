@@ -323,11 +323,11 @@ body {
     width: 49%;
     display: inline-block;
     vertical-align: top;
-    margin-bottom: 1.5%;
+    margin-bottom: 0.5%;
 }
 
 .col-full {
-    width: 98%;
+    width: calc(98% + 4.5px);
     display: inline-block;
     vertical-align: top;
     margin-bottom: 1.5%;
@@ -338,20 +338,19 @@ body {
     font-size: 0px;
 }
 
-.temp_chart,
-.humid_chart {
-    margin-right: 2%;
-}
+
 
 
 .temp_chart,
 .CO2_chart,
 .humid_chart,
-.pres_chart {
+.pres_chart,
+.pm_chart {
     background: rgba(255, 255, 255, 0.1);
     border-radius: 5px;
     padding: 2%;
 }
+
 
 
 /* vanaf hier schaling */
