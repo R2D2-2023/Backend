@@ -1,32 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-
+    {% include "head.html" %}
+    
     <!---link naar CSS opmaak--->
     <link rel="stylesheet" type="text/css" href="../static/bootstrap/css/style_index.css">
-
-    <!---boxicons link--->
-    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
-
-    <!----remixicons link--->
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
-
-    <!---google fonts link --->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Poppins:ital,wght@1,300&display=swap"
-        rel="stylesheet">
-
-    <!-- D3.js import
-    <script src="https://d3js.org/d3.v6.min.js"></script> -->
-
-    <!-- voor ajax functionaliteit -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 </head>
 
 
@@ -52,22 +31,13 @@
         })
     }
     getRecentData()
-    myInterval = setInterval(function () { getRecentData() }, 1000);
+    myInterval = setInterval(getRecentData(), 5000);
 </script>
 
 
 
 <body>
-    <header>
-        <a href={{ url_for('index') }} class="logo">Binnenklimaat</a>
-        <ul class="navlist">
-            <li><a href={{ url_for('index') }}>HOME</a></li>
-            <li><a href={{ url_for('charts') }}>STATISTIEKEN</a></li>
-            <li><a href={{ url_for('email') }}>ABONNEREN</a></li>
-            <li><a href={{ url_for('lege_pagina') }}>LOG UIT</a></li>
-        </ul>
-        <div class="bx bx-menu" id="menu-icon"></div>
-    </header>
+    {% include "header.html" %}
 
     <section class="backgroundimage">
 
@@ -298,11 +268,6 @@
 
 
 
-    <!-- scrollreveal effect -->
-    <script src="https://unpkg.com/scrollreveal"></script>
-
-    <!-- custom javascript link -->
-    <script src="../static/bootstrap/js/script.js"></script>
 
 
 </body>
