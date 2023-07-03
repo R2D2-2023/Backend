@@ -122,8 +122,8 @@ def config_route(app, csrf, db):
         color_min = (0, 0, 255)  # Blauw (lage temperatuur)
         color_max = (255, 0, 0)  # Rood (hoge temperatuur)
 
-        min_temp = min(temp)
-        max_temp = max(temp)
+        min_temp = 30
+        max_temp = 15
 
         intensities = []
         colors = []

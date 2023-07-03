@@ -41,7 +41,7 @@ def database():
     for i in range(100, 0, -1):
         datetime_now = datetime.now() - timedelta(minutes=i)
         cur.execute(f"INSERT INTO locatie_only (datetime, x_loc, y_loc) VALUES ('{datetime_now}', {randint(0,232)}, {randint(0,65)})")
-        cur.execute(f"INSERT INTO sensor_data_with_foreign_location (datetime, temperature, co2, humidity, pressure, pm10, pm25, pm100, zone) VALUES ('{datetime_now}', {randint(20, 30)}, {randint(400,1000)}, {randint(40,60)}, {randint(1000,1100)}, {randint(0,100)}, {randint(0,100)}, {randint(0,100)}, {randint(1,10)})")
+        cur.execute(f"INSERT INTO sensor_data_with_foreign_location (datetime, temperature, co2, humidity, pressure, pm10, pm25, pm100, zone) VALUES ('{datetime_now}', {randint(20, 30)}, {randint(400,1000)}, {randint(40,60)}, {randint(1000,1100)}, {randint(0,100)}, {randint(0,100)}, {randint(0,100)}, {1})")
     conn.commit()
 
 @pytest.fixture()
@@ -97,7 +97,7 @@ def test_get_new_data_only_get_newer_data(client, database):
     data = {
     'last_datapoint': f'{(datetime.now() - timedelta(minutes=10)).isoformat()}',
     'first_datapoint': f'{(datetime.now()).isoformat()}',
-    'location': '1'}
+    'location': '1023'}
     response = client.get("/get_new_data", query_string=data)
     assert response.status_code == 200
     assert b"No new data available." not in response.data

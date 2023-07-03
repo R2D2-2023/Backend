@@ -33,7 +33,7 @@ jobs:
           run: |
             flask db init
             flask db upgrade
-            pytest
+            pytest -n0
           env:
             DBNAME: postgres
             DBHOST: localhost
