@@ -242,7 +242,6 @@ function handleGraphButtons(){
 function setControlsLock(locked){
     let time_controls = document.getElementById("instellingen_container").querySelectorAll(".time_input, button");
     let loc_controls = document.getElementById("content_container").querySelectorAll("input[type='checkbox']");
-    console.log(loc_controls);
     for (let i = 0; i < time_controls.length; i++) {
         time_controls[i].disabled = locked;
     }
