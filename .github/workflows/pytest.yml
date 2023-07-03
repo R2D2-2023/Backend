@@ -31,6 +31,7 @@ jobs:
             pip install -r requirements.txt
         - name: Run PyTest
           run: |
+            flask db init
             flask db upgrade
             pytest
           env:
