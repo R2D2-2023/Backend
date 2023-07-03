@@ -173,7 +173,7 @@
                         <canvas id="pres_chart"></canvas>
                     </div>
                 </section>
-                <section class="col-1-2">
+                <section class="col-full">
                     <div class="pm_chart">
                         <h8 class="niet_zichtbaar">niet zichtbare text</h8>
                         <canvas id="pm_chart"></canvas>
@@ -207,11 +207,11 @@
 
 <script>
     graphs = [
-        new GraphData('temperature', 'temp_chart', [], 'Temperature (°C)', [], '#1AEF9A', '#C8F0C8', 20, 30),
-        new GraphData('co2', 'co2_chart', [], 'CO2 (ppm)', [], '#FF396A', '#FAACC2', 400, 1000),
-        new GraphData('humidity', 'humid_chart', [], 'Humidity (%)', [], '#39CF9A', '#82EDC7', 40, 60),
-        new GraphData('pressure', 'pres_chart', [], 'Air pressure (hPa)', [], '#FFAA00', '#FFD175', 1000, 1100),
-        // new GraphData('particulate matter', 'pm_chart', [], 'Particulate Matter (PPM)', [], '', '', 1000, 1100)
+        new GraphData('temperature', 'temp_chart', 'Temperature (°C)', '#1AEF9A', '#C8F0C8', 20, 30),
+        new GraphData('co2', 'co2_chart', 'CO2 (ppm)', '#FF396A', '#FAACC2', 400, 1000),
+        new GraphData('humidity', 'humid_chart', 'Humidity (%)', '#39CF9A', '#82EDC7', 40, 60),
+        new GraphData('pressure', 'pres_chart', 'Air pressure (hPa)', '#FFAA00', '#FFD175', 1000, 1100),
+        // new GraphData('particulate matter', 'pm_chart', 'Particulate Matter (PPM)', '', '', 1000, 1100)
     ];
     charts = createCharts(graphs);
     getNewData(dateMinHours(hour_global, min_global));

@@ -1,9 +1,9 @@
-function GraphData(type, canvasID, data, data_label, time_labels, color, backgroundColor, suggestedMin, suggestedMax) {
+function GraphData(type, canvasID, data_label, color, backgroundColor, suggestedMin, suggestedMax) {
     this.type = type;
     this.canvasID = canvasID;
-    this.data = data;
+    this.data = [];
     this.data_label = data_label;
-    this.time_labels = time_labels;
+    this.time_labels = [];
     this.color = color;
     this.backgroundColor = backgroundColor;
     this.suggestedMin = suggestedMin;
@@ -14,7 +14,7 @@ let min_global = 5;
 let hour_global = 0;
 let end_min_global = -1;
 let end_hour_global = 0;
-let location_global = 0;
+let location_global = 1023;
 let liveUpdate = true;
 
 function createCharts(graphs) {
@@ -204,7 +204,6 @@ function clearGraphs() {
 }
 
 function handleGraphButtons(){
-    if ($.active === 0) {
         let cb_1 = document.getElementById("cb_1");
         let cb_2 = document.getElementById("cb_2");
         let cb_3 = document.getElementById("cb_3");
@@ -229,7 +228,7 @@ function handleGraphButtons(){
         if (cb_10.checked) uint16_t += 512;
 
         location_global = uint16_t;
-
+        console.log(location_global);
         clearGraphs();
         setControlsLock(true);
 

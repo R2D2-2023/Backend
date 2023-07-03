@@ -326,6 +326,13 @@ body {
     margin-bottom: 1.5%;
 }
 
+.col-full {
+    width: 98%;
+    display: inline-block;
+    vertical-align: top;
+    margin-bottom: 1.5%;
+}
+
 .niet_zichtbaar {
     opacity: 0%;
     font-size: 0px;
@@ -347,7 +354,7 @@ body {
 }
 
 
-/* vanaf hier schaaling */
+/* vanaf hier schaling */
 
 @media (max-width: 1535px) {
     header {
