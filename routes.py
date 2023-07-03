@@ -65,10 +65,11 @@ def config_route(app, csrf, db):
         data = {}
         data['temperature'] = [data.temperature for data in final_data]
         data['humidity'] = [data.humidity for data in final_data]
-        # data['co2'] = [data.ppm for data in final_data]
         data['co2'] = [data.co2 for data in final_data]
         data['pressure'] = [data.pressure for data in final_data]
-        # data['pressure'] = [data.air_pressure for data in final_data]
+        data['pm10'] = [data.pm10 for data in final_data]
+        data['pm25'] = [data.pm25 for data in final_data]
+        data['pm100'] = [data.pm100 for data in final_data]
         if timestamp == []:
             return "No new data available."
         
