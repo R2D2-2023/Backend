@@ -7,4 +7,4 @@ psycopg2
 python-dotenv
 SQLAlchemy
 pytest
-opencv-python
+opencv-python-headless
