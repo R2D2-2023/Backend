@@ -42,8 +42,6 @@
 <!-- scrollreveal effect -->
 <script src="https://unpkg.com/scrollreveal"></script>
 
-<!-- custom javascript link -->
-<script src="{{url_for('static', filename='bootstrap/js/script.js')}}"></script>
 
 
 
@@ -53,33 +51,39 @@
         <ul class="navlist">
             <li><a href={{ url_for('index') }}>HOME</a></li>
             <li><a href={{ url_for('charts') }}>STATISTIEKEN</a></li>
-            <li><a href={{ url_for('lege_pagina') }}>LEGE PAGINA</a></li>
-            <li><a href={{ url_for('lege_pagina') }}>LEGE PAGINA</a></li>
+            <li><a href={{ url_for('email') }}>ABONEREN</a></li>
+            <li><a href={{ url_for('lege_pagina') }}>LOG UIT</a></li>
         </ul>
         <div class="bx bx-menu" id="menu-icon"></div>
     </header>
 
     <section class="backgroundimage">
 
-        <div class="instellingen_container">
+        <div class="instellingen_container" id="instellingen_container">
             <div class="instellingen_logo">
-                <img src="../static/images/instellingen.png" alt="instellingen logo">
+                <img src="../static/images/instellingen.png" alt="instellingen logo" id="instellingen_logo">
+                <img src="../static/images/instellingen.gif" alt="instellingen animatie" id="instellingen_animatie" hidden>
             </div>
             <div class="time_title">
-                <h4>TIME:</h4>
+                <h4>TIME RANGE</h4>
             </div>
-            <div class="time_buttons">
-                <button type="submit" id="button_10" name="button" onclick="setTimeView(charts, graphs, 1, 0, 1)" class="btn btn-primary">1 min</button>
-                <button type="submit" id="button_50" name="button" onclick="setTimeView(charts, graphs, 1, 0, 5)" class="btn btn-primary">5 min</button>
-                <button type="submit" id="button_100" name="button" onclick="setTimeView(charts, graphs, 1, 0, 10)" class="btn btn-primary">10 min</button>
-                <button type="submit" id="button_100" name="button" onclick="setTimeView(charts, graphs, 1, 1, 0)" class="btn btn-primary">1 uur</button>
+                <div class="time_buttons">
+                <button type="submit" id="button_1min" name="button" onclick="setTimeView(0, 1)" class="btn btn-primary">1 min</button>
+                <button type="submit" id="button_5min" name="button" onclick="setTimeView(0, 5)" class="btn btn-primary">5 min</button>
+                <button type="submit" id="button_10min" name="button" onclick="setTimeView(0, 10)" class="btn btn-primary">10 min</button>
+                <button type="submit" id="button_1hour" name="button" onclick="setTimeView(1, 0)" class="btn btn-primary">1 uur</button>
+                <button type="submit" id="button_1day" name="button" onclick="setTimeView(24, 0)" class="btn btn-primary">1 dag</button>
+                <button type="submit" id="button_1week" name="button" onclick="setTimeView(168, 0)" class="btn btn-primary">1 week</button>
             </div>
             <div class="time_custom">
+                <h4>FROM</h4>
+                <input type="datetime-local" id="start_time" name="start_time" class="time_input" onchange="timeInputChanged()">
+                <h4>TO</h4>
+                <input type="datetime-local" id="end_time" name="end_time" class="time_input" onchange="timeInputChanged()">
                 
-
             </div>
         </div>
-        <div class="procent_80">
+        <div class="procent_80" id="content_container">
             <div class="map_title_container">
                 <div class="map_title">
                     <h4>SELECT REGION:</h4>
@@ -88,55 +92,55 @@
                     <h4>SELECT ALL:</h4>
                 </div>
                 <div class="checkbox_select_all">
-                    <input type="checkbox" id="cb_select_all" name="cb_select_all" onclick="checkAll(this)">
+                    <input type="checkbox" id="cb_select_all" name="cb_select_all" checked onclick="checkAll(this)">
                     <label  id="cb_select_all" for="cb_select_all"></label>
                 </div>
             </div>
 
             <div class="map_img_container">
                 <div class="map_img">
-                    <img src="../static/images/kaart4de-verdieping.png" alt="Plategrond van de 4de verdieping van de hogeschool utrecht heidelberglaan 15">
+                    <img src="../static/images/kaart4de-verdieping.png" alt="Plattegrond van de 4e verdieping van de Hogeschool Utrecht Heidelberglaan 15">
                 </div>
                 
 
                 <div class="checkbox_container">
-                    <input type="checkbox" id="cb_1" name="cb_1" checked>
+                    <input type="checkbox" id="cb_1" name="cb_1" checked onclick="handleGraphButtons()">
                     <label  id="cb_1" for="cb_1"></label>
                 </div>
                 <div class="checkbox_container">
-                    <input type="checkbox" id="cb_2" name="cb_2">
+                    <input type="checkbox" id="cb_2" name="cb_2" checked onclick="handleGraphButtons()">
                     <label  id="cb_2" for="cb_2"></label>
                 </div>
                 <div class="checkbox_container">
-                    <input type="checkbox" id="cb_3" name="cb_3">
+                    <input type="checkbox" id="cb_3" name="cb_3" checked onclick="handleGraphButtons()">
                     <label  id="cb_3" for="cb_3"></label>
                 </div>
                 <div class="checkbox_container">
-                    <input type="checkbox" id="cb_4" name="cb_4">
+                    <input type="checkbox" id="cb_4" name="cb_4" checked onclick="handleGraphButtons()">
                     <label  id="cb_4" for="cb_4"></label>
                 </div>
                 <div class="checkbox_container">
-                    <input type="checkbox" id="cb_5" name="cb_5">
+                    <input type="checkbox" id="cb_5" name="cb_5" checked onclick="handleGraphButtons()">
                     <label  id="cb_5" for="cb_5"></label>
                 </div>
                 <div class="checkbox_container">
-                    <input type="checkbox" id="cb_6" name="cb_6">
+                    <input type="checkbox" id="cb_6" name="cb_6" checked onclick="handleGraphButtons()">
                     <label  id="cb_6" for="cb_6"></label>
                 </div>
                 <div class="checkbox_container">
-                    <input type="checkbox" id="cb_7" name="cb_7">
+                    <input type="checkbox" id="cb_7" name="cb_7" checked onclick="handleGraphButtons()">
                     <label  id="cb_7" for="cb_7"></label>
                 </div>
                 <div class="checkbox_container">
-                    <input type="checkbox" id="cb_8" name="cb_8">
+                    <input type="checkbox" id="cb_8" name="cb_8" checked onclick="handleGraphButtons()">
                     <label  id="cb_8" for="cb_8"></label>
                 </div>
                 <div class="checkbox_container">
-                    <input type="checkbox" id="cb_9" name="cb_9">
+                    <input type="checkbox" id="cb_9" name="cb_9" checked onclick="handleGraphButtons()">
                     <label  id="cb_9" for="cb_9"></label>
                 </div>
                 <div class="checkbox_container">
-                    <input type="checkbox" id="cb_10" name="cb_10">
+                    <input type="checkbox" id="cb_10" name="cb_10" checked onclick="handleGraphButtons()">
                     <label  id="cb_10" for="cb_10"></label>
                 </div>
 
@@ -168,10 +172,10 @@
                         <canvas id="pres_chart"></canvas>
                     </div>
                 </section>
-                <section class="col-1-2">
-                    <div class="pres_chart">
+                <section class="col-full">
+                    <div class="pm_chart">
                         <h8 class="niet_zichtbaar">niet zichtbare text</h8>
-                        <canvas id="pres_chart"></canvas>
+                        <canvas id="pm_chart"></canvas>
                     </div>
                 </section>
             </div>
@@ -186,8 +190,8 @@
 
 
 <script>
-    var checkboxes = document.querySelectorAll("input[type='checkbox']");
-    var selectAllCheckbox = document.getElementById('cb_select_all');
+    let checkboxes = document.querySelectorAll("input[type='checkbox']");
+    let selectAllCheckbox = document.getElementById('cb_select_all');
 
     function checkAll(source) {
         checkboxes.forEach(function (checkbox) {
@@ -195,25 +199,30 @@
                 checkbox.checked = source.checked;
             }
         });
+        handleGraphButtons();
     }
-
-    selectAllCheckbox.addEventListener('change', function () {
-        checkAll(this);
-    });
 </script>
-
 
 <script>
-    let graphs = [
-        new GraphData('temperature', 'temp_chart', [], 'Temperature (°C)', [], '#1AEF9A', '#C8F0C8', 20, 30),
-        new GraphData('co2', 'co2_chart', [], 'CO2 (ppm)', [], '#FF396A', '#FAACC2', 400, 1000),
-        new GraphData('humidity', 'humid_chart', [], 'Humidity (%)', [], '#39CF9A', '#82EDC7', 40, 60),
-        new GraphData('pressure', 'pres_chart', [], 'Air pressure (hPa)', [], '#FFAA00', '#FFD175', 1000, 1100),
-        new GraphData('air quality', 'air_q_hart', [], 'air quality (PPM)', [], '', '', 1000, 1100)
+    chartSetup();
+    console.log(Chart.defaults.animation)
+    graphs = [
+        new GraphData(['temperature'], 'temp_chart', ['Temperature (°C)'], ['#1AEF9A'], ['#C8F0C8'], 20, 30),
+        new GraphData(['co2'], 'co2_chart', ['CO2 (ppm)'], ['#FF396A'], ['#FAACC2'], 400, 1000),
+        new GraphData(['humidity'], 'humid_chart', ['Humidity (%)'], ['#39CFFA'], ['#82EDF7'], 40, 60),
+        new GraphData(['pressure'], 'pres_chart', ['Air pressure (hPa)'], ['#FFAA00'], ['#FFD175'], 1000, 1100),
+        new GraphData(['pm10', 'pm25', 'pm100'], 'pm_chart', ['PM10 (ppm)', 'PM25 (ppm)', 'PM100 (ppm)'], ['#99DD80', '#88BB50', '#449950'], ['#BBFFA0', '#AADD70', '#66BB70'], 0, 50)
     ];
     charts = createCharts(graphs);
-    getNewData(charts, graphs, 1, dateMinHours(hour_global, min_global)) 
-    myInterval = setInterval(function(){getNewData(charts, graphs, 1, undefined, dateMinHours(hour_global, min_global))}, 1000);
+    getNewData(dateMinHours(hour_global, min_global));
+    updateTimeInputValue();
+    dataInterval = setInterval(function() {if (liveUpdate) {getNewData(undefined, dateMinHours(hour_global, min_global))}}, 10000);
+    timeUpdateInterval = setInterval(function(){updateTimeInputValue()}, 30000);
+    handleGraphButtons();
 </script>
+
+<!-- custom javascript link -->
+<script src="{{url_for('static', filename='bootstrap/js/script.js')}}"></script>
+
 
 </html>

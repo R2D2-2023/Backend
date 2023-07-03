@@ -113,6 +113,35 @@ body {
   background: rgba(26, 239, 154, 0.7);
 }
 
+.time_buttons button[disabled] {
+    color: gray;
+    background: rgba(5, 5, 5, 0.1)
+}
+
+.time_custom {
+    padding-left: 5%;
+    padding-right: 5%;
+    color: white;
+}
+
+.time_custom h4 {
+    color: white;
+}
+
+.time_input {
+    background-color: rgba(5, 5, 5, 0.1);
+    border: 1px solid #1aef9a;
+    border-radius: 3px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    width: 85%;
+    font-size: 0.6rem;
+    color-scheme: dark;
+}
+.time_input::-webkit-calendar-picker-indicator {
+    width: 10%;    
+}
+
 .procent_80 {
     padding-left: 14%;
 }
@@ -215,6 +244,22 @@ body {
     box-shadow: 0 0 20px white;
 }
 
+.checkbox_container input[type='checkbox'][disabled] + label::before,
+.checkbox_select_all input[type='checkbox'][disabled] + label::before {
+    border-color: lightgray;
+}
+
+.checkbox_container input[type='checkbox'][disabled]:checked + label::before,
+.checkbox_select_all input[type='checkbox'][disabled]:checked + label::before {
+    border-color: lightgray;
+    background-color: gray;
+}
+
+.checkbox_container input[type='checkbox'][disabled] + label:hover::before,
+.checkbox_select_all input[type='checkbox'][disabled] + label:hover::before {
+    background-color: transparent;
+}
+
 
 #cb_1 {
     top: 15%;
@@ -278,6 +323,13 @@ body {
     width: 49%;
     display: inline-block;
     vertical-align: top;
+    margin-bottom: 0.5%;
+}
+
+.col-full {
+    width: calc(98% + 4.5px);
+    display: inline-block;
+    vertical-align: top;
     margin-bottom: 1.5%;
 }
 
@@ -286,23 +338,22 @@ body {
     font-size: 0px;
 }
 
-.temp_chart,
-.humid_chart {
-    margin-right: 2%;
-}
+
 
 
 .temp_chart,
 .CO2_chart,
 .humid_chart,
-.pres_chart {
+.pres_chart,
+.pm_chart {
     background: rgba(255, 255, 255, 0.1);
     border-radius: 5px;
     padding: 2%;
 }
 
 
-/* vanaf hier schaaling */
+
+/* vanaf hier schaling */
 
 @media (max-width: 1535px) {
     header {

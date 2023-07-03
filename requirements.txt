@@ -2,7 +2,9 @@ Flask
 Flask-Migrate
 Flask-SQLAlchemy
 flask_wtf
+flask_login
 psycopg2
 python-dotenv
 SQLAlchemy
 pytest
+opencv-python-headless
