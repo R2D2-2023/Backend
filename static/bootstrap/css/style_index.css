@@ -65,9 +65,6 @@ body {
     display: none;
 }
 
-/* tot hier is het menu styling */
-/* vanaf hier colom indeling */
-
 .col-1-4 {
     width: 24%;
 }
@@ -98,10 +95,6 @@ body {
     vertical-align: top;
 }
 
-
-/* einde colom indeling */
-/* begin styling actuele waarde */
-
 .temp,
 .humid,
 .co2,
@@ -117,21 +110,6 @@ body {
     color: rgba(255, 255, 255, 0.9);
 }
 
-
-/* @media (max-height: 600px) {
-    .notification {
-        max-height: 70vh;
-        height: 70vh;
-    }
-}
-
-@media (max-height: 400px) {
-    .notification {
-        max-height: 65vh;
-        height: 65vh;
-    }
-} */
-
 .temp {
     background: linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12);
 }
@@ -146,16 +124,6 @@ body {
 .overig {
     border: 2px solid #1aef9a;
 }
-
-/* .notification-title {
-    padding-left: 5%;
-    padding-top: 10px;
-    font-size: 20px;
-    margin-right: 2%;
-} */
-
-/* einde stuling actuele waarde  */
-/* begin styling notivications  */
 
 .waardes-naam {
     padding-left: 10%;
@@ -215,7 +183,6 @@ body {
     color: rgb(255, 255, 255)
 }
 
-/* Hide scrollbar when not being interacted with */
 .notification-container::-webkit-scrollbar {
     width: 0em;
     background-color: transparent;
@@ -225,19 +192,13 @@ body {
     background-color: transparent;
 }
 
-/* Show scrollbar when being interacted with */
 .notification-container:hover::-webkit-scrollbar-thumb {
     background-color: transparent;
 }
 
-/* Prevent text selection while scrolling */
 .notification-container.unselectable {
     user-select: none;
 }
-
-/* einde styling notivications  */
-/* begin styling map  */
-
 
 #heatmap-canvas {
     position: absolute;
@@ -246,7 +207,6 @@ body {
     width: 100%;
     height: 100%;
   }
-  
 
 .kaart {
     max-height: calc(100vh - 401px);
@@ -279,34 +239,12 @@ body {
     position: relative;
 }
 
-
-
-/* einde styling map  */
-/* begin responsive maken */
-
-
-/* @media (max-height: 600px) {
-}
-
-@media (max-height: 400px) {
-} */
-
-
 @media (max-width: 1535px) {
     header {
         padding: 15px 3%;
         transition: .2s;
     }
 }
-
-/* @media (max-width: 1460px) {
-} */
-
-/* @media (max-width: 1340px) {
-} */
-
-/* @media (max-width: 1000px) {
-} */
 
 @media (max-width: 990px) {
     #menu-icon {
@@ -365,6 +303,3 @@ body {
 
 
 }
-
-/* @media (max-width: 780px) {
-} */

@@ -263,10 +263,6 @@ def config_route(app, csrf, db):
         
         elif request.method == 'GET':
             return render_template("email.html", value="")
-        
-    @app.route('/dev')
-    def dev():
-        return render_template("notif_test.html", value="")
     
     @app.route('/get_latest_entry', methods=['GET'])
     def get_all_notifs():
