@@ -8,7 +8,7 @@ import cv2
 import numpy as np
 
 # The import must be done after db initialization due to circular import issue
-from models import SensorData, aabbccddeeff7778, EmailAddress, aabbccddeeff7778error, LocOnly, SensorDataWithLoc
+from models import EmailAddress, aabbccddeeff7778error, LocOnly, SensorDataWithLoc
 from flask_login import login_required, current_user, login_user, logout_user
 from models import UserModel
 
@@ -286,7 +286,7 @@ def config_route(app, csrf, db):
     
     @app.route('/logout')
     @login_required
-    def lege_pagina():
+    def logout():
         """
         Logs out the current user and redirects to the login page.
 
