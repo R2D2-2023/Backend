@@ -163,7 +163,6 @@ def config_route(app, csrf, db):
             if zone_data:
                 sensor_data = zone_data[0]
                 temp.append(sensor_data.temperature)
-                print(i)
                 i += 1
 
 
@@ -235,17 +234,29 @@ def config_route(app, csrf, db):
             # cv2.circle(heatmap_overlay, (zones[i][0], zones[i][1]), radius, color, outline)
             cv2.rectangle(heatmap_overlay, (zones[i][0], zones[i][1]),(zones[i][0]+steps_x, zones[i][1]+steps_y), color, outline)  
 
-        # plaatsing circle waar de auto nu is !!! locatie word nog niet goed berekend !!!
         # circle staat nu net niet op de kaart dus kan zijn dat je hem niet ziet
         max_x = 232
         max_y = 65 
-
         cv2.circle(heatmap_overlay, (int(heatmap_overlay.shape[1]/max_x * last_location[0].x_loc), int(heatmap_overlay.shape[0]/max_y * last_location[0].y_loc)), 100, (255,255,255), outline)
+        icon = cv2.imread('static/images/r2d2.png', cv2.IMREAD_UNCHANGED)
+        icon = cv2.resize(icon, (0, 0), fx = 0.1, fy = 0.1)
 
+        x_offset=(int(heatmap_overlay.shape[1]/max_x * last_location[0].x_loc)) - int((icon.shape[0])/2)
+        y_offset=(int(heatmap_overlay.shape[0]/max_y * last_location[0].y_loc)) - int((icon.shape[1])/2)
+
+        y1, y2 = y_offset, y_offset + icon.shape[0]
+        x1, x2 = x_offset, x_offset + icon.shape[1]
+
+        alpha_s = icon[:, :, 3] / 255.0
+        alpha_l = 1.0 - alpha_s
+
+        for c in range(0, 3):
+            heatmap_overlay[y1:y2, x1:x2, c] = (alpha_s * icon[:, :, c] + alpha_l * heatmap_overlay[y1:y2, x1:x2, c])
+        
         # Combineer de originele afbeelding met de heatmap-overlay
         alpha = 0.5
         beta = 0.5
-        combined_image = cv2.addWeighted(heatmap_overlay, alpha, image, beta, 0)
+        combined_image = cv2.addWeighted(image, alpha, heatmap_overlay, beta, 0)
 
         # Bewaar of toon de gegenereerde afbeelding
         cv2.imwrite('static/images/kaart4de-verdieping-solid_heatmap.png', combined_image)
