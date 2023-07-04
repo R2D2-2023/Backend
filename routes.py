@@ -16,13 +16,36 @@ sensordata = None
 cachetime = None
 regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
 
+ 
+
 def validate_mail(mail_adress):
+    """
+    Validates whether a given email address is in a valid format.
+
+    Parameters:
+    - mail_address (str): The email address to be validated.
+
+    Returns:
+    - bool or None: Returns True if the email address is valid, False if it is not valid, or None if the email address is empty.
+    """
     if (re.fullmatch(regex, mail_adress)):
         return
     else:
         return False
 
 def config_route(app, csrf, db):
+    """
+    Configures routes for an API in a Flask application.
+
+    Parameters:
+    - app (Flask): The Flask application object.
+    - csrf: The CSRF protection object.
+    - db: The database object.
+
+    Returns:
+    - None
+    """
+
     # Routes for API's   
     @app.route('/get_new_data')
     def get_new_data():
@@ -76,6 +99,12 @@ def config_route(app, csrf, db):
     
     @app.route('/get_recent_data')	
     def get_recent_data():
+        """
+        Retrieves the most recent sensor data from the database and returns it as JSON.
+
+        Returns:
+        - dict: A dictionary containing the timestamp and sensor data.
+        """
         sensordata = SensorDataWithLoc.query.order_by(SensorDataWithLoc.datetime.desc()).limit(1).all()
         timestamp = sensordata[0].datetime.strftime("%H:%M")
         data = {}

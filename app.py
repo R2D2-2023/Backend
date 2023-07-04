@@ -16,12 +16,11 @@ from routes import config_route
 
 def create_app():
     app = Flask(__name__)
-    # if config_filename is not None:
-    #     app.config.from_object(config_filename)
+
 
     if 'FLASK_TEST' in os.environ:
         app.config.from_object('azureproject.test')
-    #     # WEBSITE_HOSTNAME exists only in production environment
+        # WEBSITE_HOSTNAME exists only in production environment
     elif 'WEBSITE_HOSTNAME' not in os.environ:
         # local development, where we'll use environment variables
         print("Loading config.development and environment variables from .env file.")
