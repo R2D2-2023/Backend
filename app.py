@@ -17,7 +17,6 @@ from routes import config_route
 def create_app():
     app = Flask(__name__)
 
-
     if 'FLASK_TEST' in os.environ:
         app.config.from_object('azureproject.test')
         # WEBSITE_HOSTNAME exists only in production environment
