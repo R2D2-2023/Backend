@@ -7,23 +7,6 @@
     text-decoration: none;
 }
 
-header {
-    position: fixed;
-    right: 0;
-    top: 0;
-    z-index: 1000;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 33px 9%;
-    background: rgba(255, 255, 255, 0.0);
-}
-
-body {
-    background-color: #0d0d0d;
-}
-
 .logo {
     font-size: 30px;
     font-weight: 700;
@@ -65,14 +48,12 @@ body {
     display: none;
 }
 
-/* tot hier is het menu styling */
-/* vanaf hier colom indeling */
-
 .col-1-4 {
     width: 24%;
 }
 
 .col-3-4 {
+    padding-top: 4%;
     width: 75%;
 }
 
@@ -96,10 +77,6 @@ body {
     display: inline-block;
     vertical-align: top;
 }
-
-
-/* einde colom indeling */
-/* begin styling actuele waarde */
 
 .temp,
 .humid,
@@ -133,13 +110,13 @@ body {
 
 .waardes-naam {
     padding-left: 10%;
-    padding-top: 15px;
+    padding-top: 10px;
 }
 
 .waardes-value {
     display: inline-block;
     padding-left: 7%;
-    padding-top: 3px;
+    padding-bottom: ;
     font-size: 55px;
 }
 
@@ -147,61 +124,72 @@ body {
     display: inline-block;
 }
 
-
-/* einde stuling actuele waarde  */
-/* begin styling notivications  */
-
-.notification {
-    max-height: calc(100vh - 150px);
-    height: calc(100vh - 150px);
-    overflow: hidden;
-    color: white;
+.notification-container {
+    position: fixed;
+    left: 7%;
+    top: 60%;
+    height: 80%;
+    width: 20%;
+    transform: translateY(-60%);
+    background: transparent;
+    box-shadow: none;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-y: scroll;
+    user-select: none;
+    flex-direction: column-reverse;
+    z-index: 1;
 }
 
-.bericht-1,
-.bericht-2,
-.bericht-3,
-.bericht-4,
-.bericht-5,
-.bericht-6 {
-    margin-bottom: 8px;
-}
-
-.notificartion-bericht-title {
+.notification-time {
     padding-top: 10px;
     padding-bottom: 5px;
     padding-left: 5%;
-    font-size: 15px;
+    font-size: 17px;
     font-weight: 1000;
+    color: rgb(255, 255, 255)
 }
 
-.notificartion-bericht {
+.notification-message {
+    margin-bottom: 10px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
     padding-left: 5%;
     padding-right: 3%;
     margin-right: 2%;
-    padding-bottom: 8px;
-    padding-top: 8px;
-    border-left: 2px solid #1aef9a;
-    background: rgba(26, 239, 154, 0.1);
+    padding-bottom: 15px;
+    padding-top: 15px;
+    border-left: 3px solid #1aef9a;
+    background-color: rgba(26, 239, 154, 0.1);
     border-radius: 4px;
+    color: rgb(255, 255, 255)
 }
 
+.notification-container::-webkit-scrollbar {
+    width: 0em;
+    background-color: transparent;
+}
 
-/* einde styling notivications  */
-/* begin styling map  */
+.notification-container::-webkit-scrollbar-thumb {
+    background-color: transparent;
+}
 
-  .kaart-img {
-    position: relative;
-  }
+.notification-container:hover::-webkit-scrollbar-thumb {
+    background-color: transparent;
+}
 
-  #heatmap-canvas {
+.notification-container.unselectable {
+    user-select: none;
+}
+
+#heatmap-canvas {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
   }
-  
 
 .kaart {
     max-height: calc(100vh - 401px);
@@ -231,20 +219,8 @@ body {
     height: auto;
     opacity: 90%;
     align-items: center;
+    position: relative;
 }
-
-
-
-/* einde styling map  */
-/* begin responsive maken */
-
-
-/* @media (max-height: 600px) {
-}
-
-@media (max-height: 400px) {
-} */
-
 
 @media (max-width: 1535px) {
     header {
@@ -252,15 +228,6 @@ body {
         transition: .2s;
     }
 }
-
-/* @media (max-width: 1460px) {
-} */
-
-/* @media (max-width: 1340px) {
-} */
-
-/* @media (max-width: 1000px) {
-} */
 
 @media (max-width: 990px) {
     #menu-icon {
@@ -319,6 +286,3 @@ body {
 
 
 }
-
-/* @media (max-width: 780px) {
-} */

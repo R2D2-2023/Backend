@@ -1,0 +1,17 @@
+<html>
+    <head>
+        <title>Notification Page</title>
+        <!-- <link rel="stylesheet" type="text/css" href="../static/bootstrap/css/style_index.css"> -->
+        <link rel="stylesheet" type="text/css" href="../static/bootstrap/css/style_notifs_test.css">
+    </head>
+    <body>
+        <div class="notification-container"></div>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="../static/bootstrap/js/notifications.js"></script>
+        <script >
+            checkForNotif()
+            myInterval = setInterval(function(){checkForNotif();}, 10000);
+        </script>
+    </body>
+</html>

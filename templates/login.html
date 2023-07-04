@@ -1,28 +1,17 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    {% include "head.html" %}
 
     <!-- Link to the custom CSS file -->
     <link rel="stylesheet" type="text/css" href="../static/bootstrap/css/style_login.css">
 
-    <!---boxicons link--->
-    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
-
-    <!---google fonts link --->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Poppins:ital,wght@1,300&display=swap"
-        rel="stylesheet">
 </head>
 
 <body>
     <header>
         <a href="{{ url_for('index') }}" class="logo">Binnenklimaat</a>
-        <div class="bx bx-menu" id="menu-icon"></div>
     </header>
 
     <section class="backgroundimage">
@@ -35,8 +24,5 @@
             </form>
         </div>
     </section>
-
-    <!-- custom JavaScript link -->
-    <script src="../static/bootstrap/js/script.js"></script>
 </body>
 </html>
