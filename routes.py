@@ -8,7 +8,7 @@ import cv2
 import numpy as np
 
 # The import must be done after db initialization due to circular import issue
-from models import SensorData, aabbccddeeff7778, EmailAddress, LocOnly, SensorDataWithLoc
+from models import SensorData, aabbccddeeff7778, EmailAddress, aabbccddeeff7778error, LocOnly, SensorDataWithLoc
 from flask_login import login_required, current_user, login_user, logout_user
 from models import UserModel
 
@@ -59,7 +59,6 @@ def config_route(app, csrf, db):
             print(len(raw_data), len(final_data))
         else:
             final_data = raw_data
-        
 
         timestamp = [data.datetime.isoformat() for data in final_data]
         data = {}
@@ -199,25 +198,16 @@ def config_route(app, csrf, db):
         return render_template('index.html')
     
  
-
-
-
     @app.route('/charts')
     @login_required
     def charts():
         print('Request for charts page received')
         return render_template('charts.html')
 
-    # @app.route('/lege_pagina')
-    # @login_required
-    # def lege_pagina():
-    #     print('Request for lege_pagina page received')
-    #     return render_template('lege_pagina.html')
     
-    @app.route('/lege_pagina')
+    @app.route('/logout')
     @login_required
     def lege_pagina():
-        print('Request for lege_pagina page received')
         logout_user()  # Logout the current user
         return redirect('/login')
 
@@ -264,7 +254,22 @@ def config_route(app, csrf, db):
         
         elif request.method == 'GET':
             return render_template("email.html", value="")
-
+    
+    @app.route('/get_latest_entry', methods=['GET'])
+    def get_all_notifs():
+        all_entries = db.session.query(aabbccddeeff7778error).all()
+        data_list = []
+        for entry in all_entries:
+            data = {
+                'id': entry.id,
+                'datetime': entry.datetime,
+                'message': entry.message,
+                'severity': entry.severity,
+                'component': entry.component
+            }
+            data_list.append(data)
+        return jsonify(data=data_list)
+   
     # Routes for static files
     @app.route('/favicon.ico')
     def favicon():
@@ -285,28 +290,26 @@ def config_route(app, csrf, db):
         
         return render_template('login.html')
  
-    # @app.route('/register', methods=['POST', 'GET'])
-    # def register():
-    #     if current_user.is_authenticated:
-    #         return redirect('/')
+    @app.route('/register', methods=['POST', 'GET'])
+    def register():
+        if current_user.is_authenticated:
+            return redirect('/')
 
-    #     if request.method == 'POST':
-    #         email = request.form['email']
-    #         username = request.form['username']
-    #         password = request.form['password']
+        if request.method == 'POST':
+            email = request.form['email']
+            username = request.form['username']
+            password = request.form['password']
 
-    #         if UserModel.query.filter_by(email=email).first():
-    #             return 'Email already exists'
+            if UserModel.query.filter_by(email=email).first():
+                return 'Email already exists'
+            if UserModel.query.filter_by(username=username).first():
+                return 'Username already exists'
 
-    #         user = UserModel(email=email, username=username)
-    #         user.set_password(password)
-    #         db.session.add(user)
-    #         db.session.commit()
-    #         return redirect('/login')
+            user = UserModel(email=email, username=username)
+            user.set_password(password)
+            db.session.add(user)
+            db.session.commit()
+            return redirect('/login')
         
-    #     return render_template('register.html')
+        return render_template('register.html')
  
-    # @app.route('/lege_pagina')
-    # def logout():
-    #     logout_user()
-    #     return redirect('/login')
