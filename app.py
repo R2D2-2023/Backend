@@ -15,6 +15,13 @@ from routes import config_route
 
 
 def create_app():
+    """
+    Creates and configures the Flask application instance.
+
+    Returns:
+    - Flask: The configured Flask application instance.
+    """
+
     app = Flask(__name__)
 
     if 'FLASK_TEST' in os.environ:

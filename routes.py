@@ -50,6 +50,13 @@ def config_route(app, csrf, db):
     # Routes for API's   
     @app.route('/get_new_data')
     def get_new_data():
+        """
+        Retrieves new sensor data.
+
+        Returns:
+        - JSON: The retrieved sensor data in JSON format if available, or an error message as a string.
+        """
+
         last_datapoint = request.args.get('last_datapoint')
         first_datapoint = request.args.get('first_datapoint')    
         location = request.args.get('location')       
@@ -145,7 +152,7 @@ def config_route(app, csrf, db):
         Renders the index page with a temperature heatmap overlay.
 
         Returns:
-        - str or Response: Renders the index.html template.
+        - Response: Renders the index.html template.
         """
 
         print('Request for index page received')
@@ -271,7 +278,7 @@ def config_route(app, csrf, db):
         Renders the charts page.
 
         Returns:
-        - str or Response: Renders the charts.html template.
+        - Response: Renders the charts.html template.
         """
         print('Request for charts page received')
         return render_template('charts.html')
@@ -379,7 +386,7 @@ def config_route(app, csrf, db):
         Handles user login functionality.
 
         Returns:
-        - str or Response: Redirects to the home page if the user is successfully logged in or if the user is already
+        - Response: Redirects to the home page if the user is successfully logged in or if the user is already
                            authenticated. Otherwise, renders the login template.
         """
         if current_user.is_authenticated:
@@ -400,7 +407,7 @@ def config_route(app, csrf, db):
         Handles user registration functionality.
 
         Returns:
-        - str or Response: Redirects to the login page if the user is successfully registered or if the user is already
+        - Response: Redirects to the login page if the user is successfully registered or if the user is already
                            authenticated. Otherwise, renders the register template or returns an error message.
         """
 
