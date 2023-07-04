@@ -198,25 +198,16 @@ def config_route(app, csrf, db):
         return render_template('index.html')
     
  
-
-
-
     @app.route('/charts')
     @login_required
     def charts():
         print('Request for charts page received')
         return render_template('charts.html')
 
-    # @app.route('/lege_pagina')
-    # @login_required
-    # def lege_pagina():
-    #     print('Request for lege_pagina page received')
-    #     return render_template('lege_pagina.html')
     
-    @app.route('/lege_pagina')
+    @app.route('/logout')
     @login_required
     def lege_pagina():
-        print('Request for lege_pagina page received')
         logout_user()  # Logout the current user
         return redirect('/login')
 
@@ -298,28 +289,26 @@ def config_route(app, csrf, db):
         
         return render_template('login.html')
  
-    # @app.route('/register', methods=['POST', 'GET'])
-    # def register():
-    #     if current_user.is_authenticated:
-    #         return redirect('/')
+    @app.route('/register', methods=['POST', 'GET'])
+    def register():
+        if current_user.is_authenticated:
+            return redirect('/')
 
-    #     if request.method == 'POST':
-    #         email = request.form['email']
-    #         username = request.form['username']
-    #         password = request.form['password']
+        if request.method == 'POST':
+            email = request.form['email']
+            username = request.form['username']
+            password = request.form['password']
 
-    #         if UserModel.query.filter_by(email=email).first():
-    #             return 'Email already exists'
+            if UserModel.query.filter_by(email=email).first():
+                return 'Email already exists'
+            if UserModel.query.filter_by(username=username).first():
+                return 'Username already exists'
 
-    #         user = UserModel(email=email, username=username)
-    #         user.set_password(password)
-    #         db.session.add(user)
-    #         db.session.commit()
-    #         return redirect('/login')
+            user = UserModel(email=email, username=username)
+            user.set_password(password)
+            db.session.add(user)
+            db.session.commit()
+            return redirect('/login')
         
-    #     return render_template('register.html')
+        return render_template('register.html')
  
-    # @app.route('/lege_pagina')
-    # def logout():
-    #     logout_user()
-    #     return redirect('/login')
