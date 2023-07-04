@@ -59,7 +59,7 @@ function checkForNotif() {
                 
                 var datetime = response.data[i].datetime;
                 var date = new Date(datetime);
-                date.setUTCHours(date.getUTCHours() + 2);
+                // date.setUTCHours(date.getUTCHours() + 2);
                 var date_result = date.toUTCString().slice(0, -4);
 
                 var error = response.data[i].message;
