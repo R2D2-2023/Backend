@@ -54,7 +54,7 @@ def login(client, database):
     csrf_token = response.data.decode("utf-8").split("csrf_token")[1].split("value=\"")[1].split("\"")[0]
     response = client.post("/login", data=dict(email="test@test.nl", password="test", csrf_token=csrf_token), follow_redirects=True)
     assert response.status_code == 200
-    assert b"<title>Dashboard</title>" in response.data
+    assert b"<title>M3-S Dashboard</title>" in response.data
 
 def test_verify_testing(app):
     assert app.config['TESTING'] == True
@@ -118,7 +118,7 @@ def test_login_not_logged_in(client, database):
 def test_login(client, database, login):
     response = client.get("/", follow_redirects=True)
     assert response.status_code == 200
-    assert b"<title>Dashboard</title>" in response.data
+    assert b"<title>M3-S Dashboard</title>" in response.data
 
 def test_logout(client, database, login):
     response = client.get("/logout", follow_redirects=True)
