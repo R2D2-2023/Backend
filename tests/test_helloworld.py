@@ -12,7 +12,7 @@ sys.path.append(str(path_root))
 print(sys.path)
 
 from app import create_app
-from models import config_db, SensorData
+from models import config_db
 from routes import config_route
 
 @pytest.fixture

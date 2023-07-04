@@ -1,3 +1,13 @@
+/**
+ * Object to hold the data for graphs
+ * @param {String[]} type               Type of data contained in the graph
+ * @param {String} canvasID             ID of the canvas the graph will be contained in
+ * @param {String[]} data_label         Label for describing the kind of data in the graph
+ * @param {String[]} color              Color of the resulting chart's line
+ * @param {String[]} backgroundColor    Color of the resulting chart's dots
+ * @param {Number} suggestedMin         The minimum the chart will display if not exceeded
+ * @param {Number} suggestedMax         The maximum the chart will display if not exceeded
+ */
 function GraphData(type, canvasID, data_label, color, backgroundColor, suggestedMin, suggestedMax) {
     this.type = type;
     this.canvasID = canvasID;
@@ -17,13 +27,21 @@ let end_hour_global = 0;
 let location_global = 1023;
 let liveUpdate = true;
 
+/**
+ * Sets up global settings for the charts
+ */
 function chartSetup() {
-    Chart.defaults.elements.line.fill = false;                          // de onderkant vullen
-    Chart.defaults.elements.line.cubicInterpolationMode = 'monotone';   // de vorm van de lijn afronden
-    Chart.defaults.elements.line.tension = 0.4;                         // hoeveel er word afgerond
-    Chart.defaults.elements.line.borderWidth = 1;                       // dikte van de lijn
+    Chart.defaults.elements.line.fill = false;
+    Chart.defaults.elements.line.cubicInterpolationMode = 'monotone';
+    Chart.defaults.elements.line.tension = 0.4;
+    Chart.defaults.elements.line.borderWidth = 1;
 }
 
+/**
+ * Creates an array of charts and displays them using the supplied graph data
+ * @param {GraphData[]} graphs  The graph data to construct charts from
+ * @returns                     An array of charts
+ */
 function createCharts(graphs) {
     charts = [];
     for (let i = 0; i < graphs.length; i++) {
@@ -44,6 +62,11 @@ function createCharts(graphs) {
     return charts;
 }
 
+/**
+ * Creates and sets up individual charts
+ * @param {GraphData} graph The graph data to construct the chart from 
+ * @returns                 A chart object
+ */
 function createGraph(graph) {
     const canvas = document.getElementById(graph.canvasID);
 
@@ -53,9 +76,9 @@ function createGraph(graph) {
             labels: graph.time_labels,
             datasets: [{
                 label: graph.data_label[0],
-                data: graph.data,                               // de data die je laat zien
-                borderColor: graph.color[0],                    // kleur van de lijn
-                backgroundColor: graph.backgroundColor[0]      // vul kleur van de bolletjes en blokjes
+                data: graph.data,
+                borderColor: graph.color[0],
+                backgroundColor: graph.backgroundColor[0]
             }]
         },
         options: {
@@ -74,32 +97,13 @@ function createGraph(graph) {
 
 }
 
-
-// function to update the graph with new data
-function updateCharts(index) {
-    document.getElementById('myRange').value=index
-    // update the chart data
-    for (let i = 0; i < charts.length; i++) {
-        chart = charts[i];
-        graph = graphs[i];
-        chart.data.datasets[0].data = graph.data.slice(0, index);
-        chart.data.labels = graph.time_labels.slice(0, index);
-        chart.update();
-    }
-}
-
-function append(value, array) {
-    var newArray = array.slice();
-    newArray.shift(value);
-    return newArray;
-}
-
-function prepend(value, array) {
-    var newArray = array.slice();
-    newArray.unshift(value);
-    return newArray;
-}
-
+/**
+ * Gets new data from the database depending on what times are provided and adds it to the charts to display
+ * Also removes data from the chart based on a cutoff time
+ * @param {Date} timestamp      Starting time to check for data
+ * @param {Date} cutoff_time    Time to delete data older than it
+ * @param {Date} end_timestamp  Ending time to stop checking for data
+ */
 function getNewData(timestamp, cutoff_time, end_timestamp) {
     if (timestamp === undefined) {
         timestamp = charts[0].data.labels[charts[0].data.labels.length - 1];
@@ -131,7 +135,6 @@ function getNewData(timestamp, cutoff_time, end_timestamp) {
                             dataset.data.shift();
                         });
                         charts[i].data.labels.shift();
-                        // graphs[i].time_labels.shift();
                     }
                 }
             }
@@ -149,6 +152,13 @@ function getNewData(timestamp, cutoff_time, end_timestamp) {
     })
 }
 
+/**
+ * Processes changes made with the time controls
+ * @param {Number} hours        // Starting time to check for data in hours ago
+ * @param {Number} mins         // Starting time to check for data in minutes ago
+ * @param {Number} end_hours    // Ending time to stop checking for data in hours ago
+ * @param {Number} end_mins     // Ending time to stop checking for data in minutes ago
+ */
 function setTimeView(hours, mins, end_hours, end_mins) {
     if ($.active === 0) {
         clearGraphs();
@@ -169,6 +179,9 @@ function setTimeView(hours, mins, end_hours, end_mins) {
     }
 }
 
+/**
+ * Processes changes made using the custom time input
+ */
 function timeInputChanged() {
     let times = document.getElementsByClassName("time_input");
     let cur_time_ms = Math.round(Date.parse(dateMinHours()) / 60000) * 60000;
@@ -185,7 +198,9 @@ function timeInputChanged() {
     }
 }
 
-// fill datetime selection with current datetime
+/**
+ * Sets time input text to current time
+ */
 function updateTimeInputValue() {
     if (liveUpdate) {
         const startDateControl = document.getElementById("start_time");
@@ -195,6 +210,12 @@ function updateTimeInputValue() {
     }
 }
 
+/**
+ * Returns an ISO formatted date string with timezone applied
+ * @param {Number} hours    Hours ago for the date
+ * @param {Number} minutes  Minutes ago for the date
+ * @returns                 ISO formatted date string
+ */
 function dateMinHours(hours, minutes) {
     if (minutes === undefined) {
         minutes = 0;
@@ -209,8 +230,10 @@ function dateMinHours(hours, minutes) {
     return d.toISOString().slice(0, -1);
 }
 
+/**
+ * Clear the data from the graphs and charts
+ */
 function clearGraphs() {
-    // Clear the data from the graphs and charts
     for (let i = 0; i < charts.length; i++) {
         charts[i].data.datasets[0].data = [];
         charts[i].data.labels = [];
@@ -218,6 +241,9 @@ function clearGraphs() {
     }
 }
 
+/**
+ * Processes changes made using the location input
+ */
 function handleGraphButtons(){
     if ($.active === 0) {
         let cb_1 = document.getElementById("cb_1");
@@ -253,6 +279,10 @@ function handleGraphButtons(){
 
 };
 
+/**
+ * Locks controls to prevent them from being used
+ * @param {Boolean} locked  Sets lock on or off 
+ */
 function setControlsLock(locked){
     let time_controls = document.getElementById("instellingen_container").querySelectorAll(".time_input, button");
     let loc_controls = document.getElementById("content_container").querySelectorAll("input[type='checkbox']");

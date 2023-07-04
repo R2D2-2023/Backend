@@ -8,7 +8,7 @@ import cv2
 import numpy as np
 
 # The import must be done after db initialization due to circular import issue
-from models import SensorData, aabbccddeeff7778, EmailAddress, aabbccddeeff7778error, LocOnly, SensorDataWithLoc
+from models import EmailAddress, aabbccddeeff7778error, LocOnly, SensorDataWithLoc
 from flask_login import login_required, current_user, login_user, logout_user
 from models import UserModel
 
@@ -16,16 +16,47 @@ sensordata = None
 cachetime = None
 regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
 
+ 
+
 def validate_mail(mail_adress):
+    """
+    Validates whether a given email address is in a valid format.
+
+    Parameters:
+    - mail_address (str): The email address to be validated.
+
+    Returns:
+    - bool or None: Returns True if the email address is valid, False if it is not valid, or None if the email address is empty.
+    """
     if (re.fullmatch(regex, mail_adress)):
         return
     else:
         return False
 
+
 def config_route(app, csrf, db):
+    """
+    Configures routes for an API in a Flask application.
+
+    Parameters:
+    - app (Flask): The Flask application object.
+    - csrf: The CSRF protection object.
+    - db: The database object.
+
+    Returns:
+    - None
+    """
+
     # Routes for API's   
     @app.route('/get_new_data')
     def get_new_data():
+        """
+        Retrieves new sensor data.
+
+        Returns:
+        - JSON: The retrieved sensor data in JSON format if available, or an error message as a string.
+        """
+
         last_datapoint = request.args.get('last_datapoint')
         first_datapoint = request.args.get('first_datapoint')    
         location = request.args.get('location')       
@@ -76,6 +107,12 @@ def config_route(app, csrf, db):
     
     @app.route('/get_recent_data')	
     def get_recent_data():
+        """
+        Retrieves the most recent sensor data from the database and returns it as JSON.
+
+        Returns:
+        - dict: A dictionary containing the timestamp and sensor data.
+        """
         sensordata = SensorDataWithLoc.query.order_by(SensorDataWithLoc.datetime.desc()).limit(1).all()
         timestamp = sensordata[0].datetime.strftime("%H:%M")
         data = {}
@@ -88,17 +125,36 @@ def config_route(app, csrf, db):
     
     @app.route('/get_email_data')
     def get_email_data():
+        """
+        Retrieves email addresses from the 'EmailAddress' table.
+
+        Returns:
+        - Response: A list of email addresses.
+        """
         return [email.adress for email in EmailAddress.query.all()]
 
     @app.route('/test_is_data_avalable')
     def test_is_data_avalable():
+        """
+        Checks if data is available in the 'SensorDataWithLoc' table.
+
+        Returns:
+        - Response: A string indicating the availability of data.
+        """
         SensorDataWithLoc.query.order_by(SensorDataWithLoc.datetime.desc()).limit(100).all()
         return "ok"
 
-    # Routes for html pages
+
     @app.route('/')
     @login_required
     def index():
+        """
+        Renders the index page with a temperature heatmap overlay.
+
+        Returns:
+        - Response: Renders the index.html template.
+        """
+
         print('Request for index page received')
 
         # Haal de temperatuurgegevens op uit de SQL-database
@@ -218,19 +274,37 @@ def config_route(app, csrf, db):
     @app.route('/charts')
     @login_required
     def charts():
+        """
+        Renders the charts page.
+
+        Returns:
+        - Response: Renders the charts.html template.
+        """
         print('Request for charts page received')
         return render_template('charts.html')
 
     
     @app.route('/logout')
     @login_required
-    def lege_pagina():
+    def logout():
+        """
+        Logs out the current user and redirects to the login page.
+
+        Returns:
+        - Response: Redirects to the '/login' route.
+        """
         logout_user()  # Logout the current user
         return redirect('/login')
 
     @app.route('/email', methods = ['GET', 'POST'])
     @login_required
     def email():
+        """
+        Handles email-related actions.
+
+        Returns:
+        - Response: Renders the email.html template.
+        """
         if request.method == 'POST':
             message = ""
             newMail = EmailAddress(adress=request.form.get("email"))
@@ -275,6 +349,13 @@ def config_route(app, csrf, db):
     
     @app.route('/get_latest_entry', methods=['GET'])
     def get_all_notifs():
+        """
+        Retrieves all notification entries from the database.
+
+        Returns:
+        - Response: JSON response containing the retrieved notification entries.
+        """
+
         all_entries = db.session.query(aabbccddeeff7778error).all()
         data_list = []
         for entry in all_entries:
@@ -288,14 +369,26 @@ def config_route(app, csrf, db):
             data_list.append(data)
         return jsonify(data=data_list)
    
-    # Routes for static files
     @app.route('/favicon.ico')
     def favicon():
+        """
+        Handles the request for the favicon.
+
+        Returns:
+        - Response: Sends the favicon.ico file from the 'static' directory as a response.
+        """
         return send_from_directory(os.path.join(app.root_path, 'static'),
                                 'favicon.ico', mimetype='image/vnd.microsoft.icon')
     
     @app.route('/login', methods = ['POST', 'GET'])
     def login():
+        """
+        Handles user login functionality.
+
+        Returns:
+        - Response: Redirects to the home page if the user is successfully logged in or if the user is already
+                           authenticated. Otherwise, renders the login template.
+        """
         if current_user.is_authenticated:
             return redirect('/')
         
@@ -310,6 +403,14 @@ def config_route(app, csrf, db):
  
     @app.route('/register', methods=['POST', 'GET'])
     def register():
+        """
+        Handles user registration functionality.
+
+        Returns:
+        - Response: Redirects to the login page if the user is successfully registered or if the user is already
+                           authenticated. Otherwise, renders the register template or returns an error message.
+        """
+
         if current_user.is_authenticated:
             return redirect('/')
 

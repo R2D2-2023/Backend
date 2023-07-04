@@ -1,5 +1,9 @@
 var last_entry = 0;
-
+/**
+ * Adds a notification to the notification list on the page
+ * @param {Date} time       Date and time of the notification
+ * @param {String} message  The notification's content
+ */
 function addNotification(time, message) {
     var notificationContainer = document.querySelector('.notification-container');
     var notification = document.createElement('div');
@@ -14,6 +18,33 @@ function addNotification(time, message) {
     notification.appendChild(messageDiv); 
     notificationContainer.insertBefore(notification, notificationContainer.firstChild);
     notificationContainer.scrollTop = 0;
+}
+
+/**
+ * Checks for and gets new notifications from the database to put them on the page
+ */
+function checkForNotif() {
+    $.ajax({
+        url: '/get_latest_entry',
+        type: 'GET',
+        success: function(response) {
+            for (var i = 0; i < response.data.length; i++) {
+                var id = response.data[i].id;
+                
+                var datetime = response.data[i].datetime;
+                var date = new Date(datetime);
+                // date.setUTCHours(date.getUTCHours() + 2);
+                var date_result = date.toUTCString().slice(0, -4);
+
+                var error = response.data[i].message;
+
+                if (last_entry === 0 || last_entry < id) {
+                    last_entry = id;
+                    addNotification(date_result, error);
+                }    
+            }
+        },
+    });
 }
 
 var notificationContainer = document.querySelector('.notification-container');
@@ -49,26 +80,3 @@ document.addEventListener('mousemove', function(event) {
     }
 });
 
-function checkForNotif() {
-    $.ajax({
-        url: '/get_latest_entry',
-        type: 'GET',
-        success: function(response) {
-            for (var i = 0; i < response.data.length; i++) {
-                var id = response.data[i].id;
-                
-                var datetime = response.data[i].datetime;
-                var date = new Date(datetime);
-                // date.setUTCHours(date.getUTCHours() + 2);
-                var date_result = date.toUTCString().slice(0, -4);
-
-                var error = response.data[i].message;
-
-                if (last_entry === 0 || last_entry < id) {
-                    last_entry = id;
-                    addNotification(date_result, error);
-                }    
-            }
-        },
-    });
-}
