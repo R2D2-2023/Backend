@@ -61,7 +61,7 @@
     color: white;
 }
 
-.button {
+/* .button {
     background-color: rgba(5, 5, 5, 0.1);
     border: 1px solid #1aef9a;
     border-radius: 3px;
@@ -69,6 +69,23 @@
     padding-top: 1px;
     padding-bottom: 1px;
     width: 40%;
+} */
+
+.button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px; /* Adjust the margin value as needed */
+}
+
+.button {
+    padding: 10px 20px;
+    background-color: rgba(5, 5, 5, 0.1);
+    color: white;
+    border: 1px solid #1aef9a;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 16px;
 }
 
 .button:hover {

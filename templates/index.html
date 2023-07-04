@@ -98,18 +98,22 @@
                     </section>
                 </div>
                 <div class="kaart">
-                    <div class="kaart-text">
-                        <!-- <h1 class="title">Route van de robot</h1> -->
-                    </div>
                     <div class="kaart-img">
-                        <!-- <canvas id="heatmap-canvas"></canvas> -->
-                        <!-- <img id="heatmap-image" src="../static/images/kaart4de-verdieping-solid.png" alt="Plategrond van de 4de verdieping van de hogeschool utrecht heidelberglaan 15"> -->
-                        <img id="heatmap-image" src="../static/images/kaart4de-verdieping-solid_heatmap.png" alt="Plategrond van de 4de verdieping van de hogeschool utrecht heidelberglaan 15">
+                        <div class="heatmap-container">
+                            <img id="heatmap-image" src="../static/images/kaart4de-verdieping-solid_heatmap.png" alt="Plategrond van de 4de verdieping van de hogeschool utrecht heidelberglaan 15">
+                        </div>
                     </div>
                 </div>
-            </section>
-        </section>
-
+                <div class="heatmap-legend">
+                    <div class="heatmap-label heatmap-label-left">
+                        <h5>Laag</h5>
+                    </div>
+                    <div class="heatmap-label heatmap-label-right">
+                        <h5>Hoog</h5>
+                    </div>
+                    <div class="heatmap-gradient"></div>
+                </div>    
+                            
     </section>
 
 
@@ -208,11 +212,6 @@
         window.onload = generateHeatmap;
 
     </script> -->
-
-
-
-
-
 </body>
 
 

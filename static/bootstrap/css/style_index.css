@@ -53,7 +53,7 @@
 }
 
 .col-3-4 {
-    padding-top: 4%;
+    padding-top: 1%;
     width: 75%;
 }
 
@@ -116,7 +116,7 @@
 .waardes-value {
     display: inline-block;
     padding-left: 7%;
-    padding-bottom: ;
+    padding-bottom: 0px;
     font-size: 55px;
 }
 
@@ -199,8 +199,10 @@
 }
 
 .kaart-text {
-    padding-left: 3%;
+    padding-left: 5%;
     padding-top: 10px;
+    font-size: large;
+    color:white;
 }
 
 .title {
@@ -211,7 +213,7 @@
     padding-left: 3%;
     padding-right: 4%;
     padding-top: 15px;
-    padding-bottom: 15px;
+    /* padding-bottom: 5px; */
 }
 
 .kaart-img img {
@@ -221,6 +223,78 @@
     align-items: center;
     position: relative;
 }
+
+/* .heatmap-legend {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 3%;
+  }
+  
+  .heatmap-gradient {
+    width: 150px;
+    height: 7px;
+    background: linear-gradient(to left, red, blue);
+    margin-left: 10px;
+  }
+  
+  .heatmap-label {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .heatmap-label h3 {
+    color: white;
+    margin: 0;
+    text-align: left;
+    font-size: small;
+    flex-grow: 1;
+  }
+  
+  .heatmap-label .heatmap-gradient {
+    flex-shrink: 0;
+  } */
+
+
+.heatmap-legend {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+    padding-bottom: 3%; 
+    padding-right: 12%;
+  }
+  
+  .heatmap-gradient {
+    width: 200px;
+    height: 15px;
+    background: linear-gradient(to right, rgba(0, 0, 120), rgba(120, 0, 0));
+    margin-left: 10px;
+  }
+  
+  .heatmap-label {
+    color: white;
+    margin: 0;
+    font-size: small;
+  }
+  
+  .heatmap-label-left {
+    margin-left: 3%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  
+  .heatmap-label-right {
+    margin-right: 47%;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
 
 @media (max-width: 1535px) {
     header {
@@ -283,6 +357,4 @@
     .overig {
         height: 90px;
     }
-
-
 }
