@@ -43,6 +43,7 @@ jobs:
             python -m compileall . -f
         - name: Run Flask server
           run: |
+            flask db init
             flask db upgrade
             flask run &
           env:

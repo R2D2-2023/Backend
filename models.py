@@ -19,7 +19,6 @@ login = LoginManager()
 
 def config_db(app):
     # Initialize the database connection
-    print("DATABASE_URI: " + app.config.get('DATABASE_URI'))
     app.config.update(
         SQLALCHEMY_DATABASE_URI=app.config.get('DATABASE_URI'),
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
