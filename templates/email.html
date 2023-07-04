@@ -19,12 +19,12 @@
   <section class="backgroundimage">
     <div class="gmail_container">
       <form method="POST" action="{{ url_for('email') }}">
-        <label for="email">E-mail Address:</label>
+        <label for="email">E-mail Adres:</label>
         <input class="input_bar" type="text" id="email" name="email" required>
         <label for="messages"> {{ value }} </label>
         <br><br>
-        <input class="button" type="submit" name ="submit" value="submit">
-        <input class="button" type="submit" name ="remove" value="remove"> 
+        <input class="button" type="submit" name ="submit" value="Abonneren">
+        <input class="button" type="submit" name ="remove" value="Afmelden"> 
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       </form>
     </div>
