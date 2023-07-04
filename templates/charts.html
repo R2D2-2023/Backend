@@ -161,7 +161,7 @@
 <script>
     let checkboxes = document.querySelectorAll("input[type='checkbox']");
     let selectAllCheckbox = document.getElementById('cb_select_all');
-
+    // Set all checkboxes to same state as source checkbox
     function checkAll(source) {
         checkboxes.forEach(function (checkbox) {
             if (checkbox != source) {
@@ -174,7 +174,6 @@
 
 <script>
     chartSetup();
-    console.log(Chart.defaults.animation)
     graphs = [
         new GraphData(['temperature'], 'temp_chart', ['Temperature (°C)'], ['#1AEF9A'], ['#C8F0C8'], 20, 30),
         new GraphData(['co2'], 'co2_chart', ['CO2 (ppm)'], ['#FF396A'], ['#FAACC2'], 400, 1000),
