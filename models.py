@@ -17,7 +17,12 @@ login = LoginManager()
 
 
 def config_db(app):
-    # Initialize the database connection
+    """"
+    Configures the database connection for the Flask application.
+
+    Args:
+    - app (Flask): The Flask application instance.
+    """
     app.config.update(
         SQLALCHEMY_DATABASE_URI=app.config.get('DATABASE_URI'),
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
@@ -29,6 +34,12 @@ def config_db(app):
     return db, migrate, csrf
 
 def config_login(app):
+    """
+    Configures the login management for the Flask application.
+
+    Args:
+    - app (Flask): The Flask application instance.
+    """
     login.init_app(app)
     login.login_view = 'login'
     
@@ -78,7 +89,7 @@ class aabbccddeeff7778error(db.Model):
     def __str__(self):
         return self.name
 
-# Model voor userdata tabel
+# Model voor userdata tabel (inloggen)
 class UserModel(UserMixin, db.Model):
     __tablename__ = 'users'
  
@@ -100,4 +111,13 @@ class UserModel(UserMixin, db.Model):
 
 @login.user_loader
 def load_user(id):
+    """
+    Callback function for loading a user from the user ID.
+
+    Args:
+    - id (str): The ID of the user to load.
+
+    Returns:
+    - UserModel: The user object corresponding to the provided ID.
+    """
     return UserModel.query.get(int(id))
