@@ -34,7 +34,7 @@
                 <img src="../static/images/instellingen.gif" alt="instellingen animatie" id="instellingen_animatie" hidden>
             </div>
             <div class="time_title">
-                <h4>TIME RANGE</h4>
+                <h4>TIJDBEREIK</h4>
             </div>
                 <div class="time_buttons">
                 <button type="submit" id="button_1min" name="button" onclick="setTimeView(0, 1)" class="btn btn-primary">1 min</button>
@@ -45,9 +45,9 @@
                 <button type="submit" id="button_1week" name="button" onclick="setTimeView(168, 0)" class="btn btn-primary">1 week</button>
             </div>
             <div class="time_custom">
-                <h4>FROM</h4>
+                <h4>VANAF</h4>
                 <input type="datetime-local" id="start_time" name="start_time" class="time_input" onchange="timeInputChanged()">
-                <h4>TO</h4>
+                <h4>TOT</h4>
                 <input type="datetime-local" id="end_time" name="end_time" class="time_input" onchange="timeInputChanged()">
                 
             </div>
@@ -55,10 +55,10 @@
         <div class="procent_80" id="content_container">
             <div class="map_title_container">
                 <div class="map_title">
-                    <h4>SELECT REGION:</h4>
+                    <h4>MEETZONES</h4>
                 </div>
                 <div class="map_select_all">
-                    <h4>SELECT ALL:</h4>
+                    <h4>SELECTEER ALLES:</h4>
                 </div>
                 <div class="checkbox_select_all">
                     <input type="checkbox" id="cb_select_all" name="cb_select_all" checked onclick="checkAll(this)">
@@ -180,7 +180,7 @@
         new GraphData(['co2'], 'co2_chart', ['CO2 (ppm)'], ['#FF396A'], ['#FAACC2'], 400, 1000),
         new GraphData(['humidity'], 'humid_chart', ['Humidity (%)'], ['#39CFFA'], ['#82EDF7'], 40, 60),
         new GraphData(['pressure'], 'pres_chart', ['Air pressure (hPa)'], ['#FFAA00'], ['#FFD175'], 1000, 1100),
-        new GraphData(['pm10', 'pm25', 'pm100'], 'pm_chart', ['PM10 (ppm)', 'PM25 (ppm)', 'PM100 (ppm)'], ['#99DD80', '#88BB50', '#449950'], ['#BBFFA0', '#AADD70', '#66BB70'], 0, 50)
+        new GraphData(['pm10', 'pm25', 'pm100'], 'pm_chart', ['PM10 (ppm)', 'PM25 (ppm)', 'PM100 (ppm)'], ['#AA39DD', '#DDDD00', '#66CC70'], ['#AA71EE', '#FFFF70', '#66FF70'], 0, 50)
     ];
     charts = createCharts(graphs);
     getNewData(dateMinHours(hour_global, min_global));
