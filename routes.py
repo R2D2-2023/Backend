@@ -33,6 +33,7 @@ def validate_mail(mail_adress):
     else:
         return False
 
+
 def config_route(app, csrf, db):
     """
     Configures routes for an API in a Flask application.
@@ -117,17 +118,36 @@ def config_route(app, csrf, db):
     
     @app.route('/get_email_data')
     def get_email_data():
+        """
+        Retrieves email addresses from the 'EmailAddress' table.
+
+        Returns:
+        - Response: A list of email addresses.
+        """
         return [email.adress for email in EmailAddress.query.all()]
 
     @app.route('/test_is_data_avalable')
     def test_is_data_avalable():
+        """
+        Checks if data is available in the 'SensorDataWithLoc' table.
+
+        Returns:
+        - Response: A string indicating the availability of data.
+        """
         SensorDataWithLoc.query.order_by(SensorDataWithLoc.datetime.desc()).limit(100).all()
         return "ok"
 
-    # Routes for html pages
+
     @app.route('/')
     @login_required
     def index():
+        """
+        Renders the index page with a temperature heatmap overlay.
+
+        Returns:
+        - str or Response: Renders the index.html template.
+        """
+
         print('Request for index page received')
 
         # Haal de temperatuurgegevens op uit de SQL-database
@@ -236,6 +256,12 @@ def config_route(app, csrf, db):
     @app.route('/charts')
     @login_required
     def charts():
+        """
+        Renders the charts page.
+
+        Returns:
+        - str or Response: Renders the charts.html template.
+        """
         print('Request for charts page received')
         return render_template('charts.html')
 
@@ -243,12 +269,24 @@ def config_route(app, csrf, db):
     @app.route('/logout')
     @login_required
     def lege_pagina():
+        """
+        Logs out the current user and redirects to the login page.
+
+        Returns:
+        - Response: Redirects to the '/login' route.
+        """
         logout_user()  # Logout the current user
         return redirect('/login')
 
     @app.route('/email', methods = ['GET', 'POST'])
     @login_required
     def email():
+        """
+        Handles email-related actions.
+
+        Returns:
+        - Response: Renders the email.html template.
+        """
         if request.method == 'POST':
             message = ""
             newMail = EmailAddress(adress=request.form.get("email"))
@@ -293,6 +331,13 @@ def config_route(app, csrf, db):
     
     @app.route('/get_latest_entry', methods=['GET'])
     def get_all_notifs():
+        """
+        Retrieves all notification entries from the database.
+
+        Returns:
+        - Response: JSON response containing the retrieved notification entries.
+        """
+
         all_entries = db.session.query(aabbccddeeff7778error).all()
         data_list = []
         for entry in all_entries:
@@ -306,14 +351,26 @@ def config_route(app, csrf, db):
             data_list.append(data)
         return jsonify(data=data_list)
    
-    # Routes for static files
     @app.route('/favicon.ico')
     def favicon():
+        """
+        Handles the request for the favicon.
+
+        Returns:
+        - Response: Sends the favicon.ico file from the 'static' directory as a response.
+        """
         return send_from_directory(os.path.join(app.root_path, 'static'),
                                 'favicon.ico', mimetype='image/vnd.microsoft.icon')
     
     @app.route('/login', methods = ['POST', 'GET'])
     def login():
+        """
+        Handles user login functionality.
+
+        Returns:
+        - str or Response: Redirects to the home page if the user is successfully logged in or if the user is already
+                           authenticated. Otherwise, renders the login template.
+        """
         if current_user.is_authenticated:
             return redirect('/')
         
@@ -328,6 +385,14 @@ def config_route(app, csrf, db):
  
     @app.route('/register', methods=['POST', 'GET'])
     def register():
+        """
+        Handles user registration functionality.
+
+        Returns:
+        - str or Response: Redirects to the login page if the user is successfully registered or if the user is already
+                           authenticated. Otherwise, renders the register template or returns an error message.
+        """
+
         if current_user.is_authenticated:
             return redirect('/')
 
