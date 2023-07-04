@@ -1,3 +1,6 @@
+/**
+ * Gets the most recent data from the database and displays it on the text elements in the page
+ */
 function getRecentData() {
     $.ajax({
         url: "/get_recent_data",

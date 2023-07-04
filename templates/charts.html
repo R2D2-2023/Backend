@@ -161,7 +161,10 @@
 <script>
     let checkboxes = document.querySelectorAll("input[type='checkbox']");
     let selectAllCheckbox = document.getElementById('cb_select_all');
-    // Set all checkboxes to same state as source checkbox
+    /**
+     * Sets all checkboxes' state to that of the supplied checkbox
+     * @param {checkbox}    The checkbox to get the state from
+     */
     function checkAll(source) {
         checkboxes.forEach(function (checkbox) {
             if (checkbox != source) {
