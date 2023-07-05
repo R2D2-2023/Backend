@@ -1,3 +1,8 @@
+/**
+ * Decodes the message received through the uplink
+ * @param {String} input     A series of bytes
+ * @returns                  Decoded data or warnings or errors
+ */
 function decodeUplink(input) {
     // Sensor readings
     if (input.fPort === 1) {
