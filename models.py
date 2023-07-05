@@ -10,7 +10,6 @@ from flask_login import LoginManager
 from flask_login import LoginManager
 
 
-# Initialize the database connection
 db = SQLAlchemy()
 migrate = Migrate()
 csrf = CSRFProtect()
@@ -18,7 +17,12 @@ login = LoginManager()
 
 
 def config_db(app):
-    # Initialize the database connection
+    """"
+    Configures the database connection for the Flask application.
+
+    Args:
+    - app (Flask): The Flask application instance.
+    """
     app.config.update(
         SQLALCHEMY_DATABASE_URI=app.config.get('DATABASE_URI'),
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
@@ -30,23 +34,16 @@ def config_db(app):
     return db, migrate, csrf
 
 def config_login(app):
+    """
+    Configures the login management for the Flask application.
+
+    Args:
+    - app (Flask): The Flask application instance.
+    """
     login.init_app(app)
     login.login_view = 'login'
     
- 
-class SensorData(db.Model):
-    __tablename__ = 'sensor_data'
-    datetime = Column(DateTime, primary_key=True)
-    co2 = Column(Integer)
-    humidity = Column(Integer)
-    pressure = Column(Integer)
-    temperature = Column(DECIMAL(3,1))
-    location = Column(Integer)
-
-    def __str__(self):
-        return self.name
-    
-
+# Model voor locatie tabel
 class LocOnly(db.Model):
     __tablename__ = 'locatie_only'
     datetime = Column(DateTime, primary_key=True)
@@ -56,7 +53,7 @@ class LocOnly(db.Model):
     def __str__(self):
         return self.name
     
-    
+# Model voor sensorendata tabel
 class SensorDataWithLoc(db.Model):
     __tablename__ = 'sensor_data_with_foreign_location'
     datetime = Column(DateTime, ForeignKey('locatie_only.datetime'), primary_key=True)
@@ -72,20 +69,7 @@ class SensorDataWithLoc(db.Model):
     def __str__(self):
         return self.name
     
-
-class aabbccddeeff7778(db.Model):
-    __tablename__ = 'aabbccddeeff7778'
-    datetime = Column(DateTime, primary_key=True)
-    ppm = Column(Integer)
-    humidity = Column(Integer)
-    air_pressure = Column(Integer)
-    temperature = Column(Integer)
-    position = Column(Integer)
-
-    def __str__(self):
-        return self.name
-    
-
+# Model voor e-mailadres tabel
 class EmailAddress(db.Model):
     __tablename__ = 'emailaddress'
     adress = Column(String, primary_key=True)
@@ -93,6 +77,7 @@ class EmailAddress(db.Model):
     def __str__(self):
         return self.name
     
+# Model voor error berichten tabel
 class aabbccddeeff7778error(db.Model):
     __tablename__ = 'aabbccddeeff7778error'
     id = Column(Integer, primary_key=True)
@@ -104,6 +89,7 @@ class aabbccddeeff7778error(db.Model):
     def __str__(self):
         return self.name
 
+# Model voor userdata tabel (inloggen)
 class UserModel(UserMixin, db.Model):
     __tablename__ = 'users'
  
@@ -122,7 +108,16 @@ class UserModel(UserMixin, db.Model):
     def get_id(self):
         return str(self.id)
 
- 
+
 @login.user_loader
 def load_user(id):
+    """
+    Callback function for loading a user from the user ID.
+
+    Args:
+    - id (str): The ID of the user to load.
+
+    Returns:
+    - UserModel: The user object corresponding to the provided ID.
+    """
     return UserModel.query.get(int(id))
