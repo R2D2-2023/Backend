@@ -159,6 +159,19 @@ def config_route(app, csrf, db):
 
         # Haal de temperatuurgegevens op uit de SQL-database
         last_location = LocOnly.query.order_by(LocOnly.datetime.desc()).limit(1).all()
+        assert(last_location[0].x_loc >= 0 and last_location[0].x_loc <= 232)
+        assert(last_location[0].y_loc >= 0 and last_location[0].y_loc <= 65)
+
+        if(last_location[0].x_loc > 222):
+            last_location[0].x_loc = 222
+        if(last_location[0].x_loc < 10):
+            last_location[0].x_loc = 10
+
+        if(last_location[0].y_loc > 55):
+            last_location[0].y_loc = 55
+        if(last_location[0].y_loc < 10):
+            last_location[0].y_loc = 10
+
         # per locatie en dan de temperatuur index 0 is zone 0 enz..
         sens_data = []
         for i in range(1,11):
@@ -172,11 +185,11 @@ def config_route(app, csrf, db):
                 temp.append(sensor_data.temperature)
                 i += 1
 
-
         # Definieer de kleuren voor de temperatuurgradient
-        color_min = (0, 0, 255)  # Blauw (lage temperatuur)
-        color_max = (255, 0, 0)  # Rood (hoge temperatuur)
+        color_min = (0, 0, 200)  # Blauw (lage temperatuur)
+        color_max = (200, 0, 0)  # Rood (hoge temperatuur)
 
+        # zorg dat de minimale en maximale temp gedefineerd zijn en niet overeen kunnen komen
         min_temp = min(temp)
         max_temp = max(temp)
         if min_temp is None:
@@ -186,6 +199,7 @@ def config_route(app, csrf, db):
         if min_temp == max_temp:
             max_temp += 1
 
+        # baseer de kleur en intensiteit van de regio op basis van de temperatuur en stop het in deze variabelen
         intensities = []
         colors = []
         for temperature in temp:
@@ -198,29 +212,12 @@ def config_route(app, csrf, db):
             color = tuple(int(c_min + (c_max - c_min) * intensity) for c_min, c_max in zip(color_min, color_max))
             colors.append(color)
 
-
-
         # Laad de afbeelding
         image = cv2.imread('static/images/kaart4de-verdieping-solid.png', cv2.IMREAD_UNCHANGED)
         # Maak een lege heatmap-overlay
         heatmap_overlay = np.zeros_like(image)
 
-        # # zone's waneer je circles gebruikt     
-        # steps_y = int(heatmap_overlay.shape[0]/5)
-        # steps_x = int(heatmap_overlay.shape[1]/10)
-        # zones = [
-        #     [steps_x*1, steps_y*1],
-        #     [steps_x*3, steps_y*1],
-        #     [steps_x*5, steps_y*1],
-        #     [steps_x*7, steps_y*1],
-        #     [steps_x*9, steps_y*1],
-        #     [steps_x*1, steps_y*4],
-        #     [steps_x*3, steps_y*4],
-        #     [steps_x*5, steps_y*4],
-        #     [steps_x*7, steps_y*4],
-        #     [steps_x*9, steps_y*4]]
-
-        # zone's bij het gebruik van rectangles
+        # maakt zone cordinaten verdeeld over de regio's
         steps_x = int(heatmap_overlay.shape[1]/5)
         steps_y = int(heatmap_overlay.shape[0]/2)
         zones = [
@@ -237,36 +234,49 @@ def config_route(app, csrf, db):
         
         outline = -1
         for i, color in enumerate(colors):
-            # Teken een cirkel op de heatmap-overlay op de bijbehorende positie (x, y)
-            # cv2.circle(heatmap_overlay, (zones[i][0], zones[i][1]), radius, color, outline)
+            # Teken een rechthoek op de heatmap-overlay op de bijbehorende positie (x, y)
             cv2.rectangle(heatmap_overlay, (zones[i][0], zones[i][1]),(zones[i][0]+steps_x, zones[i][1]+steps_y), color, outline)  
 
-        # circle staat nu net niet op de kaart dus kan zijn dat je hem niet ziet
+        # # Combineer de originele afbeelding met de heatmap-overlay zodat de kleuren niet te fel worden
+        alpha = 0.15
+        beta = 0.5
+        heatmap_overlay = cv2.addWeighted(image, alpha, heatmap_overlay, beta, 0)
+        
+        # tekekent een circle op de plek waar de auto zich op dit moment ongeveer bevind
         max_x = 232
         max_y = 65 
         cv2.circle(heatmap_overlay, (int(heatmap_overlay.shape[1]/max_x * last_location[0].x_loc), int(heatmap_overlay.shape[0]/max_y * last_location[0].y_loc)), 100, (255,255,255), outline)
+        
+        # laad het icoontje voor de waar de auto zich bevind in
         icon = cv2.imread('static/images/r2d2.png', cv2.IMREAD_UNCHANGED)
         icon = cv2.resize(icon, (0, 0), fx = 0.1, fy = 0.1)
 
+        # bebaal de plek waar de linker bovenhoek moet starten met tekenen zodat de afbeelding midden in de circle word geplaatst
         x_offset=(int(heatmap_overlay.shape[1]/max_x * last_location[0].x_loc)) - int((icon.shape[0])/2)
         y_offset=(int(heatmap_overlay.shape[0]/max_y * last_location[0].y_loc)) - int((icon.shape[1])/2)
 
-        y1, y2 = y_offset, y_offset + icon.shape[0]
-        x1, x2 = x_offset, x_offset + icon.shape[1]
+        # bepaal begin en eind punt op de x en y as van waar het icoon getekend moet worden
+        x1 = x_offset
+        x2 = x_offset + icon.shape[1]
+        y1 = y_offset
+        y2 = y_offset + icon.shape[0]
 
+        # plaats het icoon op de afbeelding maar allen de zichtbare pixlels
         alpha_s = icon[:, :, 3] / 255.0
         alpha_l = 1.0 - alpha_s
-
         for c in range(0, 3):
             heatmap_overlay[y1:y2, x1:x2, c] = (alpha_s * icon[:, :, c] + alpha_l * heatmap_overlay[y1:y2, x1:x2, c])
-        
-        # Combineer de originele afbeelding met de heatmap-overlay
-        alpha = 0.5
-        beta = 0.5
-        combined_image = cv2.addWeighted(image, alpha, heatmap_overlay, beta, 0)
 
-        # Bewaar of toon de gegenereerde afbeelding
-        cv2.imwrite('static/images/kaart4de-verdieping-solid_heatmap.png', combined_image)
+        # plaats de gemaakte overlay terug in de afbeelding
+        x_begin = 0
+        x_einde = heatmap_overlay.shape[1]
+        y_begin = 0
+        y_einde = heatmap_overlay.shape[0]
+        for c in range(0, 3):
+            image[y_begin:y_einde, x_begin:x_einde, c] = heatmap_overlay[y_begin:y_einde, x_begin:x_einde, c]
+        
+        # Bewaar de gegenereerde afbeelding
+        cv2.imwrite('static/images/kaart4de-verdieping-solid_heatmap.png', image)
 
         return render_template('index.html')
     
