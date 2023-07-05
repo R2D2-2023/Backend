@@ -5,6 +5,7 @@
     font-family: 'Poppins', sans-serif;
     list-style: none;
     text-decoration: none;
+    overflow: hidden;
 }
 
 .logo {
@@ -53,7 +54,7 @@
 }
 
 .col-3-4 {
-    padding-top: 4%;
+    padding-top: 7%;
     width: 75%;
 }
 
@@ -116,12 +117,13 @@
 .waardes-value {
     display: inline-block;
     padding-left: 7%;
-    padding-bottom: ;
+    padding-bottom: 0px;
     font-size: 55px;
 }
 
 .waardes-eenheid {
     display: inline-block;
+    padding-bottom: 4%;
 }
 
 .notification-container {
@@ -199,8 +201,11 @@
 }
 
 .kaart-text {
-    padding-left: 3%;
+    padding-left: 5%;
     padding-top: 10px;
+    font-size: large;
+    color:white;
+    margin-bottom: 5%;
 }
 
 .title {
@@ -211,7 +216,7 @@
     padding-left: 3%;
     padding-right: 4%;
     padding-top: 15px;
-    padding-bottom: 15px;
+    /* padding-bottom: 5px; */
 }
 
 .kaart-img img {
@@ -221,6 +226,86 @@
     align-items: center;
     position: relative;
 }
+
+/* .heatmap-legend {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 3%;
+  }
+  
+  .heatmap-gradient {
+    width: 150px;
+    height: 7px;
+    background: linear-gradient(to left, red, blue);
+    margin-left: 10px;
+  }
+  
+  .heatmap-label {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .heatmap-label h3 {
+    color: white;
+    margin: 0;
+    text-align: left;
+    font-size: small;
+    flex-grow: 1;
+  }
+  
+  .heatmap-label .heatmap-gradient {
+    flex-shrink: 0;
+  } */
+
+
+.heatmap-legend {
+    position: relative;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    /* margin-bottom: 20px; */
+    padding-bottom: 10%; 
+    padding-right: 12%;
+}
+  
+.heatmap-gradient {
+    width: 260px;
+    height: 20px;
+    background: linear-gradient(to right, #272682, #792323);
+    margin-left: 10px;
+}
+  
+.heatmap-label {
+    color: white;
+    margin: 0;
+    font-size: small;
+}
+
+.label-container{
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    font-size: small;
+}
+
+.empty-space{
+    width: 70%;
+}
+
+.title-temperature{
+    padding-left: 5%;
+    padding-top: 0px;
+    font-size: medium;
+    color:white;
+    margin-bottom: 50px;
+}
+
 
 @media (max-width: 1535px) {
     header {
@@ -283,6 +368,4 @@
     .overig {
         height: 90px;
     }
-
-
 }
