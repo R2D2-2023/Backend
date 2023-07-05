@@ -211,11 +211,11 @@
     border-radius: 1em;
     border: .2em solid #1aef9a;
 }
-
+/* 
 .checkbox_container label:hover::before,
 .checkbox_select_all label:hover::before {
     background-color: rgba(26, 239, 154, 0.4);
-}
+} */
 
 .checkbox_container input[type='checkbox']:checked + label::before,
 .checkbox_select_all input[type='checkbox']:checked + label::before {

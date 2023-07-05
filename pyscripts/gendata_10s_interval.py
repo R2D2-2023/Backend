@@ -46,6 +46,25 @@ pm25 = random.randint(0, 50)
 pm100 = random.randint(0, 50)
 zone = random.randint(1, 10)
 
+# get random value between 10 and 50 or 160 and 200
+x_loc1 = random.randint(10, 50)
+x_loc2 = random.randint(160, 200)
+
+if random.randint(0, 1) == 0:
+    x_loc = x_loc1
+else:
+    x_loc = x_loc2
+
+# get random value between 0 and 10 or 50 and 63
+y_loc1 = random.randint(0, 10)
+y_loc2 = random.randint(50, 63)
+
+if random.randint(0, 1) == 0:
+    y_loc = y_loc1
+else:
+    y_loc = y_loc2
+
+
 while True:
     # generate random data
     print("Generating random data and inserting into database...")
@@ -99,7 +118,7 @@ while True:
         break
 
     # create the query
-    query_location = f"INSERT INTO locatie_only (x_loc, y_loc, datetime) VALUES ({random.randint(0,232)}, {random.randint(0,65)}, CURRENT_TIMESTAMP AT TIME ZONE 'CEST');"
+    query_location = f"INSERT INTO locatie_only (x_loc, y_loc, datetime) VALUES ({x_loc}, {y_loc}, CURRENT_TIMESTAMP AT TIME ZONE 'CEST');"
     query_sensor_data = f"INSERT INTO sensor_data_with_foreign_location (co2, temperature, humidity, pressure, pm10, pm25, pm100, zone, datetime) VALUES ({co2}, {temperature}, {humidity}, {pressure}, {pm10}, {pm25}, {pm100}, {zone}, CURRENT_TIMESTAMP AT TIME ZONE 'CEST');"
 
     # execute the query
