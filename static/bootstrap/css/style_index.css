@@ -261,7 +261,7 @@
 
 
 .heatmap-legend {
-    position: absolute;
+    position: relative;
     bottom: 0;
     right: 0;
     display: flex;
@@ -284,21 +284,15 @@
     margin: 0;
     font-size: small;
 }
-  
-.heatmap-label-left {
-    margin-left: 3%;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-  
-.heatmap-label-right {
-    margin-right: 47%;
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
 
+.label-container{
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    font-size: small;
+}
 
 
 @media (max-width: 1535px) {
